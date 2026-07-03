@@ -24,7 +24,6 @@ The platform also provides an admin dashboard that allows scholarship providers 
 ## 🔍 Search Filters
 
 Students can filter scholarships by:
-- Education Level
 - Scholarship Type
 - Location
 - Course/Program
