@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backend Testing Frontend</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav>
+    <button onclick="showPage('landing')">Home</button>
+    <button onclick="showPage('login')">Login</button>
+    <button onclick="showPage('register')">Register</button>
+    <button onclick="showPage('dashboard')">Dashboard</button>
+    <button onclick="showPage('eligibility')">Eligibility</button>
+    <button onclick="showPage('recommendations')">Recommendations</button>
+    <button onclick="showPage('browse')">Browse Scholarships</button>
+    <button onclick="showPage('admin-login')">Admin Login</button>
+    <button onclick="showPage('admin-dashboard')">Admin Dashboard</button>
+  </nav>
+
+  <main>
+    <!-- Landing Page -->
+    <section id="landing-page" class="page">
+      <h2>Welcome to IskolarHub</h2>
+      <button onclick="showPage('register')">Register</button>
+      <button onclick="showPage('login')">Login</button>
+      <div id="landing-result"></div>
+    </section>
+
+    <!-- Registration Page -->
+    <section id="register-page" class="page" style="display:none;">
+      <h2>Student Registration</h2>
+      <form id="register-form">
+        <label>Full Name</label>
+        <input type="text" id="reg-fullname" required>
+
+        <label>Email</label>
+        <input type="email" id="reg-email" required>
+
+        <label>Password</label>
+        <input type="password" id="reg-password" required>
+
+        <label>Confirm Password</label>
+        <input type="password" id="reg-confirm" required>
+
+        <button type="submit">Register</button>
+      </form>
+      <div id="register-result"></div>
+    </section>
+
+    <!-- Login Page -->
+    <section id="login-page" class="page" style="display:none;">
+      <h2>Student Login</h2>
+      <form id="login-form">
+        <label>Email</label>
+        <input type="email" id="login-email" required>
+
+        <label>Password</label>
+        <input type="password" id="login-password" required>
+
+        <button type="submit">Login</button>
+      </form>
+      <div id="login-result"></div>
+    </section>
+
+    <!-- Student Dashboard -->
+    <section id="dashboard-page" class="page" style="display:none;">
+      <h2 id="dashboard-welcome">Welcome, Student</h2>
+      <button onclick="showPage('eligibility')">Complete Eligibility Form</button>
+      <button onclick="showPage('browse')">Browse Scholarships</button>
+      <button onclick="logout()">Logout</button>
+      <div id="dashboard-result"></div>
+    </section>
+
+    <!-- Eligibility Form -->
+    <section id="eligibility-page" class="page" style="display:none;">
+      <h2>Eligibility Form</h2>
+      <form id="eligibility-form">
+        <label>Full Name</label>
+        <input type="text" id="elig-fullname">
+
+        <label>Age</label>
+        <input type="number" id="elig-age">
+
+        <label>Current School</label>
+        <input type="text" id="elig-school">
+
+        <label>Education Level</label>
+        <select id="elig-education">
+          <option value="">Select</option>
+          <option value="College">College</option>
+          <option value="Senior High">Senior High</option>
+          <option value="Graduate">Graduate</option>
+        </select>
+
+        <label>Strand (if applicable)</label>
+        <input type="text" id="elig-strand">
+
+        <label>Course</label>
+        <input type="text" id="elig-course">
+
+        <label>GWA</label>
+        <input type="number" id="elig-gwa" step="0.01">
+
+        <button type="submit">Submit</button>
+      </form>
+      <div id="eligibility-result"></div>
+    </section>
+
+    <!-- Scholarship Recommendations -->
+    <section id="recommendations-page" class="page" style="display:none;">
+      <h2>Scholarship Recommendations</h2>
+      <button onclick="loadRecommendations()">Refresh Recommendations</button>
+      <button onclick="showPage('browse')">Browse All Scholarships</button>
+      <div id="rec-result"></div>
+    </section>
+
+    <!-- Browse Scholarships -->
+    <section id="browse-page" class="page" style="display:none;">
+      <h2>Browse Scholarships</h2>
+      <input type="text" id="search-query" placeholder="Search by university, title, or course..." oninput="performSearch()">
+
+      <div class="filters">
+        <label>Education Level</label>
+        <select id="filter-education" onchange="performSearch()">
+          <option value="">Any</option>
+          <option value="College">College</option>
+          <option value="Senior High">Senior High</option>
+          <option value="Graduate">Graduate</option>
+        </select>
+
+        <label>Scholarship Type</label>
+        <select id="filter-type" onchange="performSearch()">
+          <option value="">Any</option>
+          <option value="Academic">Academic</option>
+          <option value="Government">Government</option>
+          <option value="Private">Private</option>
+          <option value="Needs-Based">Needs-Based</option>
+          <option value="Financial Assistance">Financial Assistance</option>
+          <option value="Athletic">Athletic</option>
+          <option value="Merit">Merit</option>
+        </select>
+
+        <label>Course</label>
+        <input type="text" id="filter-course" oninput="performSearch()">
+
+        <label>Minimum GWA</label>
+        <input type="number" id="filter-gwa" oninput="performSearch()">
+      </div>
+
+      <div id="browse-result"></div>
+    </section>
+
+    <!-- Admin Login -->
+    <section id="admin-login-page" class="page" style="display:none;">
+      <h2>Admin Login</h2>
+      <form id="admin-login-form">
+        <label>Username</label>
+        <input type="text" id="admin-username" required>
+
+        <label>Password</label>
+        <input type="password" id="admin-password" required>
+
+        <button type="submit">Login</button>
+      </form>
+      <div id="admin-login-result"></div>
+    </section>
+
+    <!-- Admin Dashboard -->
+    <section id="admin-dashboard-page" class="page" style="display:none;">
+      <h2>Admin Dashboard</h2>
+      <button onclick="loadScholarships()">Refresh List</button>
+      <button onclick="openAddModal()">Add Scholarship</button>
+      <div id="admin-table"></div>
+    </section>
+  </main>
+
+  <!-- Add/Edit Modal -->
+  <div id="scholarship-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3 id="modal-title">Add Scholarship</h3>
+      <form id="scholarship-form">
+        <input type="hidden" id="scholarship-id">
+        <label>Title</label>
+        <input type="text" id="sch-title" required>
+        <label>Description</label>
+        <textarea id="sch-description" required></textarea>
+        <label>University</label>
+        <input type="text" id="sch-university" required>
+        <label>Education Level</label>
+        <select id="sch-education" required>
+          <option value="">Select</option>
+          <option value="College">College</option>
+          <option value="Senior High">Senior High</option>
+          <option value="Graduate">Graduate</option>
+        </select>
+        <label>Course</label>
+        <input type="text" id="sch-course">
+        <label>Scholarship Type</label>
+        <input type="text" id="sch-type" required>
+        <label>Minimum GWA</label>
+        <input type="number" id="sch-gwa" step="0.01" required>
+        <label>Requirements</label>
+        <textarea id="sch-requirements" required></textarea>
+        <label>Deadline</label>
+        <input type="date" id="sch-deadline" required>
+        <label>Website URL</label>
+        <input type="url" id="sch-url">
+        <button type="submit">Save</button>
+        <button type="button" onclick="closeModal()">Cancel</button>
+      </form>
+      <div id="modal-result"></div>
+    </div>
+  </div>
+
+  <div class="debug">
+    <h3>API Response</h3>
+    <pre id="debug-output">No request made yet.</pre>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
