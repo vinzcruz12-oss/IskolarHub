@@ -50,7 +50,7 @@
             <h1 class="hero-title">FIND YOUR FUTURE</h1>
             <p class="hero-description">Discover scholarships across the Philippines and receive personalized recommendations based on your profile.</p>
             <div class="hero-buttons">
-              <button class="btn-filled-hero" onclick="showPage('browse')">Browse Universities</button>
+              <button class="btn-filled-hero" onclick="showPage('browse')">Browse Scholarships</button>
               <button class="btn-outline-hero" onclick="showPage('register')">Find My Scholarship</button>
             </div>
           </div>
@@ -430,6 +430,7 @@
         <button type="submit">Register</button>
       </form>
       <div id="register-result"></div>
+      <p style="margin-top: 15px; font-size: 14px;">Already have an account? <a href="#" onclick="showPage('login'); return false;">Login here</a></p>
     </section>
 
     <!-- Login Page -->
@@ -445,6 +446,8 @@
         <button type="submit">Login</button>
       </form>
       <div id="login-result"></div>
+      <p style="margin-top: 15px; font-size: 14px;">Don't have an account? <a href="#" onclick="showPage('register'); return false;">Sign Up here</a></p>
+      <p style="margin-top: 10px; font-size: 14px;"><a href="#" onclick="alert('Password reset link sent to your email.'); return false;">Forgot Password?</a></p>
     </section>
 
     <!-- Student Dashboard -->
@@ -528,15 +531,42 @@
     </section>
 
     <!-- Browse Scholarships -->
-    <section id="browse-page" class="page" style="display:none;">
-      <h2>Browse Scholarships</h2>
-      <input type="text" id="search-query" placeholder="Search by university, title, or course..." oninput="performSearch()">
+    <section id="browse-page" class="page page-hero-container" style="display:none;">
+      <header class="hero-header browse-header">
+        <div class="logo-container">
+          <img src="images/logo.png" alt="" class="logo-img">
+        </div>
+        <nav class="hero-nav">
+          <a href="#about" onclick="showPage('landing')">About</a>
+          <a href="#how-it-works" onclick="showPage('landing')">How It Works</a>
+          <a href="#universities" onclick="showPage('landing')">Universities</a>
+          <a href="#testimonials" onclick="showPage('landing')">Testimonials</a>
+          <a href="#faqs" onclick="showPage('landing')">FAQs</a>
+          <a href="#contact" onclick="showPage('landing')">Contact</a>
+        </nav>
+        <div class="auth-buttons">
+          <button class="btn-outline-header" onclick="showPage('login')">Login</button>
+          <button class="btn-filled-header" onclick="showPage('register')">Sign Up</button>
+        </div>
+      </header>
 
-      <div class="filters">
-        <div>
-          <label>Scholarship Type</label>
+      <div class="browse-container">
+        <h1 class="browse-main-title">Browse Scholarships</h1>
+        <p class="browse-main-subtitle">Discover scholarships that match your goals.</p>
+
+        <div class="browse-search-wrapper">
+          <input type="text" id="search-query" placeholder="Search scholarships..." oninput="performSearch()">
+        </div>
+
+        <div class="browse-filters-wrapper">
+          <select id="filter-education" onchange="performSearch()">
+            <option value="">Education Level</option>
+            <option value="Senior High School">Senior High School</option>
+            <option value="College">College</option>
+          </select>
+
           <select id="filter-type" onchange="performSearch()">
-            <option value="">Any</option>
+            <option value="">Scholarship Type</option>
             <option value="Academic">Academic</option>
             <option value="Merit">Merit</option>
             <option value="Financial Assistance">Financial Assistance</option>
@@ -545,12 +575,9 @@
             <option value="Athletic">Athletic</option>
             <option value="Needs-Based">Needs-Based</option>
           </select>
-        </div>
 
-        <div>
-          <label>Course</label>
           <select id="filter-course" onchange="performSearch()">
-            <option value="">Any</option>
+            <option value="">Course</option>
             <option value="BS Information Technology">BS Information Technology</option>
             <option value="BS Computer Science">BS Computer Science</option>
             <option value="BS Civil Engineering">BS Civil Engineering</option>
@@ -559,15 +586,12 @@
             <option value="BS Psychology">BS Psychology</option>
             <option value="BS Education">BS Education</option>
           </select>
+
+          <input type="number" id="filter-gwa" placeholder="Minimum GWA" step="0.01" oninput="performSearch()">
         </div>
 
-        <div>
-          <label>Minimum GWA</label>
-          <input type="number" id="filter-gwa" oninput="performSearch()">
-        </div>
+        <div id="browse-result"></div>
       </div>
-
-      <div id="browse-result"></div>
     </section>
 
     <!-- Admin Login -->

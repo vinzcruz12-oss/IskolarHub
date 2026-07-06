@@ -304,7 +304,7 @@ async function doSearch() {
       <td>${s.scholarship_type}</td>
       <td>${s.minimum_gwa}</td>
       <td>${s.course || 'Any'}</td>
-      <td>${s.official_scholarship_url ? '<a href="' + s.official_scholarship_url + '" target="_blank">Apply</a>' : 'No link'}</td>
+      <td>${s.official_scholarship_url ? '<a href="#" onclick="handleApplyClick(event, \'' + s.official_scholarship_url + '\')">Apply</a>' : 'No link'}</td>
     </tr>`;
   });
   html += '</table>';
@@ -559,5 +559,16 @@ function scrollCarousel(direction) {
       left: direction * scrollAmount,
       behavior: 'smooth'
     });
+  }
+}
+
+// Handle apply clicks for guest users
+function handleApplyClick(e, url) {
+  e.preventDefault();
+  if (!currentStudentId) {
+    alert('Please login or register first to apply for scholarships.');
+    showPage('login');
+  } else if (url) {
+    window.open(url, '_blank');
   }
 }
