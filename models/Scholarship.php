@@ -50,7 +50,7 @@ class Scholarship {
             $params[] = $scholarship_type;
         }
         if ($minimum_gwa !== null && $minimum_gwa > 0) {
-            $sql .= " AND minimum_gwa <= ?";
+            $sql .= " AND minimum_gwa >= ?";
             $params[] = $minimum_gwa;
         }
 
