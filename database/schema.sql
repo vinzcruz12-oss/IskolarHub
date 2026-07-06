@@ -42,8 +42,9 @@ CREATE TABLE students (
     university_id INT,
     college_id INT,
     course_id INT,
-    education_level VARCHAR(100),
+    current_school VARCHAR(255) NULL,
     strand VARCHAR(255),
+    course VARCHAR(255) NULL,
     gwa DECIMAL(5,2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
@@ -56,12 +57,13 @@ CREATE TABLE scholarships (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    education_level VARCHAR(100) NOT NULL,
+    university VARCHAR(255) NOT NULL,
+    course VARCHAR(255) NOT NULL,
     scholarship_type VARCHAR(100) NOT NULL,
     minimum_gwa DECIMAL(5,2),
     requirements TEXT,
     deadline DATE,
-    website_url VARCHAR(500),
+    official_scholarship_url VARCHAR(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

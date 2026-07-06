@@ -47,9 +47,11 @@ try {
     ];
     $pdo = new PDO($dsn, $username, $password, $options);
     
-    // 2. Create the database
-    echo "Creating database if not exists...\n";
-    $pdo->exec("CREATE DATABASE IF NOT EXISTS iskolarhub CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
+    // 2. Drop and Recreate the database
+    echo "Dropping old database if exists...\n";
+    $pdo->exec("DROP DATABASE IF EXISTS iskolarhub");
+    echo "Creating database...\n";
+    $pdo->exec("CREATE DATABASE iskolarhub CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
     
     // 3. Connect to the specific database
     echo "Selecting database 'iskolarhub'...\n";

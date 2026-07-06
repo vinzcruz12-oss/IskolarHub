@@ -59,18 +59,20 @@ INSERT IGNORE INTO scholarships
 (
     title,
     description,
-    education_level,
+    university,
+    course,
     scholarship_type,
     minimum_gwa,
     requirements,
     deadline,
-    website_url
+    official_scholarship_url
 )
 VALUES
 (
     'FEU Academic Excellence Scholarship',
     'Academic scholarship for outstanding FEU students',
-    'College',
+    'Far Eastern University',
+    'BS Information Technology',
     'Academic',
     85,
     'General weighted average of at least 85%',
@@ -81,7 +83,8 @@ VALUES
 (
     'UP Diliman Computer Science Scholarship',
     'Full scholarship for CS students at UP Diliman',
-    'College',
+    'University of the Philippines Diliman',
+    'BS Computer Science',
     'Government',
     85,
     'Must pass the UP Diliman entrance exam',
@@ -92,7 +95,8 @@ VALUES
 (
     'ADMU Loyola Schools Merit Scholarship',
     'Merit-based scholarship for Ateneo students',
-    'College',
+    'Ateneo de Manila University',
+    'BS Accountancy',
     'Private',
     90,
     'Minimum 90% average, interview required',
@@ -103,7 +107,8 @@ VALUES
 (
     'DLSU Science and Technology Scholarship',
     'STEM scholarship from De La Salle University',
-    'College',
+    'De La Salle University',
+    'BS Computer Science',
     'Academic',
     90,
     'Dean''s List standing, no failing grades',
@@ -114,7 +119,8 @@ VALUES
 (
     'UST College Scholarship Program',
     'University of Santo Tomas scholarship for deserving students',
-    'College',
+    'University of Santo Tomas',
+    'BS Electronics Engineering',
     'Needs-Based',
     85,
     'Proof of financial need, 85% general average',
@@ -125,7 +131,8 @@ VALUES
 (
     'NU Academic Grant',
     'Academic assistance for National University students',
-    'College',
+    'National University',
+    'BS Nursing',
     'Financial Assistance',
     0,
     'No GPA requirement, family income below 200k',
@@ -136,7 +143,8 @@ VALUES
 (
     'Adamson University Engineering Scholarship',
     'Scholarship for engineering students at Adamson',
-    'College',
+    'Adamson University',
+    'BS Mechanical Engineering',
     'Academic',
     85,
     'Minimum 88% in math and science subjects',
@@ -147,7 +155,8 @@ VALUES
 (
     'UE Athletic Scholarship Program',
     'Sports scholarship for University of the East',
-    'College',
+    'University of the East',
+    'BS Education',
     'Athletic',
     0,
     'Must be varsity player in any sport',
@@ -158,7 +167,8 @@ VALUES
 (
     'TIP Technology Scholarship',
     'Scholarship for TIP students excelling in technology',
-    'College',
+    'Technological Institute of the Philippines',
+    'BS Information Technology',
     'Merit',
     85,
     'Portfolio of projects required',
@@ -169,7 +179,8 @@ VALUES
 (
     'Mapúa University Engineering Excellence',
     'Engineering scholarship at Mapúa University',
-    'College',
+    'Mapúa University',
+    'BS Electronics Engineering',
     'Private',
     95,
     'Minimum 95% average, entrance exam required',
