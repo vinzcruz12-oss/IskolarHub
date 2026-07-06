@@ -16,6 +16,16 @@ function showPage(pageId) {
   const page = document.getElementById(pageId + '-page');
   if (page) page.style.display = 'block';
 
+  // Toggle global-test-nav visibility
+  const testNav = document.getElementById('global-test-nav');
+  if (testNav) {
+    if (pageId === 'landing') {
+      testNav.style.display = 'none';
+    } else {
+      testNav.style.display = 'flex';
+    }
+  }
+
   if (pageId === 'dashboard') {
     document.getElementById('dashboard-welcome').textContent = 'Welcome, ' + (currentStudentName || 'Student');
   }
@@ -38,7 +48,9 @@ function showPage(pageId) {
 function debug(data) {
   const el = document.getElementById('debug-output');
   console.log('API Response:', data);
-  el.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+  if (el) {
+    el.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+  }
 }
 
 async function apiFetch(path, options = {}) {
@@ -521,3 +533,40 @@ document.getElementById('scholarship-form').addEventListener('submit', async (e)
     }
   }
 });
+
+// FAQ Accordion Toggle
+function toggleFaq(rowElement) {
+  const item = rowElement.closest('.faq-accordion-item');
+  const container = item.querySelector('.faq-answer-container');
+  const arrow = item.querySelector('.faq-arrow-icon');
+  
+  const isActive = item.classList.contains('active');
+  
+  // Close all other FAQ items
+  document.querySelectorAll('.faq-accordion-item').forEach(el => {
+    el.classList.remove('active');
+    const ans = el.querySelector('.faq-answer-container');
+    if (ans) ans.style.display = 'none';
+    const arr = el.querySelector('.faq-arrow-icon');
+    if (arr) arr.textContent = '▼';
+  });
+  
+  // If it was not active, toggle it open
+  if (!isActive) {
+    item.classList.add('active');
+    if (container) container.style.display = 'block';
+    if (arrow) arrow.textContent = '▲';
+  }
+}
+
+// Carousel Scroll Logic
+function scrollCarousel(direction) {
+  const container = document.querySelector('.uni-carousel-container');
+  if (container) {
+    const scrollAmount = container.clientWidth * 0.8;
+    container.scrollBy({
+      left: direction * scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+}
