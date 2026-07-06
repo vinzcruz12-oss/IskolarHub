@@ -4,7 +4,12 @@ let currentStudentName = null;
 let currentAdminId = null;
 let isViewingAsStudent = false;
 
-function showPage(pageId) {
+function showPage(pageId, updateHash = true) {
+  if (updateHash) {
+    window.location.hash = pageId;
+    return;
+  }
+
   if (isViewingAsStudent && pageId !== 'admin-student-view' && pageId !== 'landing' && pageId !== 'login' && pageId !== 'register') {
     document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
     const page = document.getElementById('admin-student-view-page');
@@ -572,3 +577,58 @@ function handleApplyClick(e, url) {
     window.open(url, '_blank');
   }
 }
+
+// SPA Hash-Based Routing
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
+const VALID_PAGES = [
+  'landing', 'privacy', 'register', 'login', 'dashboard', 
+  'eligibility', 'recommendations', 'browse', 
+  'admin-login', 'admin-dashboard', 'admin-student-view'
+];
+
+const LANDING_ANCHORS = [
+  'about', 'how-it-works', 'universities', 'testimonials', 'faqs', 'contact'
+];
+
+let isInitialLoad = true;
+
+function handleRouting() {
+  let hash = window.location.hash.substring(1) || 'landing';
+  
+  if (isInitialLoad) {
+    isInitialLoad = false;
+    // Force landing anchors/landing hashes back to top on first load/reload
+    if (hash === 'landing' || LANDING_ANCHORS.includes(hash)) {
+      hash = 'landing';
+      window.location.hash = 'landing';
+      window.scrollTo(0, 0);
+    }
+  }
+  
+  if (VALID_PAGES.includes(hash)) {
+    showPage(hash, false);
+    if (hash === 'landing') {
+      window.scrollTo(0, 0);
+    }
+  } else if (LANDING_ANCHORS.includes(hash)) {
+    showPage('landing', false);
+    const el = document.getElementById(hash);
+    if (el) {
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }, 50);
+    }
+  } else {
+    showPage('landing', false);
+  }
+}
+
+// Register routing listeners
+window.addEventListener('hashchange', handleRouting);
+window.addEventListener('DOMContentLoaded', handleRouting);
+
+// Initialize routing immediately on script execution
+handleRouting();
