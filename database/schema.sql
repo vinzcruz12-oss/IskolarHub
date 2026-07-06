@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS iskolarhub;
+USE iskolarhub;
+
 -- Students table
 CREATE TABLE IF NOT EXISTS students (
     id INT AUTO_INCREMENT PRIMARY KEY,
