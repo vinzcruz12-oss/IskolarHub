@@ -537,25 +537,16 @@ document.getElementById('scholarship-form').addEventListener('submit', async (e)
 // FAQ Accordion Toggle
 function toggleFaq(rowElement) {
   const item = rowElement.closest('.faq-accordion-item');
-  const container = item.querySelector('.faq-answer-container');
-  const arrow = item.querySelector('.faq-arrow-icon');
-  
   const isActive = item.classList.contains('active');
   
   // Close all other FAQ items
   document.querySelectorAll('.faq-accordion-item').forEach(el => {
     el.classList.remove('active');
-    const ans = el.querySelector('.faq-answer-container');
-    if (ans) ans.style.display = 'none';
-    const arr = el.querySelector('.faq-arrow-icon');
-    if (arr) arr.textContent = '▼';
   });
   
   // If it was not active, toggle it open
   if (!isActive) {
     item.classList.add('active');
-    if (container) container.style.display = 'block';
-    if (arrow) arrow.textContent = '▲';
   }
 }
 

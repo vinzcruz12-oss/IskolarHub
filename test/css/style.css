@@ -931,18 +931,41 @@ html {
   font-size: 14px;
   color: #7a151a;
   font-weight: bold;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-accordion-item.active .faq-arrow-icon {
+  transform: rotate(-180deg);
 }
 
 .faq-answer-container {
-  padding-top: 10px;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
   padding-right: 24px;
 }
 
+.faq-accordion-item.active .faq-answer-container {
+  grid-template-rows: 1fr;
+}
+
 .faq-answer {
+  min-height: 0;
   font-size: 14px;
   line-height: 1.6;
   color: #718096;
   margin: 0;
+  transition: opacity 0.25s ease, padding 0.3s ease;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.faq-accordion-item.active .faq-answer {
+  opacity: 1;
+  padding-top: 10px;
+  padding-bottom: 8px;
 }
 
 /* Contact Section Styles */
