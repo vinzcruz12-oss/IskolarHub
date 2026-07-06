@@ -10,6 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+require_once __DIR__ . '/../../config/helpers.php';
+requireDatabase();
+
 require_once __DIR__ . '/../../models/Admin.php';
 
 $input = json_decode(file_get_contents('php://input'), true);

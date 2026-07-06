@@ -10,25 +10,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once __DIR__ . '/../../models/Student.php';
+require_once __DIR__ . '/../../config/helpers.php';
+requireDatabase();
+
+require_once __DIR__ . '/../../controllers/StudentController.php';
 
 $id = $_GET['id'] ?? null;
 
-if (!$id) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'error' => 'ID is required']);
-    exit;
-}
-
-$student = new Student();
-$result = $student->findById($id);
-
-if (!$result) {
-    http_response_code(404);
-    echo json_encode(['success' => false, 'error' => 'Student not found']);
-    exit;
-}
-
-http_response_code(200);
-echo json_encode(['success' => true, 'data' => $result]);
-exit;
+$controller = new StudentController();
+$controller->show($id);

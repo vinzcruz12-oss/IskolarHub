@@ -7,11 +7,14 @@ class Student {
 
     public function __construct() {
         $this->db = (new Database())->getConnection();
+        if (!$this->db) {
+            throw new RuntimeException('Database connection failed');
+        }
     }
 
-    public function create($fullname, $email, $password, $education_level = null, $course = null, $gwa = null) {
-        $stmt = $this->db->prepare("INSERT INTO students (fullname, email, password, education_level, course, gwa) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$fullname, $email, $password, $education_level, $course, $gwa]);
+    public function create($first_name, $middle_name, $last_name, $email, $password, $course = null, $gwa = null) {
+        $stmt = $this->db->prepare("INSERT INTO students (first_name, middle_name, last_name, email, password, course, gwa) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$first_name, $middle_name, $last_name, $email, $password, $course, $gwa]);
         return $this->db->lastInsertId();
     }
 
@@ -44,11 +47,12 @@ class Student {
         $fields = [];
         $params = [];
 
-        if (isset($data['fullname'])) { $fields[] = 'fullname = ?'; $params[] = $data['fullname']; }
+        if (isset($data['first_name'])) { $fields[] = 'first_name = ?'; $params[] = $data['first_name']; }
+        if (isset($data['middle_name'])) { $fields[] = 'middle_name = ?'; $params[] = $data['middle_name']; }
+        if (isset($data['last_name'])) { $fields[] = 'last_name = ?'; $params[] = $data['last_name']; }
         if (isset($data['email'])) { $fields[] = 'email = ?'; $params[] = $data['email']; }
         if (isset($data['age'])) { $fields[] = 'age = ?'; $params[] = $data['age']; }
         if (isset($data['current_school'])) { $fields[] = 'current_school = ?'; $params[] = $data['current_school']; }
-        if (isset($data['education_level'])) { $fields[] = 'education_level = ?'; $params[] = $data['education_level']; }
         if (isset($data['strand'])) { $fields[] = 'strand = ?'; $params[] = $data['strand']; }
         if (isset($data['course'])) { $fields[] = 'course = ?'; $params[] = $data['course']; }
         if (isset($data['gwa'])) { $fields[] = 'gwa = ?'; $params[] = $data['gwa']; }

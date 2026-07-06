@@ -7,6 +7,9 @@ class Admin {
 
     public function __construct() {
         $this->db = (new Database())->getConnection();
+        if (!$this->db) {
+            throw new RuntimeException('Database connection failed');
+        }
     }
 
     public function findByUsername($username) {
