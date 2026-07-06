@@ -2,8 +2,16 @@ const API_BASE = '../api';
 let currentStudentId = null;
 let currentStudentName = null;
 let currentAdminId = null;
+let isViewingAsStudent = false;
 
 function showPage(pageId) {
+  if (isViewingAsStudent && pageId !== 'admin-student-view' && pageId !== 'landing' && pageId !== 'login' && pageId !== 'register') {
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    const page = document.getElementById('admin-student-view-page');
+    if (page) page.style.display = 'block';
+    return;
+  }
+
   document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
   const page = document.getElementById(pageId + '-page');
   if (page) page.style.display = 'block';
@@ -19,6 +27,11 @@ function showPage(pageId) {
   }
   if (pageId === 'browse') {
     performSearch();
+  }
+  if (pageId === 'admin-dashboard' && currentAdminId) {
+    loadAdminStats();
+    loadScholarships();
+    loadStudents();
   }
 }
 
@@ -51,16 +64,43 @@ function logout() {
   currentStudentId = null;
   currentStudentName = null;
   currentAdminId = null;
+  isViewingAsStudent = false;
   showPage('landing');
+}
+
+function adminLogout() {
+  currentAdminId = null;
+  isViewingAsStudent = false;
+  showPage('landing');
+}
+
+function viewAsStudent() {
+  if (!currentAdminId) return;
+  isViewingAsStudent = true;
+  showPage('admin-student-view');
+}
+
+function returnToAdminDashboard() {
+  isViewingAsStudent = false;
+  showPage('admin-dashboard');
 }
 
 // Registration
 document.getElementById('register-form').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const fullname = document.getElementById('reg-fullname').value.trim();
+  const first_name = document.getElementById('reg-firstname').value.trim();
+  const middle_name = document.getElementById('reg-middlename').value.trim();
+  const last_name = document.getElementById('reg-lastname').value.trim();
   const email = document.getElementById('reg-email').value.trim();
   const password = document.getElementById('reg-password').value;
   const confirm = document.getElementById('reg-confirm').value;
+  const privacy = document.getElementById('reg-privacy').checked;
+
+  if (!first_name || !last_name) {
+    debug({ error: 'First name and last name are required' });
+    document.getElementById('register-result').innerHTML = '<p style="color:red;">Error: First name and last name are required</p>';
+    return;
+  }
 
   if (password !== confirm) {
     debug({ error: 'Passwords do not match' });
@@ -68,10 +108,16 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     return;
   }
 
+  if (!privacy) {
+    debug({ error: 'Privacy notice not agreed' });
+    document.getElementById('register-result').innerHTML = '<p style="color:red;">Error: You must agree to the Privacy Notice and Terms of Use</p>';
+    return;
+  }
+
   const result = await apiFetch('/students/register.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fullname, email, password })
+    body: JSON.stringify({ first_name, middle_name, last_name, email, password, confirm_password: confirm, privacy_accepted: privacy })
   });
 
   const out = document.getElementById('register-result');
@@ -114,10 +160,11 @@ async function loadStudentProfile() {
   const result = await apiFetch('/students/show.php?id=' + currentStudentId);
   if (result.ok && result.data && result.data.success) {
     const s = result.data.data;
-    document.getElementById('elig-fullname').value = s.fullname || '';
+    document.getElementById('elig-firstname').value = s.first_name || '';
+    document.getElementById('elig-middlename').value = s.middle_name || '';
+    document.getElementById('elig-lastname').value = s.last_name || '';
     document.getElementById('elig-age').value = s.age || '';
     document.getElementById('elig-school').value = s.current_school || '';
-    document.getElementById('elig-education').value = s.education_level || '';
     document.getElementById('elig-strand').value = s.strand || '';
     document.getElementById('elig-course').value = s.course || '';
     document.getElementById('elig-gwa').value = s.gwa || '';
@@ -134,12 +181,13 @@ document.getElementById('eligibility-form').addEventListener('submit', async (e)
 
   const payload = {
     id: currentStudentId,
-    fullname: document.getElementById('elig-fullname').value.trim() || undefined,
+    first_name: document.getElementById('elig-firstname').value.trim() || undefined,
+    middle_name: document.getElementById('elig-middlename').value.trim() || undefined,
+    last_name: document.getElementById('elig-lastname').value.trim() || undefined,
     age: document.getElementById('elig-age').value ? parseInt(document.getElementById('elig-age').value) : undefined,
     current_school: document.getElementById('elig-school').value.trim() || undefined,
-    education_level: document.getElementById('elig-education').value || undefined,
-    strand: document.getElementById('elig-strand').value.trim() || undefined,
-    course: document.getElementById('elig-course').value.trim() || undefined,
+    strand: document.getElementById('elig-strand').value || undefined,
+    course: document.getElementById('elig-course').value || undefined,
     gwa: document.getElementById('elig-gwa').value ? parseFloat(document.getElementById('elig-gwa').value) : undefined
   };
 
@@ -197,7 +245,7 @@ async function loadRecommendations() {
         <p><strong>Description:</strong> ${s.description}</p>
         <p><strong>Reason:</strong></p>
         <ul>${reasons}</ul>
-        ${s.website_url ? '<a href="' + s.website_url + '" target="_blank">Apply Now</a>' : 'No link'}
+        ${s.official_scholarship_url ? '<a href="' + s.official_scholarship_url + '" target="_blank">Apply Now</a>' : 'No link'}
       </div>
     `;
   });
@@ -215,11 +263,9 @@ async function doSearch() {
   const params = new URLSearchParams();
   const query = document.getElementById('search-query').value.trim();
   if (query) params.set('search', query);
-  const edu = document.getElementById('filter-education').value;
-  if (edu) params.set('education_level', edu);
   const type = document.getElementById('filter-type').value;
   if (type) params.set('scholarship_type', type);
-  const course = document.getElementById('filter-course').value.trim();
+  const course = document.getElementById('filter-course').value;
   if (course) params.set('course', course);
   const gwa = document.getElementById('filter-gwa').value;
   if (gwa !== '') params.set('minimum_gwa', gwa);
@@ -246,7 +292,7 @@ async function doSearch() {
       <td>${s.scholarship_type}</td>
       <td>${s.minimum_gwa}</td>
       <td>${s.course || 'Any'}</td>
-      <td>${s.website_url ? '<a href="' + s.website_url + '" target="_blank">Apply</a>' : 'No link'}</td>
+      <td>${s.official_scholarship_url ? '<a href="' + s.official_scholarship_url + '" target="_blank">Apply</a>' : 'No link'}</td>
     </tr>`;
   });
   html += '</table>';
@@ -276,7 +322,41 @@ document.getElementById('admin-login-form').addEventListener('submit', async (e)
   }
 });
 
-// Admin Dashboard
+// Admin Dashboard Functions
+async function loadAdminStats() {
+  const out = document.getElementById('admin-stats');
+  try {
+    const scholarshipsResult = await apiFetch('/scholarships/index.php');
+    const studentsResult = await apiFetch('/students/index.php');
+
+    const scholarships = (scholarshipsResult.data && scholarshipsResult.data.data) ? scholarshipsResult.data.data : [];
+    const students = (studentsResult.data && studentsResult.data.data) ? studentsResult.data.data : [];
+
+    const totalScholarships = scholarships.length;
+    const totalStudents = students.length;
+    const totalUniversities = [...new Set(scholarships.map(s => s.university))].length;
+
+    out.innerHTML = `
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h4>Total Scholarships</h4>
+          <p>${totalScholarships}</p>
+        </div>
+        <div class="stat-card">
+          <h4>Total Students</h4>
+          <p>${totalStudents}</p>
+        </div>
+        <div class="stat-card">
+          <h4>Universities</h4>
+          <p>${totalUniversities}</p>
+        </div>
+      </div>
+    `;
+  } catch (err) {
+    out.innerHTML = '<p style="color:red;">Error loading statistics</p>';
+  }
+}
+
 async function loadScholarships() {
   const result = await apiFetch('/scholarships/index.php');
   const out = document.getElementById('admin-table');
@@ -308,6 +388,36 @@ async function loadScholarships() {
   out.innerHTML = html;
 }
 
+async function loadStudents() {
+  const result = await apiFetch('/students/index.php');
+  const out = document.getElementById('admin-students-table');
+  if (!result.ok || !result.data || !result.data.success) {
+    out.innerHTML = '<p style="color:red;">Error: ' + JSON.stringify(result.data || result.error) + '</p>';
+    return;
+  }
+
+  const list = result.data.data || [];
+  if (list.length === 0) {
+    out.innerHTML = '<p>No students found.</p>';
+    return;
+  }
+
+  let html = '<table><tr><th>ID</th><th>Name</th><th>Email</th><th>Course</th><th>GWA</th><th>Registered</th></tr>';
+  list.forEach(s => {
+    const fullName = [s.first_name, s.middle_name, s.last_name].filter(Boolean).join(' ');
+    html += `<tr>
+      <td>${s.id}</td>
+      <td>${fullName}</td>
+      <td>${s.email}</td>
+      <td>${s.course || 'N/A'}</td>
+      <td>${s.gwa || 'N/A'}</td>
+      <td>${s.created_at || 'N/A'}</td>
+    </tr>`;
+  });
+  html += '</table>';
+  out.innerHTML = html;
+}
+
 function openAddModal() {
   document.getElementById('modal-title').textContent = 'Add Scholarship';
   document.getElementById('scholarship-form').reset();
@@ -318,6 +428,14 @@ function openAddModal() {
 
 function closeModal() {
   document.getElementById('scholarship-modal').style.display = 'none';
+}
+
+function openPrivacyModal() {
+  document.getElementById('privacy-modal').style.display = 'flex';
+}
+
+function closePrivacyModal() {
+  document.getElementById('privacy-modal').style.display = 'none';
 }
 
 async function editScholarship(id) {
@@ -332,13 +450,12 @@ async function editScholarship(id) {
   document.getElementById('sch-title').value = s.title;
   document.getElementById('sch-description').value = s.description;
   document.getElementById('sch-university').value = s.university;
-  document.getElementById('sch-education').value = s.education_level;
   document.getElementById('sch-course').value = s.course || '';
   document.getElementById('sch-type').value = s.scholarship_type;
   document.getElementById('sch-gwa').value = s.minimum_gwa;
   document.getElementById('sch-requirements').value = s.requirements;
   document.getElementById('sch-deadline').value = s.deadline;
-  document.getElementById('sch-url').value = s.website_url || '';
+  document.getElementById('sch-url').value = s.official_scholarship_url || '';
   document.getElementById('modal-result').innerHTML = '';
   document.getElementById('scholarship-modal').style.display = 'flex';
 }
@@ -366,13 +483,12 @@ document.getElementById('scholarship-form').addEventListener('submit', async (e)
     title: document.getElementById('sch-title').value,
     description: document.getElementById('sch-description').value,
     university: document.getElementById('sch-university').value,
-    education_level: document.getElementById('sch-education').value,
     course: document.getElementById('sch-course').value,
     scholarship_type: document.getElementById('sch-type').value,
     minimum_gwa: parseFloat(document.getElementById('sch-gwa').value),
     requirements: document.getElementById('sch-requirements').value,
     deadline: document.getElementById('sch-deadline').value,
-    website_url: document.getElementById('sch-url').value
+    official_scholarship_url: document.getElementById('sch-url').value
   };
 
   const out = document.getElementById('modal-result');

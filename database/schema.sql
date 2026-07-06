@@ -1,8 +1,8 @@
 CREATE DATABASE IF NOT EXISTS iskolarhub;
 USE iskolarhub;
 
---Table Structure
---University
+-- Table Structure
+-- University
 --  College
 --      Course
 
@@ -33,7 +33,9 @@ CREATE TABLE courses (
 
 CREATE TABLE students (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    fullname VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    middle_name VARCHAR(255) NULL,
+    last_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     age INT,
@@ -63,9 +65,9 @@ CREATE TABLE scholarships (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
---this table is where all the relationships for scholaship filtering can be found
---example: scholarship is only available for FEU Computer Studies then course_id will be NULL
---example: scholarship is available a specific course then all fields should be NOT NULL
+-- this table is where all the relationships for scholaship filtering can be found
+-- example: scholarship is only available for FEU Computer Studies then course_id will be NULL
+-- example: scholarship is available a specific course then all fields should be NOT NULL
 CREATE TABLE scholarship_eligibility (
     id INT AUTO_INCREMENT PRIMARY KEY,
     scholarship_id INT NOT NULL,

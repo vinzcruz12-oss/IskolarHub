@@ -42,12 +42,11 @@ class ScholarshipController {
 
     public function list() {
         $search = $_GET['search'] ?? null;
-        $education_level = $_GET['education_level'] ?? null;
         $course = $_GET['course'] ?? null;
         $scholarship_type = $_GET['scholarship_type'] ?? null;
         $minimum_gwa = $_GET['minimum_gwa'] ?? null;
 
-        $result = $this->service->searchScholarships($search, $education_level, $course, $scholarship_type, $minimum_gwa);
+        $result = $this->service->searchScholarships($search, $course, $scholarship_type, $minimum_gwa);
         $this->jsonResponse($result);
     }
 

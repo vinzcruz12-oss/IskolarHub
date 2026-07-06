@@ -29,17 +29,12 @@ class RecommendationService {
                 $reasons[] = 'GWA meets the minimum requirement';
             }
 
-            $educationMatches = $student['education_level'] === $s['education_level'];
-            if ($educationMatches) {
-                $reasons[] = 'Education Level matches';
-            }
-
             $courseMatches = empty($s['course']) || $student['course'] === $s['course'];
             if ($courseMatches) {
                 $reasons[] = 'Course matches';
             }
 
-            if ($meetsGwa && $educationMatches && $courseMatches) {
+            if ($meetsGwa && $courseMatches) {
                 $eligible[] = array_merge($s, ['reason' => $reasons]);
             }
         }

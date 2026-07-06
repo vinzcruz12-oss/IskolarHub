@@ -28,12 +28,44 @@
       <div id="landing-result"></div>
     </section>
 
+    <!-- Privacy Notice Page -->
+    <section id="privacy-page" class="page" style="display:none;">
+      <h2>Privacy Notice & Terms of Use</h2>
+      <div class="privacy-content">
+        <h3>What information we collect</h3>
+        <p>We collect your name, email address, password, age, current school, strand, course, and general weighted average (GWA).</p>
+
+        <h3>Why we collect this information</h3>
+        <p>We collect this information to create your student account and to match you with college scholarships that fit your qualifications.</p>
+
+        <h3>How we use your information</h3>
+        <p>Your information is used only for scholarship recommendations and account management. We do not use your data for marketing or any other purpose.</p>
+
+        <h3>Password security</h3>
+        <p>Your password is securely stored using encryption. We never store or share your raw password.</p>
+
+        <h3>Data sharing</h3>
+        <p>Your personal information will not be sold or shared with third parties without your permission.</p>
+
+        <h3>Your rights</h3>
+        <p>You may request correction or deletion of your personal information at any time by contacting the administrator.</p>
+      </div>
+      <button onclick="showPage('register')">I Agree - Proceed to Registration</button>
+      <button onclick="showPage('landing')">Go Back</button>
+    </section>
+
     <!-- Registration Page -->
     <section id="register-page" class="page" style="display:none;">
       <h2>Student Registration</h2>
       <form id="register-form">
-        <label>Full Name</label>
-        <input type="text" id="reg-fullname" required>
+        <label>First Name</label>
+        <input type="text" id="reg-firstname" required>
+
+        <label>Middle Name (Optional)</label>
+        <input type="text" id="reg-middlename">
+
+        <label>Last Name</label>
+        <input type="text" id="reg-lastname" required>
 
         <label>Email</label>
         <input type="email" id="reg-email" required>
@@ -43,6 +75,11 @@
 
         <label>Confirm Password</label>
         <input type="password" id="reg-confirm" required>
+
+        <label>
+          <input type="checkbox" id="reg-privacy" required>
+          I have read and agree to the <a href="#" onclick="openPrivacyModal(); return false;">Privacy Notice and Terms of Use</a>
+        </label>
 
         <button type="submit">Register</button>
       </form>
@@ -73,12 +110,31 @@
       <div id="dashboard-result"></div>
     </section>
 
+    <!-- Student Dashboard (Read-Only for Admin View) -->
+    <section id="admin-student-view-page" class="page" style="display:none;">
+      <div class="admin-banner">
+        <h2>Viewing as Student (Read-Only)</h2>
+        <button onclick="returnToAdminDashboard()">Return to Admin Dashboard</button>
+      </div>
+      <h2 id="admin-student-welcome">Welcome, Student</h2>
+      <button onclick="showPage('admin-eligibility')">View Profile</button>
+      <button onclick="showPage('admin-browse')">Browse Scholarships</button>
+      <button onclick="showPage('admin-recommendations')">View Recommendations</button>
+      <div id="admin-student-result"></div>
+    </section>
+
     <!-- Eligibility Form -->
     <section id="eligibility-page" class="page" style="display:none;">
       <h2>Eligibility Form</h2>
       <form id="eligibility-form">
-        <label>Full Name</label>
-        <input type="text" id="elig-fullname">
+        <label>First Name</label>
+        <input type="text" id="elig-firstname">
+
+        <label>Middle Name</label>
+        <input type="text" id="elig-middlename">
+
+        <label>Last Name</label>
+        <input type="text" id="elig-lastname">
 
         <label>Age</label>
         <input type="number" id="elig-age">
@@ -86,19 +142,28 @@
         <label>Current School</label>
         <input type="text" id="elig-school">
 
-        <label>Education Level</label>
-        <select id="elig-education">
+        <label>Strand</label>
+        <select id="elig-strand">
           <option value="">Select</option>
-          <option value="College">College</option>
-          <option value="Senior High">Senior High</option>
-          <option value="Graduate">Graduate</option>
+          <option value="STEM">STEM</option>
+          <option value="ABM">ABM</option>
+          <option value="HUMSS">HUMSS</option>
+          <option value="GAS">GAS</option>
+          <option value="TVL">TVL</option>
+          <option value="ICT">ICT</option>
         </select>
 
-        <label>Strand (if applicable)</label>
-        <input type="text" id="elig-strand">
-
         <label>Course</label>
-        <input type="text" id="elig-course">
+        <select id="elig-course">
+          <option value="">Select</option>
+          <option value="BS Information Technology">BS Information Technology</option>
+          <option value="BS Computer Science">BS Computer Science</option>
+          <option value="BS Civil Engineering">BS Civil Engineering</option>
+          <option value="BS Nursing">BS Nursing</option>
+          <option value="BS Accountancy">BS Accountancy</option>
+          <option value="BS Psychology">BS Psychology</option>
+          <option value="BS Education">BS Education</option>
+        </select>
 
         <label>GWA</label>
         <input type="number" id="elig-gwa" step="0.01">
@@ -122,31 +187,38 @@
       <input type="text" id="search-query" placeholder="Search by university, title, or course..." oninput="performSearch()">
 
       <div class="filters">
-        <label>Education Level</label>
-        <select id="filter-education" onchange="performSearch()">
-          <option value="">Any</option>
-          <option value="College">College</option>
-          <option value="Senior High">Senior High</option>
-          <option value="Graduate">Graduate</option>
-        </select>
+        <div>
+          <label>Scholarship Type</label>
+          <select id="filter-type" onchange="performSearch()">
+            <option value="">Any</option>
+            <option value="Academic">Academic</option>
+            <option value="Merit">Merit</option>
+            <option value="Financial Assistance">Financial Assistance</option>
+            <option value="Government">Government</option>
+            <option value="Private">Private</option>
+            <option value="Athletic">Athletic</option>
+            <option value="Needs-Based">Needs-Based</option>
+          </select>
+        </div>
 
-        <label>Scholarship Type</label>
-        <select id="filter-type" onchange="performSearch()">
-          <option value="">Any</option>
-          <option value="Academic">Academic</option>
-          <option value="Government">Government</option>
-          <option value="Private">Private</option>
-          <option value="Needs-Based">Needs-Based</option>
-          <option value="Financial Assistance">Financial Assistance</option>
-          <option value="Athletic">Athletic</option>
-          <option value="Merit">Merit</option>
-        </select>
+        <div>
+          <label>Course</label>
+          <select id="filter-course" onchange="performSearch()">
+            <option value="">Any</option>
+            <option value="BS Information Technology">BS Information Technology</option>
+            <option value="BS Computer Science">BS Computer Science</option>
+            <option value="BS Civil Engineering">BS Civil Engineering</option>
+            <option value="BS Nursing">BS Nursing</option>
+            <option value="BS Accountancy">BS Accountancy</option>
+            <option value="BS Psychology">BS Psychology</option>
+            <option value="BS Education">BS Education</option>
+          </select>
+        </div>
 
-        <label>Course</label>
-        <input type="text" id="filter-course" oninput="performSearch()">
-
-        <label>Minimum GWA</label>
-        <input type="number" id="filter-gwa" oninput="performSearch()">
+        <div>
+          <label>Minimum GWA</label>
+          <input type="number" id="filter-gwa" oninput="performSearch()">
+        </div>
       </div>
 
       <div id="browse-result"></div>
@@ -170,9 +242,29 @@
     <!-- Admin Dashboard -->
     <section id="admin-dashboard-page" class="page" style="display:none;">
       <h2>Admin Dashboard</h2>
-      <button onclick="loadScholarships()">Refresh List</button>
-      <button onclick="openAddModal()">Add Scholarship</button>
-      <div id="admin-table"></div>
+
+      <div class="admin-section">
+        <h3>Dashboard Overview</h3>
+        <div id="admin-stats"></div>
+      </div>
+
+      <div class="admin-section">
+        <h3>Manage Scholarships</h3>
+        <button onclick="loadScholarships()">Refresh List</button>
+        <button onclick="openAddModal()">Add Scholarship</button>
+        <div id="admin-table"></div>
+      </div>
+
+      <div class="admin-section">
+        <h3>View Registered Students</h3>
+        <button onclick="loadStudents()">Refresh Students</button>
+        <div id="admin-students-table"></div>
+      </div>
+
+      <div class="admin-actions">
+        <button onclick="viewAsStudent()">View as Student</button>
+        <button onclick="adminLogout()">Logout</button>
+      </div>
     </section>
   </main>
 
@@ -187,30 +279,83 @@
         <label>Description</label>
         <textarea id="sch-description" required></textarea>
         <label>University</label>
-        <input type="text" id="sch-university" required>
-        <label>Education Level</label>
-        <select id="sch-education" required>
+        <select id="sch-university" required>
           <option value="">Select</option>
-          <option value="College">College</option>
-          <option value="Senior High">Senior High</option>
-          <option value="Graduate">Graduate</option>
+          <option value="FEU">FEU</option>
+          <option value="UP Diliman">UP Diliman</option>
+          <option value="Ateneo">Ateneo</option>
+          <option value="DLSU">DLSU</option>
+          <option value="UST">UST</option>
+          <option value="NU">NU</option>
+          <option value="Adamson">Adamson</option>
+          <option value="UE">UE</option>
+          <option value="TIP">TIP</option>
+          <option value="Mapúa">Mapúa</option>
         </select>
         <label>Course</label>
-        <input type="text" id="sch-course">
+        <select id="sch-course" required>
+          <option value="">Select</option>
+          <option value="BS Information Technology">BS Information Technology</option>
+          <option value="BS Computer Science">BS Computer Science</option>
+          <option value="BS Civil Engineering">BS Civil Engineering</option>
+          <option value="BS Nursing">BS Nursing</option>
+          <option value="BS Accountancy">BS Accountancy</option>
+          <option value="BS Psychology">BS Psychology</option>
+          <option value="BS Education">BS Education</option>
+        </select>
         <label>Scholarship Type</label>
-        <input type="text" id="sch-type" required>
+        <select id="sch-type" required>
+          <option value="">Select</option>
+          <option value="Academic">Academic</option>
+          <option value="Merit">Merit</option>
+          <option value="Financial Assistance">Financial Assistance</option>
+          <option value="Government">Government</option>
+          <option value="Private">Private</option>
+          <option value="Athletic">Athletic</option>
+          <option value="Needs-Based">Needs-Based</option>
+        </select>
         <label>Minimum GWA</label>
         <input type="number" id="sch-gwa" step="0.01" required>
         <label>Requirements</label>
         <textarea id="sch-requirements" required></textarea>
         <label>Deadline</label>
         <input type="date" id="sch-deadline" required>
-        <label>Website URL</label>
+        <label>Official Scholarship URL</label>
         <input type="url" id="sch-url">
         <button type="submit">Save</button>
         <button type="button" onclick="closeModal()">Cancel</button>
       </form>
       <div id="modal-result"></div>
+    </div>
+  </div>
+
+  <!-- Privacy Notice Modal -->
+  <div id="privacy-modal" class="modal" style="display:none;">
+    <div class="modal-content privacy-modal-content">
+      <h3>Privacy Notice & Terms of Use</h3>
+      <div class="privacy-scroll">
+        <h4>What information we collect</h4>
+        <p>We collect your name, email address, password, age, current school, strand, course, and general weighted average (GWA).</p>
+
+        <h4>Why we collect this information</h4>
+        <p>We collect this information to create your student account and to match you with college scholarships that fit your qualifications.</p>
+
+        <h4>How we use your information</h4>
+        <p>Your information is used only for scholarship recommendations and account management. We do not use your data for marketing or any other purpose.</p>
+
+        <h4>Password security</h4>
+        <p>Your password is securely stored using encryption. We never store or share your raw password.</p>
+
+        <h4>Data sharing</h4>
+        <p>Your personal information will not be sold or shared with third parties without your permission.</p>
+
+        <h4>Your rights</h4>
+        <p>You may request correction or deletion of your personal information at any time by contacting the administrator.</p>
+      </div>
+      <div class="privacy-agreement">
+        <p>I have read and agree to the Privacy Notice and Terms of Use</p>
+      </div>
+      <button type="button" onclick="closePrivacyModal()">Close</button>
     </div>
   </div>
 

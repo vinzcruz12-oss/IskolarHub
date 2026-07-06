@@ -10,6 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+require_once __DIR__ . '/../../config/helpers.php';
+requireDatabase();
+
 require_once __DIR__ . '/../../controllers/ScholarshipController.php';
 
 $id = $_GET['id'] ?? null;

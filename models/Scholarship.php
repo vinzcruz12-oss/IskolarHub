@@ -7,11 +7,14 @@ class Scholarship {
 
     public function __construct() {
         $this->db = (new Database())->getConnection();
+        if (!$this->db) {
+            throw new RuntimeException('Database connection failed');
+        }
     }
 
-    public function create($title, $description, $university, $education_level, $course, $scholarship_type, $minimum_gwa, $requirements, $deadline, $website_url = null) {
-        $stmt = $this->db->prepare("INSERT INTO scholarships (title, description, university, education_level, course, scholarship_type, minimum_gwa, requirements, deadline, website_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$title, $description, $university, $education_level, $course, $scholarship_type, $minimum_gwa, $requirements, $deadline, $website_url]);
+    public function create($title, $description, $university, $course, $scholarship_type, $minimum_gwa, $requirements, $deadline, $official_scholarship_url = null) {
+        $stmt = $this->db->prepare("INSERT INTO scholarships (title, description, university, course, scholarship_type, minimum_gwa, requirements, deadline, official_scholarship_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$title, $description, $university, $course, $scholarship_type, $minimum_gwa, $requirements, $deadline, $official_scholarship_url]);
         return $this->db->lastInsertId();
     }
 
@@ -26,7 +29,7 @@ class Scholarship {
         return $stmt->fetch();
     }
 
-    public function searchAndFilter($search = null, $education_level = null, $course = null, $scholarship_type = null, $minimum_gwa = null) {
+    public function searchAndFilter($search = null, $course = null, $scholarship_type = null, $minimum_gwa = null) {
         $sql = "SELECT * FROM scholarships WHERE 1=1";
         $params = [];
 
@@ -36,10 +39,6 @@ class Scholarship {
             $params[] = $searchParam;
             $params[] = $searchParam;
             $params[] = $searchParam;
-        }
-        if ($education_level) {
-            $sql .= " AND education_level = ?";
-            $params[] = $education_level;
         }
         if ($course) {
             $sql .= " AND course = ?";
@@ -62,18 +61,17 @@ class Scholarship {
     }
 
     public function update($id, $data) {
-        $stmt = $this->db->prepare("UPDATE scholarships SET title = ?, description = ?, university = ?, education_level = ?, course = ?, scholarship_type = ?, minimum_gwa = ?, requirements = ?, deadline = ?, website_url = ? WHERE id = ?");
+        $stmt = $this->db->prepare("UPDATE scholarships SET title = ?, description = ?, university = ?, course = ?, scholarship_type = ?, minimum_gwa = ?, requirements = ?, deadline = ?, official_scholarship_url = ? WHERE id = ?");
         return $stmt->execute([
             $data['title'],
             $data['description'],
             $data['university'],
-            $data['education_level'],
             $data['course'],
             $data['scholarship_type'],
             $data['minimum_gwa'],
             $data['requirements'],
             $data['deadline'],
-            $data['website_url'] ?? null,
+            $data['official_scholarship_url'] ?? null,
             $id
         ]);
     }

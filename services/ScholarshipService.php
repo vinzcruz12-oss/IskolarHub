@@ -10,7 +10,7 @@ class ScholarshipService {
     }
 
     public function createScholarship($data) {
-        $required = ['title', 'description', 'university', 'education_level', 'course', 'scholarship_type', 'minimum_gwa', 'requirements', 'deadline'];
+        $required = ['title', 'description', 'university', 'course', 'scholarship_type', 'minimum_gwa', 'requirements', 'deadline'];
 
         foreach ($required as $field) {
             if (!isset($data[$field]) || $data[$field] === '') {
@@ -18,17 +18,44 @@ class ScholarshipService {
             }
         }
 
+        $allowedCourses = [
+            'BS Information Technology',
+            'BS Computer Science',
+            'BS Civil Engineering',
+            'BS Nursing',
+            'BS Accountancy',
+            'BS Psychology',
+            'BS Education'
+        ];
+
+        $allowedTypes = [
+            'Academic',
+            'Merit',
+            'Financial Assistance',
+            'Government',
+            'Private',
+            'Athletic',
+            'Needs-Based'
+        ];
+
+        if (!in_array($data['course'], $allowedCourses)) {
+            return ['success' => false, 'error' => 'Invalid course selection'];
+        }
+
+        if (!in_array($data['scholarship_type'], $allowedTypes)) {
+            return ['success' => false, 'error' => 'Invalid scholarship type selection'];
+        }
+
         $id = $this->scholarship->create(
             $data['title'],
             $data['description'],
             $data['university'],
-            $data['education_level'],
             $data['course'],
             $data['scholarship_type'],
             $data['minimum_gwa'],
             $data['requirements'],
             $data['deadline'],
-            $data['website_url'] ?? null
+            $data['official_scholarship_url'] ?? null
         );
 
         return $id ? ['success' => true, 'message' => 'Scholarship created', 'id' => $id] : ['success' => false, 'error' => 'Failed to create'];
@@ -62,11 +89,39 @@ class ScholarshipService {
             return ['success' => false, 'error' => 'Scholarship not found'];
         }
 
-        $required = ['title', 'description', 'university', 'education_level', 'course', 'scholarship_type', 'minimum_gwa', 'requirements', 'deadline'];
+        $required = ['title', 'description', 'university', 'course', 'scholarship_type', 'minimum_gwa', 'requirements', 'deadline'];
         foreach ($required as $field) {
             if (!isset($data[$field]) || $data[$field] === '') {
                 return ['success' => false, 'error' => "Missing required field: $field"];
             }
+        }
+
+        $allowedCourses = [
+            'BS Information Technology',
+            'BS Computer Science',
+            'BS Civil Engineering',
+            'BS Nursing',
+            'BS Accountancy',
+            'BS Psychology',
+            'BS Education'
+        ];
+
+        $allowedTypes = [
+            'Academic',
+            'Merit',
+            'Financial Assistance',
+            'Government',
+            'Private',
+            'Athletic',
+            'Needs-Based'
+        ];
+
+        if (!in_array($data['course'], $allowedCourses)) {
+            return ['success' => false, 'error' => 'Invalid course selection'];
+        }
+
+        if (!in_array($data['scholarship_type'], $allowedTypes)) {
+            return ['success' => false, 'error' => 'Invalid scholarship type selection'];
         }
 
         $this->scholarship->update($id, $data);
@@ -87,8 +142,8 @@ class ScholarshipService {
         return ['success' => true, 'message' => 'Scholarship deleted'];
     }
 
-    public function searchScholarships($search = null, $education_level = null, $course = null, $scholarship_type = null, $minimum_gwa = null) {
-        $scholarships = $this->scholarship->searchAndFilter($search, $education_level, $course, $scholarship_type, $minimum_gwa);
+    public function searchScholarships($search = null, $course = null, $scholarship_type = null, $minimum_gwa = null) {
+        $scholarships = $this->scholarship->searchAndFilter($search, $course, $scholarship_type, $minimum_gwa);
         return ['success' => true, 'data' => $scholarships];
     }
 }
