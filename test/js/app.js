@@ -597,7 +597,8 @@ if ('scrollRestoration' in history) {
 const VALID_PAGES = [
   'landing', 'privacy', 'register', 'login', 'dashboard', 
   'eligibility', 'recommendations', 'browse', 
-  'admin-login', 'admin-dashboard', 'admin-student-view'
+  'admin-login', 'admin-dashboard', 'admin-student-view',
+  'up-scholarships'
 ];
 
 const LANDING_ANCHORS = [
@@ -621,9 +622,7 @@ function handleRouting() {
   
   if (VALID_PAGES.includes(hash)) {
     showPage(hash, false);
-    if (hash === 'landing') {
-      window.scrollTo(0, 0);
-    }
+    window.scrollTo(0, 0);
   } else if (LANDING_ANCHORS.includes(hash)) {
     showPage('landing', false);
     const el = document.getElementById(hash);
