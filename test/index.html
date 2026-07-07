@@ -443,53 +443,177 @@
     </section>
 
     <!-- Registration Page -->
-    <section id="register-page" class="page" style="display:none;">
-      <h2>Student Registration</h2>
-      <form id="register-form">
-        <label>First Name</label>
-        <input type="text" id="reg-firstname" required>
+    <section id="register-page" class="page auth-section" style="display:none;">
+        <div class="auth-container">
+            <div class="auth-left">
+                <small>GET STARTED</small>
+                <h1>SIGN UP</h1>
+                <h2>Find the right scholarship for you.</h2>
+                <p>
+                    Join IskolarHub and unlock personalized scholarship
+                    recommendations based on your academic profile,
+                    qualifications, and future goals.
+                </p>
+            </div>
+            <div class="auth-card">
+                <div class="auth-logo">
+                    <img src="images/iskolarhubLogo.png" alt="IskolarHub Logo">
+                </div>
+                <form id="register-form" class="auth-form">
+                    <div class="auth-grid">
+                      <!-- First Name -->
+                      <div>
+                          <label>First Name</label>
+                          <input
+                              type="text"
+                              id="reg-firstname"
+                              placeholder="First Name"
+                              required>
+                      </div>
 
-        <label>Middle Name (Optional)</label>
-        <input type="text" id="reg-middlename">
+                      <!-- Middle Name -->
+                      <div>
+                          <label>Middle Name</label>
+                          <input
+                              type="text"
+                              id="reg-middlename"
+                              placeholder="Optional">
+                      </div>
 
-        <label>Last Name</label>
-        <input type="text" id="reg-lastname" required>
+                      <!-- Last Name -->
+                      <div>
+                          <label>Last Name</label>
+                          <input
+                              type="text"
+                              id="reg-lastname"
+                              placeholder="Last Name"
+                              required>
+                      </div>
 
-        <label>Email</label>
-        <input type="email" id="reg-email" required>
+                      <!-- Email -->
+                      <div class="auth-full">
+                          <label>Email Address</label>
+                          <input
+                              type="email"
+                              id="reg-email"
+                              placeholder="Enter your email"
+                              required>
+                      </div>
 
-        <label>Password</label>
-        <input type="password" id="reg-password" required>
+                      <!-- Password -->
+                      <div class="auth-half">
+                          <label>Password</label>
+                          <input
+                              type="password"
+                              id="reg-password"
+                              placeholder="Create a password"
+                              required>
+                      </div>
 
-        <label>Confirm Password</label>
-        <input type="password" id="reg-confirm" required>
+                      <!-- Confirm Password -->
+                      <div>
+                          <label>Confirm Password</label>
+                          <input
+                              type="password"
+                              id="reg-confirm"
+                              placeholder="Confirm your password"
+                              required>
+                      </div>
+                    </div>
 
-        <label>
-          <input type="checkbox" id="reg-privacy" required>
-          I have read and agree to the <a href="#" onclick="openPrivacyModal(); return false;">Privacy Notice and Terms of Use</a>
-        </label>
+                    <label class="privacy-check">
+                      <input
+                          type="checkbox"
+                          id="reg-privacy"
+                          required>
+                      <span>
+                          I agree to the
+                          <a href="#"
+                            onclick="openPrivacyModal(); return false;">
+                              Privacy Policy
+                          </a>
+                          and
+                          <a href="#"
+                            onclick="openPrivacyModal(); return false;">
+                              Terms of Use
+                          </a>
+                      </span>
+                    </label>
 
-        <button type="submit">Register</button>
-      </form>
-      <div id="register-result"></div>
-      <p style="margin-top: 15px; font-size: 14px;">Already have an account? <a href="#" onclick="showPage('login'); return false;">Login here</a></p>
+                    <button
+                        type="submit"
+                        class="auth-btn">
+                        CREATE ACCOUNT
+                    </button>
+                </form>
+                <div id="register-result" class="auth-result"></div>
+                <div class="auth-link">
+                    Already have an account?
+                    <a href="#"
+                      onclick="showPage('login'); return false;">
+                        Login
+                    </a>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Login Page -->
-    <section id="login-page" class="page" style="display:none;">
-      <h2>Student Login</h2>
-      <form id="login-form">
-        <label>Email</label>
-        <input type="email" id="login-email" required>
+    <section id="login-page" class="page auth-section" style="display:none;">
+        <div class="auth-container">
+            <div class="auth-left">
+                <small>Welcome Back</small>
+                <h1>LOGIN</h1>
+                <h2>Continue your journey.</h2>
+                <p>
+                    Sign in to access your scholarship dashboard, 
+                    manage your profile, and explore opportunities 
+                    that match your qualifications.
+                </p>
+            </div>
+            <div class="auth-card">
+                <div class="auth-logo">
+                    <img src="images/iskolarhubLogo.png" alt="IskolarHub">
+                </div>
+                <form id="login-form" class="auth-form">
+                    <div>
+                        <label>Email Address</label>
+                        <input
+                            type="email"
+                            id="login-email"
+                            placeholder="Enter your email"
+                            required>
+                    </div>
+                    <div>
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            id="login-password"
+                            placeholder="Enter your password"
+                            required>
+                    </div>
+                    <button type="submit" class="auth-btn">
+                        LOGIN
 
-        <label>Password</label>
-        <input type="password" id="login-password" required>
+                    </button>
+                </form>
+                <div id="login-result" class="auth-result"></div>
+                <div class="auth-link">
+                    Don't have an account?
+                    <a href="#" onclick="showPage('register'); return false;">
 
-        <button type="submit">Login</button>
-      </form>
-      <div id="login-result"></div>
-      <p style="margin-top: 15px; font-size: 14px;">Don't have an account? <a href="#" onclick="showPage('register'); return false;">Sign Up here</a></p>
-      <p style="margin-top: 10px; font-size: 14px;"><a href="#" onclick="alert('Password reset link sent to your email.'); return false;">Forgot Password?</a></p>
+                        Sign Up
+                    </a>
+                </div>
+                <div class="auth-link">
+                    <a href="#"
+                      onclick="alert('Forgot Password feature coming soon.'); return false;">
+
+                        Forgot Password?
+                    </a>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Student Dashboard -->
