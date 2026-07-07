@@ -26,36 +26,65 @@
   <main>
     <!-- Landing Page -->
     <section id="landing-page" class="page page-hero-container">
-      <div class="hero-screen">
+    <div class="hero-screen">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="videos/hero.mp4" type="video/mp4">
+        </video>
+
+        <div class="hero-overlay"></div>
+
         <header class="hero-header">
-          <div class="logo-container">
-            <img src="images/logo.png" alt="" class="logo-img">
-          </div>
-          <nav class="hero-nav">
-            <a href="#about">About</a>
-            <a href="#how-it-works">How It Works</a>
-            <a href="#universities">Universities</a>
-            <a href="#testimonials">Testimonials</a>
-            <a href="#faqs">FAQs</a>
-            <a href="#contact">Contact</a>
-          </nav>
-          <div class="auth-buttons">
-            <button class="btn-outline-header" onclick="showPage('login')">Login</button>
-            <button class="btn-filled-header" onclick="showPage('register')">Sign Up</button>
-          </div>
+
+            <div class="logo-container">
+                <img src="images/logo.png" class="logo-img">
+            </div>
+
+            <nav class="hero-nav">
+                <a href="#landing">HOME</a>
+                <a href="#about">ABOUT</a>
+                <a href="#universities">UNIVERSITIES</a>
+                <a href="#testimonials">TESTIMONIALS</a>
+                <a href="#faqs">FAQS</a>
+                <a href="#contact">CONTACT</a>
+            </nav>
+
+            <div class="auth-buttons">
+                <button class="btn-outline-header">LOGIN</button>
+                <button class="btn-filled-header">SIGN UP</button>
+            </div>
+
         </header>
 
         <div class="hero-container-inner">
-          <div class="hero-content">
-            <h1 class="hero-title">FIND YOUR FUTURE</h1>
-            <p class="hero-description">Discover scholarships across the Philippines and receive personalized recommendations based on your profile.</p>
-            <div class="hero-buttons">
-              <button class="btn-filled-hero" onclick="showPage('browse')">Browse Scholarships</button>
-              <button class="btn-outline-hero" onclick="showPage('register')">Find My Scholarship</button>
+
+            <div class="hero-content">
+
+                <h1 class="hero-title">
+                    DREAM. APPLY. SUCCEED.
+                </h1>
+
+                <p class="hero-description">
+                    DISCOVER SCHOLARSHIPS ACROSS THE PHILIPPINES.<br>
+                    MATCH WITH OPPORTUNITIES BASED ON YOUR PROFILE.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <button class="btn-outline-hero">
+                        BROWSE SCHOLARSHIPS
+                    </button>
+
+                    <button class="btn-filled-hero">
+                        FIND MY SCHOLARSHIP
+                    </button>
+
+                </div>
+
             </div>
-          </div>
+
         </div>
-      </div>
+
+    </div>
 
       <!-- About Section -->
       <div id="about" class="landing-section section-about">
