@@ -485,7 +485,7 @@ th {
 
 /* Smooth Scrolling */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 /* Landing Page Scrollable Sections */
@@ -1217,111 +1217,4 @@ html {
   text-align: center;
 }
 
-/* Browse Page Styles */
-.browse-header.hero-header {
-  position: static;
-  background: #fff;
-  border-bottom: 1.2px solid #edf2f7;
-  padding: 20px 60px;
-  box-sizing: border-box;
-}
 
-.browse-header .hero-nav a {
-  color: #4a5568 !important;
-}
-
-.browse-header .hero-nav a:hover {
-  color: #7a151a !important;
-}
-
-.browse-header .logo-container img {
-  filter: none; /* Keep the original colored logo on white background */
-}
-
-.browse-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 80px 60px;
-  box-sizing: border-box;
-  text-align: center;
-  font-family: 'Outfit', sans-serif;
-}
-
-.browse-main-title {
-  font-size: 48px;
-  font-weight: 800;
-  color: #7a151a;
-  margin: 0 0 16px 0;
-  font-family: 'Montserrat', sans-serif;
-  letter-spacing: -0.5px;
-}
-
-.browse-main-subtitle {
-  font-size: 16px;
-  color: #718096;
-  margin: 0 0 48px 0;
-}
-
-.browse-search-wrapper {
-  margin-bottom: 24px;
-  display: flex;
-  justify-content: center;
-}
-
-.browse-search-wrapper #search-query {
-  width: 100%;
-  max-width: 1080px;
-  padding: 16px 24px;
-  border: 1.2px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 15px;
-  outline: none;
-  font-family: 'Outfit', sans-serif;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-  box-sizing: border-box;
-}
-
-.browse-search-wrapper #search-query:focus {
-  border-color: #7a151a;
-  box-shadow: 0 0 0 3px rgba(122,21,26,0.08);
-}
-
-.browse-filters-wrapper {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  max-width: 1080px;
-  margin: 0 auto 50px auto;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.browse-filters-wrapper select, .browse-filters-wrapper input {
-  flex: 1;
-  padding: 14px 16px;
-  border: 1.2px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-  background: #fff;
-  box-sizing: border-box;
-  color: #4a5568;
-  font-family: 'Outfit', sans-serif;
-  transition: all 0.2s ease;
-}
-
-.browse-filters-wrapper select:focus, .browse-filters-wrapper input:focus {
-  border-color: #7a151a;
-  box-shadow: 0 0 0 3px rgba(122,21,26,0.08);
-}
-
-.browse-header .btn-outline-header {
-  color: #7a151a !important;
-  border-color: rgba(122, 21, 26, 0.5) !important;
-}
-
-.browse-header .btn-outline-header:hover {
-  border-color: #7a151a !important;
-  background: rgba(122, 21, 26, 0.05) !important;
-}

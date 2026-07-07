@@ -11,15 +11,19 @@ function showPage(pageId, updateHash = true) {
   }
 
   if (isViewingAsStudent && pageId !== 'admin-student-view' && pageId !== 'landing' && pageId !== 'login' && pageId !== 'register') {
-    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
     const page = document.getElementById('admin-student-view-page');
-    if (page) page.style.display = 'block';
+    if (page && page.style.display !== 'block') {
+      document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+      page.style.display = 'block';
+    }
     return;
   }
 
-  document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
   const page = document.getElementById(pageId + '-page');
-  if (page) page.style.display = 'block';
+  if (page && page.style.display !== 'block') {
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    page.style.display = 'block';
+  }
 
   // Toggle global-test-nav visibility
   const testNav = document.getElementById('global-test-nav');
@@ -39,9 +43,6 @@ function showPage(pageId, updateHash = true) {
   }
   if (pageId === 'recommendations' && currentStudentId) {
     loadRecommendations();
-  }
-  if (pageId === 'browse') {
-    performSearch();
   }
   if (pageId === 'admin-dashboard' && currentAdminId) {
     loadAdminStats();
@@ -269,52 +270,7 @@ async function loadRecommendations() {
   out.innerHTML = html;
 }
 
-// Search / Browse
-let searchTimeout = null;
-function performSearch() {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => doSearch(), 300);
-}
 
-async function doSearch() {
-  const params = new URLSearchParams();
-  const query = document.getElementById('search-query').value.trim();
-  if (query) params.set('search', query);
-  const type = document.getElementById('filter-type').value;
-  if (type) params.set('scholarship_type', type);
-  const course = document.getElementById('filter-course').value;
-  if (course) params.set('course', course);
-  const gwa = document.getElementById('filter-gwa').value;
-  if (gwa !== '') params.set('minimum_gwa', gwa);
-
-  const result = await apiFetch('/scholarships/list.php?' + params.toString());
-  const out = document.getElementById('browse-result');
-
-  if (!result.ok || !result.data || !result.data.success) {
-    out.innerHTML = '<p style="color:red;">Error: ' + JSON.stringify(result.data || result.error) + '</p>';
-    return;
-  }
-
-  const list = result.data.data || [];
-  if (list.length === 0) {
-    out.innerHTML = '<p>No scholarships found.</p>';
-    return;
-  }
-
-  let html = '<table><tr><th>Title</th><th>University</th><th>Type</th><th>Min GWA</th><th>Course</th><th>Action</th></tr>';
-  list.forEach(s => {
-    html += `<tr>
-      <td>${s.title}</td>
-      <td>${s.university}</td>
-      <td>${s.scholarship_type}</td>
-      <td>${s.minimum_gwa}</td>
-      <td>${s.course || 'Any'}</td>
-      <td>${s.official_scholarship_url ? '<a href="#" onclick="handleApplyClick(event, \'' + s.official_scholarship_url + '\')">Apply</a>' : 'No link'}</td>
-    </tr>`;
-  });
-  html += '</table>';
-  out.innerHTML = html;
-}
 
 // Admin Login
 document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
@@ -589,6 +545,12 @@ function handleFindScholarshipClick() {
 }
 
 
+let useSmoothScroll = false;
+function enableSmoothScroll() {
+  document.documentElement.style.scrollBehavior = 'smooth';
+  useSmoothScroll = true;
+}
+
 // SPA Hash-Based Routing
 if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
@@ -596,9 +558,11 @@ if ('scrollRestoration' in history) {
 
 const VALID_PAGES = [
   'landing', 'privacy', 'register', 'login', 'dashboard', 
-  'eligibility', 'recommendations', 'browse', 
+  'eligibility', 'recommendations', 
   'admin-login', 'admin-dashboard', 'admin-student-view',
-  'up-scholarships'
+  'up-scholarships', 'ateneo-scholarships', 'dlsu-scholarships',
+  'ust-scholarships', 'feu-scholarships', 'nu-scholarships',
+  'adamson-scholarships', 'ue-scholarships'
 ];
 
 const LANDING_ANCHORS = [
@@ -622,14 +586,34 @@ function handleRouting() {
   
   if (VALID_PAGES.includes(hash)) {
     showPage(hash, false);
-    window.scrollTo(0, 0);
+    if (useSmoothScroll) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        document.documentElement.style.scrollBehavior = 'auto';
+      }, 1000);
+      useSmoothScroll = false;
+    } else {
+      window.scrollTo(0, 0);
+    }
   } else if (LANDING_ANCHORS.includes(hash)) {
     showPage('landing', false);
     const el = document.getElementById(hash);
     if (el) {
-      setTimeout(() => {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }, 50);
+      // Force layout calculation and get absolute vertical position
+      const rect = el.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const targetY = rect.top + scrollTop;
+      
+      // Perform immediate synchronous scroll
+      if (useSmoothScroll) {
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+        setTimeout(() => {
+          document.documentElement.style.scrollBehavior = 'auto';
+        }, 1000);
+      } else {
+        window.scrollTo({ top: targetY, behavior: 'auto' });
+      }
+      useSmoothScroll = false;
     }
   } else {
     showPage('landing', false);
@@ -639,6 +623,19 @@ function handleRouting() {
 // Register routing listeners
 window.addEventListener('hashchange', handleRouting);
 window.addEventListener('DOMContentLoaded', handleRouting);
+
+// Intercept all landing anchor links to scroll smoothly
+document.addEventListener('click', e => {
+  const link = e.target.closest('a[href^="#"]');
+  if (link) {
+    const targetId = link.getAttribute('href').substring(1);
+    if (LANDING_ANCHORS.includes(targetId) || targetId === 'landing') {
+      e.preventDefault();
+      enableSmoothScroll();
+      window.location.hash = targetId;
+    }
+  }
+});
 
 // Initialize routing immediately on script execution
 handleRouting();

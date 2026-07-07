@@ -18,7 +18,6 @@
     <button onclick="showPage('dashboard')">Dashboard</button>
     <button onclick="showPage('eligibility')">Eligibility</button>
     <button onclick="showPage('recommendations')">Recommendations</button>
-    <button onclick="showPage('browse')">Browse Scholarships</button>
     <button onclick="showPage('admin-login')">Admin Login</button>
     <button onclick="showPage('admin-dashboard')">Admin Dashboard</button>
   </nav>
@@ -40,12 +39,12 @@
             </div>
 
             <nav class="hero-nav">
-                <a href="#landing">HOME</a>
-                <a href="#about">ABOUT</a>
-                <a href="#universities">UNIVERSITIES</a>
-                <a href="#testimonials">TESTIMONIALS</a>
-                <a href="#faqs">FAQS</a>
-                <a href="#contact">CONTACT</a>
+                <a href="#landing" onclick="enableSmoothScroll()">HOME</a>
+                <a href="#about" onclick="enableSmoothScroll()">ABOUT</a>
+                <a href="#universities" onclick="enableSmoothScroll()">UNIVERSITIES</a>
+                <a href="#testimonials" onclick="enableSmoothScroll()">TESTIMONIALS</a>
+                <a href="#faqs" onclick="enableSmoothScroll()">FAQS</a>
+                <a href="#contact" onclick="enableSmoothScroll()">CONTACT</a>
             </nav>
 
             <div class="auth-buttons">
@@ -69,10 +68,6 @@
                 </p>
 
                 <div class="hero-buttons">
-
-                    <button class="btn-outline-hero" onclick="showPage('browse')">
-                        BROWSE SCHOLARSHIPS
-                    </button>
 
                     <button class="btn-filled-hero" onclick="handleFindScholarshipClick()">
                         FIND MY SCHOLARSHIP
@@ -182,43 +177,43 @@
               <div class="uni-card">
                 <div class="uni-img-wrapper">
                   <img src="images/universities/admu.jpg" alt="Ateneo De Manila University" class="uni-img">
-                  <button class="btn-uni-cta" onclick="showPage('browse')">View Scholarships</button>
+                  <button class="btn-uni-cta" onclick="showPage('ateneo-scholarships')">View Scholarships</button>
                 </div>
               </div>
               <div class="uni-card">
                 <div class="uni-img-wrapper">
                   <img src="images/universities/dlsu.jpg" alt="De La Salle University" class="uni-img">
-                  <button class="btn-uni-cta" onclick="showPage('browse')">View Scholarships</button>
+                  <button class="btn-uni-cta" onclick="showPage('dlsu-scholarships')">View Scholarships</button>
                 </div>
               </div>
               <div class="uni-card">
                 <div class="uni-img-wrapper">
                   <img src="images/universities/ust.jpg" alt="University of the Santo Tomas" class="uni-img">
-                  <button class="btn-uni-cta" onclick="showPage('browse')">View Scholarships</button>
+                  <button class="btn-uni-cta" onclick="showPage('ust-scholarships')">View Scholarships</button>
                 </div>
               </div>
               <div class="uni-card">
                 <div class="uni-img-wrapper">
                   <img src="images/universities/feu.jpg" alt="Far Eastern University" class="uni-img">
-                  <button class="btn-uni-cta" onclick="showPage('browse')">View Scholarships</button>
+                  <button class="btn-uni-cta" onclick="showPage('feu-scholarships')">View Scholarships</button>
                 </div>
               </div>
               <div class="uni-card">
                 <div class="uni-img-wrapper">
                   <img src="images/universities/nu.jpg" alt="National University" class="uni-img">
-                  <button class="btn-uni-cta" onclick="showPage('browse')">View Scholarships</button>
+                  <button class="btn-uni-cta" onclick="showPage('nu-scholarships')">View Scholarships</button>
                 </div>
               </div>
               <div class="uni-card">
                 <div class="uni-img-wrapper">
                   <img src="images/universities/adu.jpg" alt="Adamson University" class="uni-img">
-                  <button class="btn-uni-cta" onclick="showPage('browse')">View Scholarships</button>
+                  <button class="btn-uni-cta" onclick="showPage('adamson-scholarships')">View Scholarships</button>
                 </div>
               </div>
               <div class="uni-card">
                 <div class="uni-img-wrapper">
                   <img src="images/universities/ue.jpg" alt="University of the East" class="uni-img">
-                  <button class="btn-uni-cta" onclick="showPage('browse')">View Scholarships</button>
+                  <button class="btn-uni-cta" onclick="showPage('ue-scholarships')">View Scholarships</button>
                 </div>
               </div>
             </div>
@@ -397,11 +392,11 @@
           </div>
           <div class="footer-links">
             <h4>Quick Links</h4>
-            <a href="#about">About</a>
-            <a href="#universities">Universities</a>
-            <a href="#testimonials">Testimonials</a>
-            <a href="#faqs">FAQs</a>
-            <a href="#contact">Contact</a>
+            <a href="#about" onclick="enableSmoothScroll()">About</a>
+            <a href="#universities" onclick="enableSmoothScroll()">Universities</a>
+            <a href="#testimonials" onclick="enableSmoothScroll()">Testimonials</a>
+            <a href="#faqs" onclick="enableSmoothScroll()">FAQs</a>
+            <a href="#contact" onclick="enableSmoothScroll()">Contact</a>
           </div>
           <div class="footer-contact">
             <h4>Contact</h4>
@@ -501,7 +496,6 @@
     <section id="dashboard-page" class="page" style="display:none;">
       <h2 id="dashboard-welcome">Welcome, Student</h2>
       <button onclick="showPage('eligibility')">Complete Eligibility Form</button>
-      <button onclick="showPage('browse')">Browse Scholarships</button>
       <button onclick="logout()">Logout</button>
       <div id="dashboard-result"></div>
     </section>
@@ -514,7 +508,6 @@
       </div>
       <h2 id="admin-student-welcome">Welcome, Student</h2>
       <button onclick="showPage('admin-eligibility')">View Profile</button>
-      <button onclick="showPage('admin-browse')">Browse Scholarships</button>
       <button onclick="showPage('admin-recommendations')">View Recommendations</button>
       <div id="admin-student-result"></div>
     </section>
@@ -573,72 +566,7 @@
     <section id="recommendations-page" class="page" style="display:none;">
       <h2>Scholarship Recommendations</h2>
       <button onclick="loadRecommendations()">Refresh Recommendations</button>
-      <button onclick="showPage('browse')">Browse All Scholarships</button>
       <div id="rec-result"></div>
-    </section>
-
-    <!-- Browse Scholarships -->
-    <section id="browse-page" class="page page-hero-container" style="display:none;">
-      <header class="hero-header browse-header">
-        <div class="logo-container">
-          <img src="images/iskolarhubLogo.png" alt="" class="logo-img">
-        </div>
-        <nav class="hero-nav">
-          <a href="#about" onclick="showPage('landing')">About</a>
-          <a href="#how-it-works" onclick="showPage('landing')">How It Works</a>
-          <a href="#universities" onclick="showPage('landing')">Universities</a>
-          <a href="#testimonials" onclick="showPage('landing')">Testimonials</a>
-          <a href="#faqs" onclick="showPage('landing')">FAQs</a>
-          <a href="#contact" onclick="showPage('landing')">Contact</a>
-        </nav>
-        <div class="auth-buttons">
-          <button class="btn-outline-header" onclick="showPage('login')">Login</button>
-          <button class="btn-filled-header" onclick="showPage('register')">Sign Up</button>
-        </div>
-      </header>
-
-      <div class="browse-container">
-        <h1 class="browse-main-title">Browse Scholarships</h1>
-        <p class="browse-main-subtitle">Discover scholarships that match your goals.</p>
-
-        <div class="browse-search-wrapper">
-          <input type="text" id="search-query" placeholder="Search scholarships..." oninput="performSearch()">
-        </div>
-
-        <div class="browse-filters-wrapper">
-          <select id="filter-education" onchange="performSearch()">
-            <option value="">Education Level</option>
-            <option value="Senior High School">Senior High School</option>
-            <option value="College">College</option>
-          </select>
-
-          <select id="filter-type" onchange="performSearch()">
-            <option value="">Scholarship Type</option>
-            <option value="Academic">Academic</option>
-            <option value="Merit">Merit</option>
-            <option value="Financial Assistance">Financial Assistance</option>
-            <option value="Government">Government</option>
-            <option value="Private">Private</option>
-            <option value="Athletic">Athletic</option>
-            <option value="Needs-Based">Needs-Based</option>
-          </select>
-
-          <select id="filter-course" onchange="performSearch()">
-            <option value="">Course</option>
-            <option value="BS Information Technology">BS Information Technology</option>
-            <option value="BS Computer Science">BS Computer Science</option>
-            <option value="BS Civil Engineering">BS Civil Engineering</option>
-            <option value="BS Nursing">BS Nursing</option>
-            <option value="BS Accountancy">BS Accountancy</option>
-            <option value="BS Psychology">BS Psychology</option>
-            <option value="BS Education">BS Education</option>
-          </select>
-
-          <input type="number" id="filter-gwa" placeholder="Minimum GWA" step="0.01" oninput="performSearch()">
-        </div>
-
-        <div id="browse-result"></div>
-      </div>
     </section>
 
     <!-- Admin Login -->
@@ -686,7 +614,7 @@
 
     <!-- University of the Philippines Diliman Scholarships Page -->
     <section id="up-scholarships-page" class="page" style="display:none;">
-      <button onclick="showPage('landing')">Go Back</button>
+      <button onclick="showPage('universities')">Go Back</button>
       
       <h1>University Name</h1>
       <p>University of the Philippines Diliman</p>
@@ -767,6 +695,383 @@
       <div>
         <h3>Private Company Scholarships</h3>
         <p>External Sponsors</p>
+      </div>
+    </section>
+
+    <!-- Ateneo de Manila University Scholarships Page -->
+    <section id="ateneo-scholarships-page" class="page" style="display:none;">
+      <button onclick="showPage('universities')">Go Back</button>
+      
+      <h1>University Name</h1>
+      <p>Ateneo de Manila University</p>
+      
+      <h2>Description</h2>
+      <p>Ateneo provides scholarship and financial aid programs for academically outstanding students, leaders, athletes, artists, and financially deserving applicants. Programs are available for incoming freshmen and continuing students.</p>
+      
+      <h2>Total Scholarships</h2>
+      <p>7 Scholarship Programs</p>
+      
+      <h2>Filters</h2>
+      <ul>
+        <li>✓ Academic</li>
+        <li>✓ Financial Need</li>
+        <li>✓ Athletic</li>
+        <li>✓ Talent</li>
+        <li>✓ Freshman</li>
+        <li>✓ Current Student</li>
+      </ul>
+      
+      <h2>Scholarship Cards</h2>
+      
+      <div>
+        <h3>Merit Scholarship</h3>
+        <p>Type: Academic</p>
+        <p>Coverage: Full Tuition, Miscellaneous Fees</p>
+        <p>Minimum Grade: Top ACET Performers</p>
+        <p>Courses: All</p>
+        <p>Eligibility: Incoming Freshmen</p>
+      </div>
+      
+      <div>
+        <h3>Director's List Scholarship</h3>
+        <p>Type: Academic</p>
+        <p>Coverage: Partial/Full Tuition</p>
+        <p>Eligibility: Current Students</p>
+      </div>
+      
+      <div>
+        <h3>Financial Aid Scholarship</h3>
+        <p>Type: Financial Need</p>
+        <p>Coverage: Tuition Assistance</p>
+        <p>Eligibility: Incoming & Current Students</p>
+      </div>
+      
+      <div>
+        <h3>Athlete Scholarship</h3>
+        <p>Type: Athletic</p>
+        <p>Coverage: Varies</p>
+      </div>
+      
+      <div>
+        <h3>Talent Scholarship</h3>
+        <p>Type: Music / Arts</p>
+        <p>Coverage: Varies</p>
+      </div>
+      
+      <div>
+        <h3>Loyola Schools Financial Aid</h3>
+        <p>Type: Need-Based</p>
+        <p>Coverage: Partial to Full Tuition</p>
+      </div>
+      
+      <div>
+        <h3>Donor Scholarships</h3>
+        <p>Type: Private Donors</p>
+        <p>Coverage: Varies</p>
+      </div>
+    </section>
+
+    <!-- De La Salle University Scholarships Page -->
+    <section id="dlsu-scholarships-page" class="page" style="display:none;">
+      <button onclick="showPage('universities')">Go Back</button>
+      
+      <h1>University Name</h1>
+      <p>De La Salle University</p>
+      
+      <h2>Description</h2>
+      <p>DLSU offers scholarships and financial assistance to recognize academic excellence, leadership, athletic talent, and financial need through the Office of Admissions and Scholarships.</p>
+      
+      <h2>Total Scholarships</h2>
+      <p>8 Scholarship Programs</p>
+      
+      <h2>Scholarship Cards</h2>
+      
+      <div>
+        <h3>Archer Achiever Scholarship</h3>
+        <p>Type: Academic</p>
+        <p>Coverage: 100% Tuition</p>
+        <p>Minimum Grade: Top DCAT Performers</p>
+        <p>Courses: All</p>
+        <p>Eligibility: Incoming Freshmen</p>
+      </div>
+      
+      <div>
+        <h3>Star Scholarship</h3>
+        <p>Type: Academic Excellence</p>
+        <p>Coverage: Full Scholarship</p>
+        <p>Eligibility: Top Freshmen</p>
+      </div>
+      
+      <div>
+        <h3>St. La Salle Financial Assistance Grant</h3>
+        <p>Type: Financial Need</p>
+        <p>Coverage: Partial to Full Tuition</p>
+      </div>
+      
+      <div>
+        <h3>Vaugirard Scholarship</h3>
+        <p>Type: Financial Need</p>
+        <p>Coverage: Tuition Assistance</p>
+      </div>
+      
+      <div>
+        <h3>Athletic Scholarship</h3>
+        <p>Type: Sports</p>
+        <p>Coverage: Varies</p>
+      </div>
+      
+      <div>
+        <h3>Student Assistantship</h3>
+        <p>Type: Work Scholarship</p>
+        <p>Coverage: Financial Assistance</p>
+      </div>
+      
+      <div>
+        <h3>Tuition Discount Grant</h3>
+        <p>Type: Academic</p>
+        <p>Coverage: Partial Tuition</p>
+      </div>
+      
+      <div>
+        <h3>Donor Scholarships</h3>
+        <p>Coverage: Varies</p>
+      </div>
+    </section>
+
+    <!-- University of Santo Tomas Scholarships Page -->
+    <section id="ust-scholarships-page" class="page" style="display:none;">
+      <button onclick="showPage('universities')">Go Back</button>
+      
+      <h1>University Name</h1>
+      <p>University of Santo Tomas</p>
+      
+      <h2>Description</h2>
+      <p>UST provides scholarships to students who excel academically, demonstrate leadership or talent, or require financial assistance. Various grants are also funded by alumni and partner organizations.</p>
+      
+      <h2>Total Scholarships</h2>
+      <p>9 Scholarship Programs</p>
+      
+      <h2>Scholarship Cards</h2>
+      
+      <div>
+        <h3>Santo Tomas Scholarship</h3>
+        <p>Type: Academic</p>
+        <p>Coverage: Full Tuition</p>
+        <p>Eligibility: Incoming Freshmen</p>
+      </div>
+      
+      <div>
+        <h3>San Martin de Porres Scholarship</h3>
+        <p>Type: Financial Need</p>
+        <p>Coverage: Partial Tuition</p>
+      </div>
+      
+      <div>
+        <h3>Rector's Scholarship</h3>
+        <p>Type: Academic</p>
+        <p>Coverage: Tuition Assistance</p>
+      </div>
+      
+      <div>
+        <h3>Athletic Scholarship</h3>
+        <p>Type: Sports</p>
+      </div>
+      
+      <div>
+        <h3>Cultural Scholarship</h3>
+        <p>Type: Performing Arts</p>
+      </div>
+      
+      <div>
+        <h3>Student Assistantship Program</h3>
+        <p>Type: Work Scholarship</p>
+      </div>
+      
+      <div>
+        <h3>Alumni Scholarship</h3>
+        <p>Type: Donor-funded</p>
+      </div>
+      
+      <div>
+        <h3>External Scholarships</h3>
+        <p>Type: Government</p>
+      </div>
+      
+      <div>
+        <h3>Private Donor Scholarships</h3>
+        <p>Coverage: Varies</p>
+      </div>
+    </section>
+
+    <!-- Far Eastern University Scholarships Page -->
+    <section id="feu-scholarships-page" class="page" style="display:none;">
+      <button onclick="showPage('universities')">Go Back</button>
+      
+      <h1>University Name</h1>
+      <p>Far Eastern University</p>
+      
+      <h2>Description</h2>
+      <p>FEU offers institutional scholarships and grants for incoming freshmen, continuing students, athletes, student leaders, artists, and financially deserving students.</p>
+      
+      <h2>Total Scholarships</h2>
+      <p>8 Scholarship Programs</p>
+      
+      <h2>Scholarship Cards</h2>
+      
+      <div>
+        <h3>Academic Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>President's Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>Entrance Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>Financial Assistance Grant</h3>
+      </div>
+      
+      <div>
+        <h3>Athletic Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>Performing Arts Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>Student Leader Grant</h3>
+      </div>
+      
+      <div>
+        <h3>Donor Scholarships</h3>
+      </div>
+    </section>
+
+    <!-- National University Scholarships Page -->
+    <section id="nu-scholarships-page" class="page" style="display:none;">
+      <button onclick="showPage('universities')">Go Back</button>
+      
+      <h1>University Name</h1>
+      <p>National University</p>
+      
+      <h2>Description</h2>
+      <p>National University offers scholarships that reward academic excellence, athletic achievements, and outstanding performance while also supporting financially deserving students.</p>
+      
+      <h2>Total Scholarships</h2>
+      <p>6 Scholarship Programs</p>
+      
+      <h2>Scholarship Cards</h2>
+      
+      <div>
+        <h3>Academic Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>Blue Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>Athletic Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>Alumni Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>Partner School Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>Financial Assistance</h3>
+      </div>
+    </section>
+
+    <!-- Adamson University Scholarships Page -->
+    <section id="adamson-scholarships-page" class="page" style="display:none;">
+      <button onclick="showPage('universities')">Go Back</button>
+      
+      <h1>University Name</h1>
+      <p>Adamson University</p>
+      
+      <h2>Description</h2>
+      <p>Adamson University provides scholarships for freshmen, academic achievers, athletes, student assistants, and financially deserving students.</p>
+      
+      <h2>Total Scholarships</h2>
+      <p>6 Scholarship Programs</p>
+      
+      <h2>Scholarship Cards</h2>
+      
+      <div>
+        <h3>Entrance Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>Academic Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>Athletic Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>Student Assistantship</h3>
+      </div>
+      
+      <div>
+        <h3>Financial Assistance</h3>
+      </div>
+      
+      <div>
+        <h3>Donor Scholarships</h3>
+      </div>
+    </section>
+
+    <!-- University of the East Scholarships Page -->
+    <section id="ue-scholarships-page" class="page" style="display:none;">
+      <button onclick="showPage('universities')">Go Back</button>
+      
+      <h1>University Name</h1>
+      <p>University of the East</p>
+      
+      <h2>Description</h2>
+      <p>The University of the East offers scholarships and grants to recognize academic excellence, leadership, athletic performance, and financial need.</p>
+      
+      <h2>Total Scholarships</h2>
+      <p>7 Scholarship Programs</p>
+      
+      <h2>Scholarship Cards</h2>
+      
+      <div>
+        <h3>Entrance Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>President's Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>College Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>Athletic Scholarship</h3>
+      </div>
+      
+      <div>
+        <h3>Student Assistant Program</h3>
+      </div>
+      
+      <div>
+        <h3>Financial Assistance</h3>
+      </div>
+      
+      <div>
+        <h3>Donor Scholarships</h3>
       </div>
     </section>
   </main>
