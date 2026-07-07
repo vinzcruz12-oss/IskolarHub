@@ -114,8 +114,8 @@ body {
 }
 
 .logo-img {
-  height: 36px;
-  max-width: 150px;
+  height: 55px;
+  max-width: 240px;
   object-fit: contain;
 }
 
@@ -1058,8 +1058,8 @@ html {
 }
 
 .card-logo-img {
-  height: 32px;
-  max-height: 32px;
+  height: 48px;
+  max-height: 48px;
   width: auto;
 }
 
@@ -1156,8 +1156,8 @@ html {
 }
 
 .footer-logo-img {
-  height: 36px;
-  max-height: 36px;
+  height: 55px;
+  max-height: 55px;
   width: auto;
   margin-bottom: 20px;
 }
