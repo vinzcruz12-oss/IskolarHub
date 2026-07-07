@@ -537,7 +537,6 @@ function handleApplyClick(e, url) {
 // Handle find scholarship click for landing page
 function handleFindScholarshipClick() {
   if (!currentStudentId) {
-    alert('Please login or register first to find scholarships matching your profile.');
     showPage('login');
   } else {
     showPage('eligibility');
@@ -639,5 +638,11 @@ document.addEventListener('click', e => {
 
 // Initialize routing immediately on script execution
 handleRouting();
+
+// Toggle University Scholarships Page Accordion
+function toggleUniAccordion(header) {
+  const item = header.closest('.uni-accordion-item');
+  item.classList.toggle('active');
+}
 
 
