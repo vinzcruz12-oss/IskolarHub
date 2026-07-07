@@ -277,7 +277,7 @@ input, select, textarea {
 }
 
 button[type="submit"], button {
-  background: #007bff;
+  background: #7a151a;
   color: #fff;
   border: none;
   padding: 10px 14px;
@@ -286,7 +286,7 @@ button[type="submit"], button {
 }
 
 button[type="submit"]:hover, button:hover {
-  background: #0056b3;
+  background: #901b21;
 }
 
 .filters {
