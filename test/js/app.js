@@ -632,3 +632,5 @@ window.addEventListener('DOMContentLoaded', handleRouting);
 
 // Initialize routing immediately on script execution
 handleRouting();
+
+
