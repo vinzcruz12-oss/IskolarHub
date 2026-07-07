@@ -1412,6 +1412,24 @@ html {
   text-align: center;
 }
 
+.page.auth-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: #fafafa;
+  margin: 0;
+  border: none;
+  max-width: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.page.auth-section[style*="block"] {
+  display: flex !important;
+}
+
 /* University View Scholarships Pages Generic Styles */
 .uni-page-wrapper {
   max-width: 1200px !important;
@@ -1604,11 +1622,18 @@ html {
 
 .auth-container{
     width:100%;
-    max-width:1400px;
+    max-width:1200px;
     display:grid;
     grid-template-columns:0.9fr 650px;
     gap:70px;
     align-items:center;
+    background:#fff;
+    border:2px solid #cbd5e0;
+    border-radius:12px;
+    padding:40px;
+    box-shadow:0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    box-sizing:border-box;
+    transform:translateY(-90px);
 }
 
 .auth-left small{
@@ -1664,6 +1689,8 @@ html {
     display:flex;
     flex-direction:column;
     gap:14px;
+    width:100%;
+    max-width:none;
 }
 
 .auth-form label{
