@@ -578,6 +578,17 @@ function handleApplyClick(e, url) {
   }
 }
 
+// Handle find scholarship click for landing page
+function handleFindScholarshipClick() {
+  if (!currentStudentId) {
+    alert('Please login or register first to find scholarships matching your profile.');
+    showPage('login');
+  } else {
+    showPage('eligibility');
+  }
+}
+
+
 // SPA Hash-Based Routing
 if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
