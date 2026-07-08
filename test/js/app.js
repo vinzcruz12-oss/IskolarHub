@@ -190,13 +190,13 @@ async function loadStudentProfile() {
   const result = await apiFetch('/students/show.php?id=' + currentStudentId);
   if (result.ok && result.data && result.data.success) {
     const s = result.data.data;
-    
+
     // Dashboard matching criteria
     const eligCourse = document.getElementById('elig-course');
     if (eligCourse) eligCourse.value = s.course || '';
     const eligGwa = document.getElementById('elig-gwa');
     if (eligGwa) eligGwa.value = s.gwa || '';
-    
+
     // Profile page fields
     const profFirst = document.getElementById('prof-firstname');
     if (profFirst) profFirst.value = s.first_name || '';
@@ -210,12 +210,28 @@ async function loadStudentProfile() {
     if (profSchool) profSchool.value = s.current_school || '';
     const profStrand = document.getElementById('prof-strand');
     if (profStrand) profStrand.value = s.strand || '';
-    
+
+    // Format name with period for single-letter middle initials
+    let cleanMiddle = (s.middle_name || '').trim();
+    if (cleanMiddle && cleanMiddle.length === 1 && !cleanMiddle.endsWith('.')) {
+      cleanMiddle += '.';
+    }
+    currentStudentName = [s.first_name, cleanMiddle, s.last_name].filter(Boolean).join(' ');
+    sessionStorage.setItem('currentStudentName', currentStudentName);
+    const welcomeEl = document.getElementById('dashboard-welcome');
+    if (welcomeEl) {
+      welcomeEl.textContent = 'Welcome, ' + currentStudentName;
+    }
+
     // Profile picture loading
     const profPicDisplay = document.getElementById('profile-pic-display');
-    if (profPicDisplay) {
+    const dashPicDisplay = document.getElementById('dashboard-pic-display');
+    if (profPicDisplay || dashPicDisplay) {
       const savedPic = localStorage.getItem('profile_pic_student_' + currentStudentId);
-      profPicDisplay.src = savedPic || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23a0aec0"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+      const defaultPic = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23a0aec0"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+      const activePic = savedPic || defaultPic;
+      if (profPicDisplay) profPicDisplay.src = activePic;
+      if (dashPicDisplay) dashPicDisplay.src = activePic;
     }
   }
 }
@@ -283,7 +299,16 @@ document.getElementById('profile-form').addEventListener('submit', async (e) => 
   const out = document.getElementById('profile-result');
   if (result.ok && result.data && result.data.success) {
     out.innerHTML = '<p style="color:green;">Profile updated successfully.</p>';
-    currentStudentName = [payload.first_name, payload.middle_name, payload.last_name].filter(Boolean).join(' ');
+    let cleanMiddle = (payload.middle_name || '').trim();
+    if (cleanMiddle && cleanMiddle.length === 1 && !cleanMiddle.endsWith('.')) {
+      cleanMiddle += '.';
+    }
+    currentStudentName = [payload.first_name, cleanMiddle, payload.last_name].filter(Boolean).join(' ');
+    sessionStorage.setItem('currentStudentName', currentStudentName);
+    const welcomeEl = document.getElementById('dashboard-welcome');
+    if (welcomeEl) {
+      welcomeEl.textContent = 'Welcome, ' + currentStudentName;
+    }
     setTimeout(() => {
       out.innerHTML = '';
     }, 3000);
@@ -301,6 +326,8 @@ document.getElementById('profile-pic-input').addEventListener('change', (e) => {
       const base64 = evt.target.result;
       const display = document.getElementById('profile-pic-display');
       if (display) display.src = base64;
+      const dashDisplay = document.getElementById('dashboard-pic-display');
+      if (dashDisplay) dashDisplay.src = base64;
       localStorage.setItem('profile_pic_student_' + currentStudentId, base64);
     };
     reader.readAsDataURL(file);
@@ -459,7 +486,11 @@ async function loadStudents() {
 
   let html = '<table><tr><th>ID</th><th>Name</th><th>Email</th><th>Course</th><th>GWA</th><th>Registered</th></tr>';
   list.forEach(s => {
-    const fullName = [s.first_name, s.middle_name, s.last_name].filter(Boolean).join(' ');
+    let cleanMiddle = (s.middle_name || '').trim();
+    if (cleanMiddle && cleanMiddle.length === 1 && !cleanMiddle.endsWith('.')) {
+      cleanMiddle += '.';
+    }
+    const fullName = [s.first_name, cleanMiddle, s.last_name].filter(Boolean).join(' ');
     html += `<tr>
       <td>${s.id}</td>
       <td>${fullName}</td>
@@ -581,12 +612,12 @@ document.getElementById('scholarship-form').addEventListener('submit', async (e)
 function toggleFaq(rowElement) {
   const item = rowElement.closest('.faq-accordion-item');
   const isActive = item.classList.contains('active');
-  
+
   // Close all other FAQ items
   document.querySelectorAll('.faq-accordion-item').forEach(el => {
     el.classList.remove('active');
   });
-  
+
   // If it was not active, toggle it open
   if (!isActive) {
     item.classList.add('active');
@@ -653,7 +684,7 @@ let isInitialLoad = true;
 
 function handleRouting() {
   let hash = window.location.hash.substring(1) || 'landing';
-  
+
   if (isInitialLoad) {
     isInitialLoad = false;
     // Force landing anchors/landing hashes back to top on first load/reload
@@ -663,7 +694,7 @@ function handleRouting() {
       window.scrollTo(0, 0);
     }
   }
-  
+
   if (VALID_PAGES.includes(hash)) {
     if ((hash === 'dashboard' || hash === 'profile') && !currentStudentId && !isViewingAsStudent) {
       hash = 'login';
@@ -688,7 +719,7 @@ function handleRouting() {
       const rect = el.getBoundingClientRect();
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       const targetY = rect.top + scrollTop;
-      
+
       // Perform immediate synchronous scroll
       if (useSmoothScroll) {
         window.scrollTo({ top: targetY, behavior: 'smooth' });
@@ -730,5 +761,7 @@ function toggleUniAccordion(header) {
   const item = header.closest('.uni-accordion-item');
   item.classList.toggle('active');
 }
+
+
 
 

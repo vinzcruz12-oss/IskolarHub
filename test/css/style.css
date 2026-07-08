@@ -1683,6 +1683,7 @@ html {
   0% {
     transform: translate(0, 0) scale(1);
   }
+
   100% {
     transform: translate(15%, 10%) scale(1.15);
   }
@@ -1692,6 +1693,7 @@ html {
   0% {
     transform: translate(0, 0) scale(1);
   }
+
   100% {
     transform: translate(-15%, -10%) scale(1.15);
   }
