@@ -1441,12 +1441,15 @@ html {
   align-items: center;
   justify-content: center;
   padding: 60px 20px;
-  background: #fafafa;
+  background: linear-gradient(135deg, #3a0609 0%, #161a22 100%);
   margin: 0;
   border: none;
   max-width: none;
   border-radius: 0;
   box-shadow: none;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .page.auth-section[style*="block"] {
@@ -1639,7 +1642,59 @@ html {
   align-items: center;
   justify-content: center;
   padding: 60px;
-  background: #fafafa;
+  background: linear-gradient(135deg, #3a0609 0%, #161a22 100%);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Aurora background glows for premium feel */
+.auth-section::before {
+  content: "";
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle, rgba(122, 21, 26, 0.45) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(80px);
+  animation: floatGlow1 20s ease-in-out infinite alternate;
+}
+
+.auth-section::after {
+  content: "";
+  position: absolute;
+  bottom: -10%;
+  right: -10%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle, rgba(38, 55, 75, 0.55) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(80px);
+  animation: floatGlow2 25s ease-in-out infinite alternate;
+}
+
+@keyframes floatGlow1 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(15%, 10%) scale(1.15);
+  }
+}
+
+@keyframes floatGlow2 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(-15%, -10%) scale(1.15);
+  }
 }
 
 .auth-container {
@@ -1649,13 +1704,16 @@ html {
   grid-template-columns: 0.9fr 650px;
   gap: 70px;
   align-items: center;
-  background: #fff;
-  border: 2px solid #cbd5e0;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25), 0 5px 15px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  transform: translateY(-90px);
+  transform: translateY(-20px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .auth-left small {
