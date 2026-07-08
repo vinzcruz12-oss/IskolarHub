@@ -1,8 +1,8 @@
 const API_BASE = '../api';
-let currentStudentId = null;
-let currentStudentName = null;
-let currentAdminId = null;
-let isViewingAsStudent = false;
+let currentStudentId = sessionStorage.getItem('currentStudentId') || null;
+let currentStudentName = sessionStorage.getItem('currentStudentName') || null;
+let currentAdminId = sessionStorage.getItem('currentAdminId') || null;
+let isViewingAsStudent = sessionStorage.getItem('isViewingAsStudent') === 'true';
 
 function showPage(pageId, updateHash = true) {
   if (updateHash) {
@@ -35,14 +35,16 @@ function showPage(pageId, updateHash = true) {
     }
   }
 
-  if (pageId === 'dashboard') {
-    document.getElementById('dashboard-welcome').textContent = 'Welcome, ' + (currentStudentName || 'Student');
-  }
-  if (pageId === 'eligibility' && currentStudentId) {
-    loadStudentProfile();
-  }
-  if (pageId === 'recommendations' && currentStudentId) {
-    loadRecommendations();
+  if (pageId === 'dashboard' || pageId === 'profile') {
+    if (pageId === 'dashboard') {
+      document.getElementById('dashboard-welcome').textContent = 'Welcome, ' + (currentStudentName || 'Student');
+    }
+    if (currentStudentId) {
+      loadStudentProfile();
+      if (pageId === 'dashboard') {
+        loadRecommendations();
+      }
+    }
   }
   if (pageId === 'admin-dashboard' && currentAdminId) {
     loadAdminStats();
@@ -83,23 +85,31 @@ function logout() {
   currentStudentName = null;
   currentAdminId = null;
   isViewingAsStudent = false;
+  sessionStorage.removeItem('currentStudentId');
+  sessionStorage.removeItem('currentStudentName');
+  sessionStorage.removeItem('currentAdminId');
+  sessionStorage.removeItem('isViewingAsStudent');
   showPage('landing');
 }
 
 function adminLogout() {
   currentAdminId = null;
   isViewingAsStudent = false;
+  sessionStorage.removeItem('currentAdminId');
+  sessionStorage.removeItem('isViewingAsStudent');
   showPage('landing');
 }
 
 function viewAsStudent() {
   if (!currentAdminId) return;
   isViewingAsStudent = true;
+  sessionStorage.setItem('isViewingAsStudent', 'true');
   showPage('admin-student-view');
 }
 
 function returnToAdminDashboard() {
   isViewingAsStudent = false;
+  sessionStorage.setItem('isViewingAsStudent', 'false');
   showPage('admin-dashboard');
 }
 
@@ -164,11 +174,13 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   if (result.ok && result.data && result.data.success) {
     currentStudentId = result.data.student_id;
     currentStudentName = result.data.fullname;
-    out.innerHTML = '<p style="color:green;">Login successful. ' + currentStudentName + '</p>';
+    sessionStorage.setItem('currentStudentId', currentStudentId);
+    sessionStorage.setItem('currentStudentName', currentStudentName);
+    out.innerHTML = '';
     document.getElementById('login-form').reset();
     setTimeout(() => showPage('dashboard'), 500);
   } else {
-    out.innerHTML = '<p style="color:red;">Error: ' + JSON.stringify(result.data || result.error) + '</p>';
+    out.innerHTML = '<p style="color:red;">Invalid Email or Password.</p>';
   }
 });
 
@@ -178,18 +190,37 @@ async function loadStudentProfile() {
   const result = await apiFetch('/students/show.php?id=' + currentStudentId);
   if (result.ok && result.data && result.data.success) {
     const s = result.data.data;
-    document.getElementById('elig-firstname').value = s.first_name || '';
-    document.getElementById('elig-middlename').value = s.middle_name || '';
-    document.getElementById('elig-lastname').value = s.last_name || '';
-    document.getElementById('elig-age').value = s.age || '';
-    document.getElementById('elig-school').value = s.current_school || '';
-    document.getElementById('elig-strand').value = s.strand || '';
-    document.getElementById('elig-course').value = s.course || '';
-    document.getElementById('elig-gwa').value = s.gwa || '';
+    
+    // Dashboard matching criteria
+    const eligCourse = document.getElementById('elig-course');
+    if (eligCourse) eligCourse.value = s.course || '';
+    const eligGwa = document.getElementById('elig-gwa');
+    if (eligGwa) eligGwa.value = s.gwa || '';
+    
+    // Profile page fields
+    const profFirst = document.getElementById('prof-firstname');
+    if (profFirst) profFirst.value = s.first_name || '';
+    const profMiddle = document.getElementById('prof-middlename');
+    if (profMiddle) profMiddle.value = s.middle_name || '';
+    const profLast = document.getElementById('prof-lastname');
+    if (profLast) profLast.value = s.last_name || '';
+    const profAge = document.getElementById('prof-age');
+    if (profAge) profAge.value = s.age || '';
+    const profSchool = document.getElementById('prof-school');
+    if (profSchool) profSchool.value = s.current_school || '';
+    const profStrand = document.getElementById('prof-strand');
+    if (profStrand) profStrand.value = s.strand || '';
+    
+    // Profile picture loading
+    const profPicDisplay = document.getElementById('profile-pic-display');
+    if (profPicDisplay) {
+      const savedPic = localStorage.getItem('profile_pic_student_' + currentStudentId);
+      profPicDisplay.src = savedPic || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23a0aec0"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+    }
   }
 }
 
-// Eligibility Form
+// Eligibility Form (Dashboard Criteria)
 document.getElementById('eligibility-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!currentStudentId) {
@@ -199,12 +230,6 @@ document.getElementById('eligibility-form').addEventListener('submit', async (e)
 
   const payload = {
     id: currentStudentId,
-    first_name: document.getElementById('elig-firstname').value.trim() || undefined,
-    middle_name: document.getElementById('elig-middlename').value.trim() || undefined,
-    last_name: document.getElementById('elig-lastname').value.trim() || undefined,
-    age: document.getElementById('elig-age').value ? parseInt(document.getElementById('elig-age').value) : undefined,
-    current_school: document.getElementById('elig-school').value.trim() || undefined,
-    strand: document.getElementById('elig-strand').value || undefined,
     course: document.getElementById('elig-course').value || undefined,
     gwa: document.getElementById('elig-gwa').value ? parseFloat(document.getElementById('elig-gwa').value) : undefined
   };
@@ -221,10 +246,64 @@ document.getElementById('eligibility-form').addEventListener('submit', async (e)
 
   const out = document.getElementById('eligibility-result');
   if (result.ok && result.data && result.data.success) {
-    out.innerHTML = '<p style="color:green;">Profile updated successfully.</p>';
-    setTimeout(() => showPage('recommendations'), 1000);
+    out.innerHTML = '<p style="color:green;">Criteria updated successfully.</p>';
+    loadRecommendations();
+    setTimeout(() => {
+      out.innerHTML = '';
+    }, 3000);
   } else {
     out.innerHTML = '<p style="color:red;">Error: ' + JSON.stringify(result.data || result.error) + '</p>';
+  }
+});
+
+// Profile Form (Static Details)
+document.getElementById('profile-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!currentStudentId) {
+    document.getElementById('profile-result').innerHTML = '<p style="color:red;">Error: No student logged in</p>';
+    return;
+  }
+
+  const payload = {
+    id: currentStudentId,
+    first_name: document.getElementById('prof-firstname').value.trim(),
+    middle_name: document.getElementById('prof-middlename').value.trim() || null,
+    last_name: document.getElementById('prof-lastname').value.trim(),
+    age: document.getElementById('prof-age').value ? parseInt(document.getElementById('prof-age').value) : null,
+    current_school: document.getElementById('prof-school').value.trim() || null,
+    strand: document.getElementById('prof-strand').value || null
+  };
+
+  const result = await apiFetch('/students/update.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  const out = document.getElementById('profile-result');
+  if (result.ok && result.data && result.data.success) {
+    out.innerHTML = '<p style="color:green;">Profile updated successfully.</p>';
+    currentStudentName = [payload.first_name, payload.middle_name, payload.last_name].filter(Boolean).join(' ');
+    setTimeout(() => {
+      out.innerHTML = '';
+    }, 3000);
+  } else {
+    out.innerHTML = '<p style="color:red;">Error: ' + JSON.stringify(result.data || result.error) + '</p>';
+  }
+});
+
+// Profile Picture Input Change
+document.getElementById('profile-pic-input').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file && currentStudentId) {
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const base64 = evt.target.result;
+      const display = document.getElementById('profile-pic-display');
+      if (display) display.src = base64;
+      localStorage.setItem('profile_pic_student_' + currentStudentId, base64);
+    };
+    reader.readAsDataURL(file);
   }
 });
 
@@ -239,7 +318,9 @@ async function loadRecommendations() {
   const out = document.getElementById('rec-result');
 
   if (!result.ok || !result.data || !result.data.success) {
-    out.innerHTML = '<p style="color:red;">Error: ' + JSON.stringify(result.data || result.error) + '</p>';
+    const errorMsg = (result.data && result.data.message) || (result.data && result.data.error) || result.error || 'Error fetching recommendations';
+    const color = (result.data && result.data.message) ? '#718096' : 'red';
+    out.innerHTML = '<p style="color:' + color + ';">' + errorMsg + '</p>';
     return;
   }
 
@@ -287,6 +368,7 @@ document.getElementById('admin-login-form').addEventListener('submit', async (e)
   const out = document.getElementById('admin-login-result');
   if (result.ok && result.data && result.data.success) {
     currentAdminId = result.data.admin_id;
+    sessionStorage.setItem('currentAdminId', currentAdminId);
     out.innerHTML = '<p style="color:green;">Admin login successful. ' + result.data.username + '</p>';
     document.getElementById('admin-login-form').reset();
     setTimeout(() => showPage('admin-dashboard'), 500);
@@ -539,7 +621,7 @@ function handleFindScholarshipClick() {
   if (!currentStudentId) {
     showPage('login');
   } else {
-    showPage('eligibility');
+    showPage('dashboard');
   }
 }
 
@@ -556,8 +638,7 @@ if ('scrollRestoration' in history) {
 }
 
 const VALID_PAGES = [
-  'landing', 'privacy', 'register', 'login', 'dashboard', 
-  'eligibility', 'recommendations', 
+  'landing', 'privacy', 'register', 'login', 'dashboard', 'profile',
   'admin-login', 'admin-dashboard', 'admin-student-view',
   'up-scholarships', 'ateneo-scholarships', 'dlsu-scholarships',
   'ust-scholarships', 'feu-scholarships', 'nu-scholarships',
@@ -584,6 +665,11 @@ function handleRouting() {
   }
   
   if (VALID_PAGES.includes(hash)) {
+    if ((hash === 'dashboard' || hash === 'profile') && !currentStudentId && !isViewingAsStudent) {
+      hash = 'login';
+      window.location.hash = 'login';
+      return;
+    }
     showPage(hash, false);
     if (useSmoothScroll) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
