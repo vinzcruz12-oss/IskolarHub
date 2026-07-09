@@ -1905,6 +1905,25 @@ html {
   text-decoration: underline;
 }
 
+.password-row{
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.password-row .form-group{
+    flex: 1;
+}
+
+.password-hint{
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #7a151a;
+    opacity: 0.7;
+    font-weight: 500;
+}
+
 /* ==========================================================================
    Side Menu and Layout Styles
    ========================================================================== */
