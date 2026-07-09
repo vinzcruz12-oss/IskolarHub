@@ -56,6 +56,12 @@ class Student {
         if (isset($data['strand'])) { $fields[] = 'strand = ?'; $params[] = $data['strand']; }
         if (isset($data['course'])) { $fields[] = 'course = ?'; $params[] = $data['course']; }
         if (isset($data['gwa'])) { $fields[] = 'gwa = ?'; $params[] = $data['gwa']; }
+        if (isset($data['phone_number'])) { $fields[] = 'phone_number = ?'; $params[] = $data['phone_number']; }
+        if (isset($data['gender'])) { $fields[] = 'gender = ?'; $params[] = $data['gender']; }
+        if (isset($data['address'])) { $fields[] = 'address = ?'; $params[] = $data['address']; }
+        if (isset($data['country'])) { $fields[] = 'country = ?'; $params[] = $data['country']; }
+        if (isset($data['status'])) { $fields[] = 'status = ?'; $params[] = $data['status']; }
+        if (isset($data['password'])) { $fields[] = 'password = ?'; $params[] = $data['password']; }
 
         if (empty($fields)) return false;
 
@@ -63,6 +69,14 @@ class Student {
         $params[] = $id;
         $stmt = $this->db->prepare($sql);
         return $stmt->execute($params);
+    }
+
+    public function verifyPasswordById($id, $password) {
+        $student = $this->findById($id);
+        if ($student && password_verify($password, $student['password'])) {
+            return true;
+        }
+        return false;
     }
 
     public function delete($id) {

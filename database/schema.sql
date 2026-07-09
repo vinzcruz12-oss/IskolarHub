@@ -46,6 +46,11 @@ CREATE TABLE students (
     strand VARCHAR(255),
     course VARCHAR(255) NULL,
     gwa DECIMAL(5,2),
+    phone_number VARCHAR(50) NULL,
+    gender VARCHAR(50) NULL,
+    address TEXT NULL,
+    country VARCHAR(100) NULL,
+    status VARCHAR(20) DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
     FOREIGN KEY (university_id) REFERENCES universities(id),

@@ -3,11 +3,92 @@ let currentStudentId = sessionStorage.getItem('currentStudentId') || null;
 let currentStudentName = sessionStorage.getItem('currentStudentName') || null;
 let currentAdminId = sessionStorage.getItem('currentAdminId') || null;
 let isViewingAsStudent = sessionStorage.getItem('isViewingAsStudent') === 'true';
+let lastUniversitySource = 'landing';
+
+// Administrative security logs simulation
+let securityLogs = [
+  { time: '2026-07-09 14:10:23', action: 'Admin login success', details: 'test@admin.com from unified form' },
+  { time: '2026-07-09 14:02:45', action: 'Failed login attempt', details: 'unknown@user.com' },
+  { time: '2026-07-09 12:45:12', action: 'Database backup automatic', details: 'Backup verified' },
+  { time: '2026-07-09 11:30:00', action: 'Security policy change', details: 'Password complexity rules set' }
+];
+
+function logSecurityEvent(action, details) {
+  const now = new Date();
+  const timeStr = now.getFullYear() + '-' + 
+    String(now.getMonth()+1).padStart(2, '0') + '-' + 
+    String(now.getDate()).padStart(2, '0') + ' ' + 
+    String(now.getHours()).padStart(2, '0') + ':' + 
+    String(now.getMinutes()).padStart(2, '0') + ':' + 
+    String(now.getSeconds()).padStart(2, '0');
+  securityLogs.unshift({ time: timeStr, action, details });
+  const el = document.getElementById('admin-access-logs');
+  if (el) {
+    // If the security tab is active, refresh visual log list instantly
+    loadSecurityLogs();
+  }
+}
 
 function showPage(pageId, updateHash = true) {
   if (updateHash) {
     window.location.hash = pageId;
     return;
+  }
+
+  // Close mobile sidebar on navigation
+  const appLayout = document.querySelector('.app-layout');
+  if (appLayout) {
+    appLayout.classList.remove('sidebar-open');
+  }
+
+  // Pre-load dynamic university details if navigating there
+  if (pageId === 'student-uni-detail') {
+    const uniKey = sessionStorage.getItem('selectedStudentUniKey') || 'up';
+    renderStudentUniDetail(uniKey);
+  }
+
+  // Manage Dark Mode on Landing & University Pages vs Student App Pages
+  const isUniversityPage = pageId.endsWith('-scholarships');
+  if (pageId === 'landing' || isUniversityPage) {
+    document.body.classList.remove('dark-mode');
+  } else if (currentStudentId) {
+    const savedSettings = JSON.parse(localStorage.getItem('student_settings_' + currentStudentId)) || {};
+    if (savedSettings.theme === 'dark') {
+      document.body.classList.add('dark-mode');
+    } else if (savedSettings.theme === 'light') {
+      document.body.classList.remove('dark-mode');
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.body.classList.toggle('dark-mode', prefersDark);
+    }
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+
+  // Update landing page header dynamically if user is logged in
+  if (pageId === 'landing') {
+    const authBtns = document.getElementById('landing-auth-buttons');
+    const userMenu = document.getElementById('landing-user-menu');
+    
+    if (authBtns && userMenu) {
+      if (currentStudentId !== null) {
+        authBtns.style.display = 'none';
+        userMenu.style.display = 'inline-block';
+        
+        const userNameEl = document.getElementById('landing-user-name');
+        if (userNameEl) userNameEl.textContent = currentStudentName || 'Student';
+        
+        const userPicEl = document.getElementById('landing-user-pic');
+        if (userPicEl) {
+          const savedPic = localStorage.getItem('profile_pic_student_' + currentStudentId);
+          const defaultPic = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2EwYWVjMCI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==';
+          userPicEl.src = savedPic || defaultPic;
+        }
+      } else {
+        authBtns.style.display = 'flex';
+        userMenu.style.display = 'none';
+      }
+    }
   }
 
   if (isViewingAsStudent && pageId !== 'admin-student-view' && pageId !== 'landing' && pageId !== 'login' && pageId !== 'register') {
@@ -25,31 +106,102 @@ function showPage(pageId, updateHash = true) {
     page.style.display = 'block';
   }
 
-  // Toggle global-test-nav visibility
-  const testNav = document.getElementById('global-test-nav');
-  if (testNav) {
-    if (pageId === 'landing') {
-      testNav.style.display = 'none';
+  // Update navigation source tracking
+  if (pageId === 'student-universities') {
+    lastUniversitySource = 'student-universities';
+  } else if (pageId === 'landing') {
+    lastUniversitySource = 'landing';
+  }
+
+  // Toggle student-sidebar visibility
+  const sidebar = document.getElementById('student-sidebar');
+  const showSidebar = currentStudentId !== null && 
+                      pageId !== 'landing' && 
+                      pageId !== 'login' && 
+                      pageId !== 'register' && 
+                      !pageId.includes('admin') && 
+                      (!isUniversityPage || lastUniversitySource === 'student-universities');
+  
+  if (sidebar) {
+    if (showSidebar) {
+      sidebar.style.display = 'flex';
+      if (appLayout) appLayout.classList.add('has-sidebar');
+      
+      // Update sidebar profile fields
+      const sidebarName = document.getElementById('sidebar-name-display');
+      if (sidebarName) sidebarName.textContent = currentStudentName || 'Student';
+      
+      const sidebarPic = document.getElementById('sidebar-pic-display');
+      const savedPic = localStorage.getItem('profile_pic_student_' + currentStudentId);
+      const defaultPic = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2EwYWVjMCI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==';
+      if (sidebarPic) {
+        sidebarPic.src = savedPic || defaultPic;
+      }
+      const dashPic = document.getElementById('dashboard-pic-display');
+      if (dashPic) {
+        dashPic.src = savedPic || defaultPic;
+      }
+      const editPic = document.getElementById('profile-pic-display');
+      if (editPic) {
+        editPic.src = savedPic || defaultPic;
+      }
+      
+      // Highlight active link in sidebar
+      document.querySelectorAll('.student-sidebar .sidebar-link, .student-sidebar .sidebar-link-bottom').forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      if (pageId === 'dashboard') {
+        const activeLink = document.getElementById('nav-find-scholarships');
+        if (activeLink) activeLink.classList.add('active');
+      } else if (pageId === 'settings') {
+        const activeLink = document.getElementById('nav-settings-bottom');
+        if (activeLink) activeLink.classList.add('active');
+      } else if (pageId === 'student-universities' || pageId === 'student-uni-detail') {
+        const activeLink = document.getElementById('nav-student-universities');
+        if (activeLink) activeLink.classList.add('active');
+      }
     } else {
-      testNav.style.display = 'flex';
+      sidebar.style.display = 'none';
+      if (appLayout) appLayout.classList.remove('has-sidebar');
     }
   }
 
-  if (pageId === 'dashboard' || pageId === 'profile') {
+  // Handle university back button target based on source
+  if (isUniversityPage) {
+    const backBtn = document.querySelector(`#${pageId}-page .btn-back-link`);
+    if (backBtn) {
+      if (lastUniversitySource === 'student-universities') {
+        backBtn.setAttribute('onclick', "showPage('student-universities')");
+      } else {
+        backBtn.setAttribute('onclick', "showPage('universities')");
+      }
+    }
+  }
+
+  // Toggle mobile toggle button visibility
+  const toggleBtn = document.getElementById('sidebar-toggle');
+  if (toggleBtn) {
+    toggleBtn.style.display = showSidebar ? 'block' : 'none';
+  }
+
+  if (pageId === 'dashboard' || pageId === 'profile' || pageId === 'settings' || pageId === 'student-universities') {
     if (pageId === 'dashboard') {
-      document.getElementById('dashboard-welcome').textContent = 'Welcome, ' + (currentStudentName || 'Student');
+      const welcomeEl = document.getElementById('dashboard-welcome');
+      if (welcomeEl) welcomeEl.textContent = 'Welcome, ' + (currentStudentName || 'Student');
     }
     if (currentStudentId) {
       loadStudentProfile();
       if (pageId === 'dashboard') {
         loadRecommendations();
       }
+      if (pageId === 'settings') {
+        loadSettingsPreferences();
+      }
     }
   }
   if (pageId === 'admin-dashboard' && currentAdminId) {
-    loadAdminStats();
-    loadScholarships();
-    loadStudents();
+    switchAdminTab('overview');
   }
 }
 
@@ -172,15 +324,27 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
   const out = document.getElementById('login-result');
   if (result.ok && result.data && result.data.success) {
-    currentStudentId = result.data.student_id;
-    currentStudentName = result.data.fullname;
-    sessionStorage.setItem('currentStudentId', currentStudentId);
-    sessionStorage.setItem('currentStudentName', currentStudentName);
-    out.innerHTML = '';
-    document.getElementById('login-form').reset();
-    setTimeout(() => showPage('dashboard'), 500);
+    if (result.data.role === 'admin') {
+      currentAdminId = result.data.admin_id;
+      sessionStorage.setItem('currentAdminId', currentAdminId);
+      out.innerHTML = '';
+      document.getElementById('login-form').reset();
+      logSecurityEvent('Admin login success', 'test@admin.com authenticated from unified portal');
+      setTimeout(() => showPage('admin-dashboard'), 500);
+    } else {
+      currentStudentId = result.data.student_id;
+      currentStudentName = result.data.fullname;
+      sessionStorage.setItem('currentStudentId', currentStudentId);
+      sessionStorage.setItem('currentStudentName', currentStudentName);
+      out.innerHTML = '';
+      document.getElementById('login-form').reset();
+      logSecurityEvent('Student login success', 'Email: ' + email);
+      setTimeout(() => showPage('dashboard'), 500);
+    }
   } else {
-    out.innerHTML = '<p style="color:red;">Invalid Email or Password.</p>';
+    const errMsg = (result.data && result.data.error) || 'Invalid Email or Password.';
+    out.innerHTML = '<p style="color:red;">' + errMsg + '</p>';
+    logSecurityEvent('Failed login attempt', 'Tried email: ' + email);
   }
 });
 
@@ -210,6 +374,16 @@ async function loadStudentProfile() {
     if (profSchool) profSchool.value = s.current_school || '';
     const profStrand = document.getElementById('prof-strand');
     if (profStrand) profStrand.value = s.strand || '';
+    const profEmail = document.getElementById('prof-email');
+    if (profEmail) profEmail.value = s.email || '';
+    const profPhone = document.getElementById('prof-phone');
+    if (profPhone) profPhone.value = s.phone_number || '';
+    const profGender = document.getElementById('prof-gender');
+    if (profGender) profGender.value = s.gender || '';
+    const profCountry = document.getElementById('prof-country');
+    if (profCountry) profCountry.value = s.country || '';
+    const profAddress = document.getElementById('prof-address');
+    if (profAddress) profAddress.value = s.address || '';
 
     // Format name with period for single-letter middle initials
     let cleanMiddle = (s.middle_name || '').trim();
@@ -228,7 +402,7 @@ async function loadStudentProfile() {
     const dashPicDisplay = document.getElementById('dashboard-pic-display');
     if (profPicDisplay || dashPicDisplay) {
       const savedPic = localStorage.getItem('profile_pic_student_' + currentStudentId);
-      const defaultPic = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23a0aec0"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+      const defaultPic = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2EwYWVjMCI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==';
       const activePic = savedPic || defaultPic;
       if (profPicDisplay) profPicDisplay.src = activePic;
       if (dashPicDisplay) dashPicDisplay.src = activePic;
@@ -247,7 +421,8 @@ document.getElementById('eligibility-form').addEventListener('submit', async (e)
   const payload = {
     id: currentStudentId,
     course: document.getElementById('elig-course').value || undefined,
-    gwa: document.getElementById('elig-gwa').value ? parseFloat(document.getElementById('elig-gwa').value) : undefined
+    gwa: document.getElementById('elig-gwa').value ? parseFloat(document.getElementById('elig-gwa').value) : undefined,
+    confirm_password: document.getElementById('elig-password').value || undefined
   };
 
   Object.keys(payload).forEach(key => {
@@ -263,12 +438,13 @@ document.getElementById('eligibility-form').addEventListener('submit', async (e)
   const out = document.getElementById('eligibility-result');
   if (result.ok && result.data && result.data.success) {
     out.innerHTML = '<p style="color:green;">Criteria updated successfully.</p>';
+    document.getElementById('elig-password').value = '';
     loadRecommendations();
     setTimeout(() => {
       out.innerHTML = '';
     }, 3000);
   } else {
-    out.innerHTML = '<p style="color:red;">Error: ' + JSON.stringify(result.data || result.error) + '</p>';
+    out.innerHTML = '<p style="color:red;">Error: ' + ((result.data && result.data.error) || result.error || JSON.stringify(result.data)) + '</p>';
   }
 });
 
@@ -287,7 +463,12 @@ document.getElementById('profile-form').addEventListener('submit', async (e) => 
     last_name: document.getElementById('prof-lastname').value.trim(),
     age: document.getElementById('prof-age').value ? parseInt(document.getElementById('prof-age').value) : null,
     current_school: document.getElementById('prof-school').value.trim() || null,
-    strand: document.getElementById('prof-strand').value || null
+    strand: document.getElementById('prof-strand').value || null,
+    phone_number: document.getElementById('prof-phone').value.trim() || null,
+    gender: document.getElementById('prof-gender').value || null,
+    country: document.getElementById('prof-country').value.trim() || null,
+    address: document.getElementById('prof-address').value.trim() || null,
+    confirm_password: document.getElementById('prof-password').value || undefined
   };
 
   const result = await apiFetch('/students/update.php', {
@@ -299,6 +480,7 @@ document.getElementById('profile-form').addEventListener('submit', async (e) => 
   const out = document.getElementById('profile-result');
   if (result.ok && result.data && result.data.success) {
     out.innerHTML = '<p style="color:green;">Profile updated successfully.</p>';
+    document.getElementById('prof-password').value = '';
     let cleanMiddle = (payload.middle_name || '').trim();
     if (cleanMiddle && cleanMiddle.length === 1 && !cleanMiddle.endsWith('.')) {
       cleanMiddle += '.';
@@ -309,11 +491,15 @@ document.getElementById('profile-form').addEventListener('submit', async (e) => 
     if (welcomeEl) {
       welcomeEl.textContent = 'Welcome, ' + currentStudentName;
     }
+    const sidebarName = document.getElementById('sidebar-name-display');
+    if (sidebarName) {
+      sidebarName.textContent = currentStudentName;
+    }
     setTimeout(() => {
       out.innerHTML = '';
     }, 3000);
   } else {
-    out.innerHTML = '<p style="color:red;">Error: ' + JSON.stringify(result.data || result.error) + '</p>';
+    out.innerHTML = '<p style="color:red;">Error: ' + ((result.data && result.data.error) || result.error || JSON.stringify(result.data)) + '</p>';
   }
 });
 
@@ -328,6 +514,8 @@ document.getElementById('profile-pic-input').addEventListener('change', (e) => {
       if (display) display.src = base64;
       const dashDisplay = document.getElementById('dashboard-pic-display');
       if (dashDisplay) dashDisplay.src = base64;
+      const sidebarDisplay = document.getElementById('sidebar-pic-display');
+      if (sidebarDisplay) sidebarDisplay.src = base64;
       localStorage.setItem('profile_pic_student_' + currentStudentId, base64);
     };
     reader.readAsDataURL(file);
@@ -380,58 +568,70 @@ async function loadRecommendations() {
 
 
 
-// Admin Login
-document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const username = document.getElementById('admin-username').value.trim();
-  const password = document.getElementById('admin-password').value;
-
-  const result = await apiFetch('/admin/login.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
+// Tab Switching for Admin Portal
+function switchAdminTab(tabId) {
+  // Hide all tab contents
+  document.querySelectorAll('.admin-tab-content').forEach(el => el.style.display = 'none');
+  // Remove active styling from nav buttons
+  document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+    btn.style.background = 'transparent';
+    btn.style.color = '#a0aec0';
   });
 
-  const out = document.getElementById('admin-login-result');
-  if (result.ok && result.data && result.data.success) {
-    currentAdminId = result.data.admin_id;
-    sessionStorage.setItem('currentAdminId', currentAdminId);
-    out.innerHTML = '<p style="color:green;">Admin login successful. ' + result.data.username + '</p>';
-    document.getElementById('admin-login-form').reset();
-    setTimeout(() => showPage('admin-dashboard'), 500);
-  } else {
-    out.innerHTML = '<p style="color:red;">Error: ' + JSON.stringify(result.data || result.error) + '</p>';
+  // Show active tab
+  const activeTab = document.getElementById('admin-tab-' + tabId);
+  if (activeTab) activeTab.style.display = 'block';
+
+  // Highlight active button
+  const activeBtn = document.getElementById('btn-admin-tab-' + tabId);
+  if (activeBtn) {
+    activeBtn.classList.add('active');
+    activeBtn.style.background = '#7a151a';
+    activeBtn.style.color = '#fff';
   }
-});
+
+  // Load appropriate data
+  if (tabId === 'overview') {
+    loadAdminStats();
+  } else if (tabId === 'scholarships') {
+    loadScholarships();
+  } else if (tabId === 'students') {
+    loadStudents();
+  } else if (tabId === 'content') {
+    loadContentStructure();
+  } else if (tabId === 'security') {
+    loadSecurityLogs();
+  } else if (tabId === 'admins') {
+    loadAdminsList();
+  }
+}
 
 // Admin Dashboard Functions
 async function loadAdminStats() {
-  const out = document.getElementById('admin-stats');
+  const out = document.getElementById('admin-stats-cards');
+  if (!out) return;
   try {
     const scholarshipsResult = await apiFetch('/scholarships/index.php');
     const studentsResult = await apiFetch('/students/index.php');
+    const adminsResult = await apiFetch('/admin/index.php');
 
-    const scholarships = (scholarshipsResult.data && scholarshipsResult.data.data) ? scholarshipsResult.data.data : [];
-    const students = (studentsResult.data && studentsResult.data.data) ? studentsResult.data.data : [];
-
-    const totalScholarships = scholarships.length;
-    const totalStudents = students.length;
-    const totalUniversities = [...new Set(scholarships.map(s => s.university))].length;
+    const scholarshipsCount = (scholarshipsResult.data && scholarshipsResult.data.data) ? scholarshipsResult.data.data.length : 0;
+    const studentsCount = (studentsResult.data && studentsResult.data.data) ? studentsResult.data.data.length : 0;
+    const adminsCount = (adminsResult.data && adminsResult.data.data) ? adminsResult.data.data.length : 0;
 
     out.innerHTML = `
-      <div class="stats-grid">
-        <div class="stat-card">
-          <h4>Total Scholarships</h4>
-          <p>${totalScholarships}</p>
-        </div>
-        <div class="stat-card">
-          <h4>Total Students</h4>
-          <p>${totalStudents}</p>
-        </div>
-        <div class="stat-card">
-          <h4>Universities</h4>
-          <p>${totalUniversities}</p>
-        </div>
+      <div style="background: #f7fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 24px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.01);">
+        <h4 style="margin: 0 0 8px 0; color: #718096; font-size: 14px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">Total Scholarships</h4>
+        <span style="font-size: 36px; font-weight: 700; color: #7a151a;">${scholarshipsCount}</span>
+      </div>
+      <div style="background: #f7fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 24px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.01);">
+        <h4 style="margin: 0 0 8px 0; color: #718096; font-size: 14px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">Registered Students</h4>
+        <span style="font-size: 36px; font-weight: 700; color: #7a151a;">${studentsCount}</span>
+      </div>
+      <div style="background: #f7fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 24px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.01);">
+        <h4 style="margin: 0 0 8px 0; color: #718096; font-size: 14px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">Administrators</h4>
+        <span style="font-size: 36px; font-weight: 700; color: #7a151a;">${adminsCount}</span>
       </div>
     `;
   } catch (err) {
@@ -461,8 +661,8 @@ async function loadScholarships() {
       <td>${s.university}</td>
       <td>${s.minimum_gwa}</td>
       <td>
-        <button onclick="editScholarship(${s.id})">Edit</button>
-        <button onclick="deleteScholarship(${s.id})">Delete</button>
+        <button onclick="editScholarship(${s.id})" style="background:#4a5568; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; margin-right:4px;">Edit</button>
+        <button onclick="deleteScholarship(${s.id})" style="background:#e53e3e; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;">Delete</button>
       </td>
     </tr>`;
   });
@@ -484,21 +684,228 @@ async function loadStudents() {
     return;
   }
 
-  let html = '<table><tr><th>ID</th><th>Name</th><th>Email</th><th>Course</th><th>GWA</th><th>Registered</th></tr>';
+  let html = '<table><tr><th>ID</th><th>Name</th><th>Email</th><th>Course</th><th>GWA</th><th>Status</th><th>Actions</th></tr>';
   list.forEach(s => {
     let cleanMiddle = (s.middle_name || '').trim();
     if (cleanMiddle && cleanMiddle.length === 1 && !cleanMiddle.endsWith('.')) {
       cleanMiddle += '.';
     }
     const fullName = [s.first_name, cleanMiddle, s.last_name].filter(Boolean).join(' ');
+    
+    // Status Badge
+    const statusVal = s.status || 'active';
+    const isBanned = statusVal === 'banned';
+    const badgeColor = isBanned ? '#fed7d7' : '#c6f6d5';
+    const textColor = isBanned ? '#9b2c2c' : '#22543d';
+    const statusBadge = `<span style="background:${badgeColor}; color:${textColor}; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight:700; text-transform:uppercase;">${statusVal}</span>`;
+
     html += `<tr>
       <td>${s.id}</td>
       <td>${fullName}</td>
       <td>${s.email}</td>
       <td>${s.course || 'N/A'}</td>
       <td>${s.gwa || 'N/A'}</td>
-      <td>${s.created_at || 'N/A'}</td>
+      <td>${statusBadge}</td>
+      <td>
+        <button onclick="openAdminStudentModal(${s.id})" style="background:#4a5568; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; margin-right:4px;">Edit</button>
+        <button onclick="toggleBanStudent(${s.id}, '${statusVal}')" style="background:${isBanned ? '#48bb78' : '#e53e3e'}; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;">${isBanned ? 'Unban' : 'Ban'}</button>
+      </td>
     </tr>`;
+  });
+  html += '</table>';
+  out.innerHTML = html;
+}
+
+// Student Edit Modal actions (Admin Only)
+async function openAdminStudentModal(studentId) {
+  const result = await apiFetch('/students/show.php?id=' + studentId);
+  if (!result.ok || !result.data || !result.data.success) {
+    alert('Failed to fetch student details.');
+    return;
+  }
+  const s = result.data.data;
+  document.getElementById('admin-student-id').value = s.id;
+  document.getElementById('admin-student-firstname').value = s.first_name || '';
+  document.getElementById('admin-student-lastname').value = s.last_name || '';
+  document.getElementById('admin-student-email').value = s.email || '';
+  document.getElementById('admin-student-age').value = s.age || '';
+  document.getElementById('admin-student-phone').value = s.phone_number || '';
+  document.getElementById('admin-student-course').value = s.course || '';
+  document.getElementById('admin-student-gwa').value = s.gwa || '';
+  document.getElementById('admin-student-gender').value = s.gender || 'Male';
+  document.getElementById('admin-student-country').value = s.country || '';
+  document.getElementById('admin-student-status').value = s.status || 'active';
+  document.getElementById('admin-student-address').value = s.address || '';
+  document.getElementById('admin-student-password').value = '';
+  document.getElementById('admin-student-modal-result').innerHTML = '';
+
+  document.getElementById('admin-student-modal').style.display = 'flex';
+}
+
+function closeAdminStudentModal() {
+  document.getElementById('admin-student-modal').style.display = 'none';
+}
+
+// Submit Admin Student Edits
+document.getElementById('admin-student-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = document.getElementById('admin-student-id').value;
+  const first_name = document.getElementById('admin-student-firstname').value.trim();
+  const last_name = document.getElementById('admin-student-lastname').value.trim();
+  const email = document.getElementById('admin-student-email').value.trim();
+  const age = document.getElementById('admin-student-age').value;
+  const phone_number = document.getElementById('admin-student-phone').value.trim();
+  const course = document.getElementById('admin-student-course').value.trim();
+  const gwa = document.getElementById('admin-student-gwa').value;
+  const gender = document.getElementById('admin-student-gender').value;
+  const country = document.getElementById('admin-student-country').value.trim();
+  const status = document.getElementById('admin-student-status').value;
+  const address = document.getElementById('admin-student-address').value.trim();
+  const new_password = document.getElementById('admin-student-password').value;
+
+  const payload = { id, first_name, last_name, email, age, phone_number, course, gwa, gender, country, status, address };
+  if (new_password) {
+    payload.new_password = new_password;
+  }
+
+  const result = await apiFetch('/students/admin_update.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  const out = document.getElementById('admin-student-modal-result');
+  if (result.ok && result.data && result.data.success) {
+    out.innerHTML = '<p style="color:green;">Profile updated successfully.</p>';
+    logSecurityEvent('Student profile updated', `Admin edited ID: ${id} (${email})`);
+    setTimeout(() => {
+      closeAdminStudentModal();
+      loadStudents();
+    }, 1000);
+  } else {
+    const errMsg = (result.data && result.data.error) || 'Failed to update profile.';
+    out.innerHTML = '<p style="color:red;">Error: ' + errMsg + '</p>';
+  }
+});
+
+// Admin toggle ban status directly
+async function toggleBanStudent(studentId, currentStatus) {
+  const newStatus = currentStatus === 'banned' ? 'active' : 'banned';
+  const confirmation = confirm(`Are you sure you want to change this student's status to ${newStatus}?`);
+  if (!confirmation) return;
+
+  const result = await apiFetch('/students/admin_update.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: studentId, status: newStatus })
+  });
+
+  if (result.ok && result.data && result.data.success) {
+    logSecurityEvent(newStatus === 'banned' ? 'Student account banned' : 'Student account unbanned', `Admin changed ID: ${studentId}`);
+    loadStudents();
+  } else {
+    alert('Failed to update student status.');
+  }
+}
+
+// Manage Content loading
+async function loadContentStructure() {
+  const result = await apiFetch('/content/index.php');
+  if (!result.ok || !result.data || !result.data.success) {
+    document.getElementById('admin-universities-list').innerHTML = '<p style="color:red;">Failed to load content mapping.</p>';
+    return;
+  }
+
+  // Populate Universities
+  const uniList = document.getElementById('admin-universities-list');
+  if (uniList) {
+    uniList.innerHTML = result.data.universities.map(u => `
+      <div style="padding: 10px; border-bottom: 1px solid #edf2f7; font-size:13.5px; color:#2d3748;">
+        <strong>${u.name}</strong><br>
+        <span style="color:#718096; font-size:11.5px;">${u.location || 'No location'} | ${u.website || 'No website'}</span>
+      </div>
+    `).join('') || '<p style="padding:10px; color:#a0aec0;">No universities found.</p>';
+  }
+
+  // Populate Colleges
+  const colList = document.getElementById('admin-colleges-list');
+  if (colList) {
+    colList.innerHTML = result.data.colleges.map(c => `
+      <div style="padding: 10px; border-bottom: 1px solid #edf2f7; font-size:13.5px; color:#2d3748;">
+        <strong>${c.name}</strong><br>
+        <span style="color:#718096; font-size:11.5px;">Uni: ${c.university_name}</span>
+      </div>
+    `).join('') || '<p style="padding:10px; color:#a0aec0;">No colleges found.</p>';
+  }
+
+  // Populate Courses
+  const courseList = document.getElementById('admin-courses-list');
+  if (courseList) {
+    courseList.innerHTML = result.data.courses.map(co => `
+      <div style="padding: 10px; border-bottom: 1px solid #edf2f7; font-size:13.5px; color:#2d3748;">
+        <strong>${co.name}</strong><br>
+        <span style="color:#718096; font-size:11.5px;">Col: ${co.college_name}</span>
+      </div>
+    `).join('') || '<p style="padding:10px; color:#a0aec0;">No courses found.</p>';
+  }
+}
+
+// Security tab management
+function loadSecurityLogs() {
+  const el = document.getElementById('admin-access-logs');
+  if (!el) return;
+
+  el.innerHTML = securityLogs.map(l => {
+    let icon = '🔒';
+    let color = '#2d3748';
+    if (l.action.includes('success')) {
+      icon = '✅';
+      color = '#2f855a';
+    } else if (l.action.includes('Failed') || l.action.includes('banned')) {
+      icon = '🚨';
+      color = '#c53030';
+    }
+
+    return `
+      <div style="background:#f7fafc; border-left:4px solid ${color === '#2d3748' ? '#4a5568' : color}; padding: 12px 16px; border-radius: 4px; font-size: 13px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+          <span style="font-weight:700; color:${color};">${icon} ${l.action}</span>
+          <span style="color:#a0aec0; font-size:11px;">${l.time}</span>
+        </div>
+        <div style="color:#4a5568;">${l.details}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleSecurityLockout() {
+  const checkbox = document.getElementById('admin-security-lockout');
+  const enabled = checkbox ? checkbox.checked : false;
+  logSecurityEvent('Security policy toggled', `Failed attempts lockout set to: ${enabled ? 'Enabled' : 'Disabled'}`);
+}
+
+// Load Admins list
+async function loadAdminsList() {
+  const out = document.getElementById('admin-accounts-list');
+  if (!out) return;
+
+  const result = await apiFetch('/admin/index.php');
+  if (!result.ok || !result.data || !result.data.success) {
+    out.innerHTML = '<p style="color:red;">Failed to retrieve admin accounts.</p>';
+    return;
+  }
+
+  const list = result.data.data || [];
+  let html = '<table style="width:100%; border-collapse:collapse; text-align:left;">';
+  html += '<tr style="border-bottom:2px solid #edf2f7; color:#4a5568; font-size:13px;"><th style="padding:10px;">Admin ID</th><th style="padding:10px;">Username/Email</th><th style="padding:10px;">Created Date</th></tr>';
+  list.forEach(a => {
+    html += `
+      <tr style="border-bottom:1px solid #edf2f7; font-size:13.5px; color:#2d3748;">
+        <td style="padding:10px;">${a.id}</td>
+        <td style="padding:10px;"><strong>${a.username}</strong></td>
+        <td style="padding:10px;">${a.created_at || 'N/A'}</td>
+      </tr>
+    `;
   });
   html += '</table>';
   out.innerHTML = html;
@@ -669,8 +1076,9 @@ if ('scrollRestoration' in history) {
 }
 
 const VALID_PAGES = [
-  'landing', 'privacy', 'register', 'login', 'dashboard', 'profile',
-  'admin-login', 'admin-dashboard', 'admin-student-view',
+  'landing', 'privacy', 'register', 'login', 'dashboard', 'profile', 'settings',
+  'student-universities', 'student-uni-detail',
+  'admin-dashboard', 'admin-student-view',
   'up-scholarships', 'ateneo-scholarships', 'dlsu-scholarships',
   'ust-scholarships', 'feu-scholarships', 'nu-scholarships',
   'adamson-scholarships', 'ue-scholarships'
@@ -696,7 +1104,12 @@ function handleRouting() {
   }
 
   if (VALID_PAGES.includes(hash)) {
-    if ((hash === 'dashboard' || hash === 'profile') && !currentStudentId && !isViewingAsStudent) {
+    if ((hash === 'dashboard' || hash === 'profile' || hash === 'settings' || hash === 'student-universities' || hash === 'student-uni-detail') && !currentStudentId && !isViewingAsStudent) {
+      hash = 'login';
+      window.location.hash = 'login';
+      return;
+    }
+    if ((hash === 'admin-dashboard' || hash === 'admin-student-view') && !currentAdminId) {
       hash = 'login';
       window.location.hash = 'login';
       return;
@@ -760,6 +1173,184 @@ handleRouting();
 function toggleUniAccordion(header) {
   const item = header.closest('.uni-accordion-item');
   item.classList.toggle('active');
+}
+
+// Student Settings & Sidebar Toggle Functions
+function toggleSidebarMenu() {
+  const appLayout = document.querySelector('.app-layout');
+  if (appLayout) {
+    appLayout.classList.toggle('sidebar-open');
+  }
+}
+
+function loadSettingsPreferences() {
+  if (!currentStudentId) return;
+  const savedSettings = JSON.parse(localStorage.getItem('student_settings_' + currentStudentId)) || {};
+  
+  const notifyMatch = document.getElementById('settings-notify-match');
+  if (notifyMatch) notifyMatch.checked = savedSettings.notifyMatch === true;
+  
+  const notifyDeadline = document.getElementById('settings-notify-deadline');
+  if (notifyDeadline) notifyDeadline.checked = savedSettings.notifyDeadline === true;
+  
+  const visibility = document.getElementById('settings-visibility');
+  if (visibility) visibility.value = savedSettings.visibility || 'public';
+  
+  const lang = document.getElementById('settings-lang');
+  if (lang) lang.value = savedSettings.lang || 'en';
+  
+  const theme = document.getElementById('settings-theme');
+  if (theme) theme.value = savedSettings.theme || 'light';
+}
+
+function applyTheme(theme) {
+  if (theme === 'dark') {
+    document.body.classList.add('dark-mode');
+  } else if (theme === 'light') {
+    document.body.classList.remove('dark-mode');
+  } else {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (prefersDark) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }
+}
+
+// Save preferences submit handler
+document.getElementById('settings-preferences-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (!currentStudentId) return;
+  
+  const settings = {
+    notifyMatch: document.getElementById('settings-notify-match').checked,
+    notifyDeadline: document.getElementById('settings-notify-deadline').checked,
+    visibility: document.getElementById('settings-visibility').value,
+    lang: document.getElementById('settings-lang').value,
+    theme: document.getElementById('settings-theme').value
+  };
+  
+  localStorage.setItem('student_settings_' + currentStudentId, JSON.stringify(settings));
+  applyTheme(settings.theme);
+  
+  const out = document.getElementById('preferences-result');
+  if (out) {
+    out.innerHTML = '<p style="color:green;">Preferences saved successfully.</p>';
+    setTimeout(() => out.innerHTML = '', 3000);
+  }
+});
+
+// Update security/password submit handler
+document.getElementById('settings-password-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!currentStudentId) {
+    document.getElementById('password-settings-result').innerHTML = '<p style="color:red;">Error: No student logged in</p>';
+    return;
+  }
+  
+  const currPass = document.getElementById('settings-curr-pass').value;
+  const newPass = document.getElementById('settings-new-pass').value;
+  const confirmPass = document.getElementById('settings-confirm-pass').value;
+  const out = document.getElementById('password-settings-result');
+  
+  if (newPass !== confirmPass) {
+    out.innerHTML = '<p style="color:red;">Error: New passwords do not match.</p>';
+    return;
+  }
+  
+  const payload = {
+    id: currentStudentId,
+    confirm_password: currPass,
+    new_password: newPass
+  };
+  
+  const result = await apiFetch('/students/update.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  
+  if (result.ok && result.data && result.data.success) {
+    out.innerHTML = '<p style="color:green;">Password updated successfully.</p>';
+    document.getElementById('settings-password-form').reset();
+    setTimeout(() => out.innerHTML = '', 3000);
+  } else {
+    out.innerHTML = '<p style="color:red;">Error: ' + ((result.data && result.data.error) || result.error || JSON.stringify(result.data)) + '</p>';
+  }
+});
+
+// Apply current student theme on startup
+(function initTheme() {
+  const activeStudentId = sessionStorage.getItem('currentStudentId');
+  if (activeStudentId) {
+    const savedSettings = JSON.parse(localStorage.getItem('student_settings_' + activeStudentId)) || {};
+    if (savedSettings.theme) {
+      applyTheme(savedSettings.theme);
+    }
+  }
+})();
+
+// Landing Page Header Dropdown Event Handlers
+function toggleLandingDropdown(event) {
+  event.stopPropagation();
+  const menu = document.getElementById('landing-user-menu');
+  if (menu) {
+    menu.classList.toggle('open');
+  }
+}
+
+function closeLandingDropdown() {
+  const menu = document.getElementById('landing-user-menu');
+  if (menu) {
+    menu.classList.remove('open');
+  }
+}
+
+window.addEventListener('click', () => {
+  closeLandingDropdown();
+});
+
+// Student University Detail Rendering Functions
+function showStudentUniDetail(uniKey) {
+  sessionStorage.setItem('selectedStudentUniKey', uniKey);
+  renderStudentUniDetail(uniKey);
+  showPage('student-uni-detail');
+}
+
+function renderStudentUniDetail(uniKey) {
+  const uniNames = {
+    up: 'University of the Philippines Diliman',
+    ateneo: 'Ateneo de Manila University',
+    dlsu: 'De La Salle University',
+    ust: 'University of Santo Tomas',
+    feu: 'Far Eastern University',
+    nu: 'National University',
+    adamson: 'Adamson University',
+    ue: 'University of the East'
+  };
+
+  const titleEl = document.getElementById('student-uni-detail-title');
+  const descEl = document.getElementById('student-uni-detail-desc');
+  const accordionEl = document.getElementById('student-uni-detail-accordion');
+
+  if (titleEl) {
+    titleEl.textContent = (uniNames[uniKey] || 'University') + ' Scholarships';
+  }
+
+  const publicPageId = uniKey + '-scholarships-page';
+  const publicPage = document.getElementById(publicPageId);
+  if (publicPage) {
+    const publicDesc = publicPage.querySelector('.poster-bottom-desc');
+    if (descEl && publicDesc) {
+      descEl.textContent = publicDesc.textContent.trim();
+    }
+
+    const publicAccordion = publicPage.querySelector('.uni-right-accordion');
+    if (accordionEl && publicAccordion) {
+      accordionEl.innerHTML = publicAccordion.innerHTML;
+    }
+  }
 }
 
 

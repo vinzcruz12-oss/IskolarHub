@@ -25,4 +25,9 @@ class Admin {
         }
         return null;
     }
+
+    public function findAll() {
+        $stmt = $this->db->query("SELECT id, username, created_at FROM admins ORDER BY created_at DESC");
+        return $stmt->fetchAll();
+    }
 }

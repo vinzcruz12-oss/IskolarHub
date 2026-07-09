@@ -224,4 +224,43 @@ VALUES
 (
     'admin',
     '$2y$10$NmZLEHFoM23/BlGAmkhIQenWu/i5tpI/vCr8kxqQtGFudZedEgkz2'
+),
+(
+    'test@admin.com',
+    '$2y$10$52Nq4h/tsfiIlg64jZgu8umCJkZhHzczr7IkVnl5ngIqtS310MG.q'
+);
+
+-- ==========================
+-- Student Account
+-- ==========================
+
+INSERT IGNORE INTO students
+(
+    id,
+    first_name,
+    middle_name,
+    last_name,
+    email,
+    password,
+    course,
+    gwa,
+    phone_number,
+    gender,
+    address,
+    country
+)
+VALUES
+(
+    1,
+    'Juan',
+    'Mercado',
+    'Dela Cruz',
+    'student@test.com',
+    '$2y$10$zaLtGhmq3Xoc48RFx6NDfuYdJokMjhUtOg1K7JbYGL6BvEgOXaLZq',
+    'BS Computer Science',
+    1.50,
+    '09123456789',
+    'Male',
+    '123 Main Street',
+    'Philippines'
 );
