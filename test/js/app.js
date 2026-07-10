@@ -103,6 +103,7 @@ function showPage(pageId, updateHash = true) {
 
   const page = document.getElementById(pageId + '-page');
   if (page && page.style.display !== 'block') {
+    window.scrollTo(0, 0);
     document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
     page.style.display = 'block';
   }
@@ -667,7 +668,7 @@ async function loadRecommendations() {
   }
 
   let scholarships = result.data.scholarships || [];
-  
+
   const typeFilter = document.getElementById('elig-type') ? document.getElementById('elig-type').value : 'all';
   if (typeFilter !== 'all') {
     scholarships = scholarships.filter(s => s.scholarship_type === typeFilter);
@@ -1826,18 +1827,18 @@ function initPasswordToggles() {
     // Create wrapper
     const wrapper = document.createElement('div');
     wrapper.className = 'password-input-wrapper';
-    
+
     // Copy some layout styling from input if present to wrapper to maintain inline/grid positioning
     if (input.style.display) {
       wrapper.style.display = input.style.display;
     }
-    
+
     // Insert wrapper in DOM before input
     input.parentNode.insertBefore(wrapper, input);
-    
+
     // Move input into wrapper
     wrapper.appendChild(input);
-    
+
     // Create button
     const toggleBtn = document.createElement('button');
     toggleBtn.type = 'button';
@@ -1848,18 +1849,18 @@ function initPasswordToggles() {
         <circle cx="12" cy="12" r="3"></circle>
       </svg>
     `;
-    
+
     // Append button to wrapper
     wrapper.appendChild(toggleBtn);
-    
+
     // Event listener
     toggleBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      
+
       const isPassword = input.type === 'password';
       input.type = isPassword ? 'text' : 'password';
-      
+
       if (isPassword) {
         // Change to Eye Off
         toggleBtn.innerHTML = `
@@ -1877,7 +1878,7 @@ function initPasswordToggles() {
           </svg>
         `;
       }
-      
+
       // Maintain focus on the input field
       input.focus();
     });
