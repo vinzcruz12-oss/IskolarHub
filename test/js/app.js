@@ -31,7 +31,12 @@ function logSecurityEvent(action, details) {
 
 function showPage(pageId, updateHash = true) {
   if (updateHash) {
-    window.location.hash = pageId;
+    const currentHash = window.location.hash.substring(1) || 'landing';
+    if (currentHash === pageId) {
+      showPage(pageId, false);
+    } else {
+      window.location.hash = pageId;
+    }
     return;
   }
 
