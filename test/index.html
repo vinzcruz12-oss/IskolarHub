@@ -15,6 +15,15 @@
 </head>
 
 <body>
+  <!-- Admin Preview Mode Banner -->
+  <div id="admin-preview-banner"
+    style="display: none; position: fixed; top: 0; left: 0; right: 0; height: 50px; background: #7a151a; color: #fff; z-index: 3000; align-items: center; justify-content: space-between; padding: 0 24px; font-family: 'Montserrat', sans-serif; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+    <span style="font-weight: 700; font-size: 15px;">Viewing as Student (Read-Only Preview)</span>
+    <button onclick="returnToAdminDashboard()"
+      style="background: #fff; color: #7a151a; border: none; padding: 6px 16px; border-radius: 4px; font-weight: 700; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 13px; transition: opacity 0.2s;">Return
+      to Admin Dashboard</button>
+  </div>
+
   <!-- Mobile Sidebar Toggle -->
   <button id="sidebar-toggle" class="sidebar-toggle-btn" onclick="toggleSidebarMenu()">☰</button>
 
@@ -35,11 +44,20 @@
       <nav class="sidebar-nav">
         <a href="#dashboard" onclick="showPage('dashboard'); return false;" class="sidebar-link"
           id="nav-find-scholarships">
-          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg></span> Find Scholarships
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+              <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
+            </svg></span> Find Scholarships
         </a>
         <a href="#student-universities" onclick="showPage('student-universities'); return false;" class="sidebar-link"
           id="nav-student-universities">
-          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10"></path><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M6 17h12"></path></svg></span> Universities
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10"></path>
+              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+              <path d="M6 17h12"></path>
+            </svg></span> Universities
         </a>
       </nav>
 
@@ -47,7 +65,13 @@
       <div class="sidebar-footer">
         <a href="#settings" onclick="showPage('settings'); return false;" class="sidebar-link-bottom"
           id="nav-settings-bottom">
-          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span> Settings
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+              </path>
+            </svg></span> Settings
         </a>
         <button onclick="logout()" class="student-logout-btn">
           Logout
@@ -1245,20 +1269,7 @@
         </section>
         </section>
 
-        <!-- Student Dashboard (Read-Only for Admin View) -->
-        <section id="admin-student-view-page" class="page" style="display:none;">
-          <div class="admin-banner"
-            style="background: #f7fafc; border-bottom: 2px solid #edf2f7; padding: 16px; margin-bottom: 24px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-            <h2 style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 18px;">Viewing as
-              Student (Read-Only)</h2>
-            <button onclick="returnToAdminDashboard()" class="btn-back-link"
-              style="margin: 0; padding: 8px 16px;">Return to
-              Admin Dashboard</button>
-          </div>
-          <h2 id="admin-student-welcome"
-            style="margin-bottom: 24px; font-family: 'Montserrat', sans-serif; color: #26374b;">Welcome, Student</h2>
-          <div id="admin-student-result"></div>
-        </section>
+
 
         <!-- Admin Dashboard -->
         <section id="admin-dashboard-page" class="page" style="display:none; max-width: 1200px;">
@@ -3156,11 +3167,17 @@
       <form id="admin-student-form" style="display: flex; flex-direction: column; gap: 12px;">
         <input type="hidden" id="admin-student-id">
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
           <div>
             <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">First
               Name</label>
             <input type="text" id="admin-student-firstname" required
+              style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+          </div>
+          <div>
+            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Middle
+              Name</label>
+            <input type="text" id="admin-student-middlename" placeholder="Optional"
               style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
           </div>
           <div>

@@ -99,14 +99,7 @@ function showPage(pageId, updateHash = true) {
     }
   }
 
-  if (isViewingAsStudent && pageId !== 'admin-student-view' && pageId !== 'landing' && pageId !== 'login' && pageId !== 'register') {
-    const page = document.getElementById('admin-student-view-page');
-    if (page && page.style.display !== 'block') {
-      document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-      page.style.display = 'block';
-    }
-    return;
-  }
+
 
   const page = document.getElementById(pageId + '-page');
   if (page && page.style.display !== 'block') {
@@ -125,15 +118,17 @@ function showPage(pageId, updateHash = true) {
   const studentSidebar = document.getElementById('student-sidebar');
   const adminSidebar = document.getElementById('admin-sidebar');
 
-  const showStudentSidebar = currentStudentId !== null &&
+  const showStudentSidebar = (currentStudentId !== null &&
     pageId !== 'landing' &&
     pageId !== 'login' &&
     pageId !== 'register' &&
     !pageId.includes('admin') &&
-    (!isUniversityPage || lastUniversitySource === 'student-universities');
+    (!isUniversityPage || lastUniversitySource === 'student-universities'))
+    || isViewingAsStudent; // show student sidebar during admin preview
 
   const showAdminSidebar = currentAdminId !== null &&
-    pageId.includes('admin');
+    pageId.includes('admin') &&
+    !isViewingAsStudent; // hide admin sidebar during preview
 
   if (studentSidebar) {
     studentSidebar.style.display = showStudentSidebar ? 'flex' : 'none';
@@ -184,6 +179,23 @@ function showPage(pageId, updateHash = true) {
     } else if (pageId === 'student-universities' || pageId === 'student-uni-detail') {
       const activeLink = document.getElementById('nav-student-universities');
       if (activeLink) activeLink.classList.add('active');
+    }
+
+    // In preview mode: hide Edit Profile and Settings, swap Logout with Exit Preview
+    const editProfileLink = studentSidebar.querySelector('.sidebar-edit-text');
+    const settingsLink = document.getElementById('nav-settings-bottom');
+    const logoutBtn = studentSidebar.querySelector('.student-logout-btn');
+    if (isViewingAsStudent) {
+      if (editProfileLink) editProfileLink.style.display = 'none';
+      if (logoutBtn) logoutBtn.style.display = 'none';
+    } else {
+      if (editProfileLink) editProfileLink.style.display = '';
+      if (settingsLink) settingsLink.style.display = '';
+      if (logoutBtn) {
+        logoutBtn.style.display = '';
+        logoutBtn.textContent = 'Logout';
+        logoutBtn.setAttribute('onclick', 'logout()');
+      }
     }
   }
 
@@ -272,16 +284,74 @@ function adminLogout() {
   showPage('landing');
 }
 
+// ─── View as Student (Fake Persona Preview) ───
+// Saves/restores the real student session so the admin can
+// browse the actual student dashboard with a fake identity.
+
+let savedStudentId = null;
+let savedStudentName = null;
+
 function viewAsStudent() {
   if (!currentAdminId) return;
   isViewingAsStudent = true;
   sessionStorage.setItem('isViewingAsStudent', 'true');
-  showPage('admin-student-view');
+
+  // Save any real student session (unlikely but defensive)
+  savedStudentId = currentStudentId;
+  savedStudentName = currentStudentName;
+
+  // Inject a fake persona — no real student record is used
+  currentStudentId = -1;          // sentinel; never hits the DB
+  currentStudentName = 'Juan Dela Cruz';
+
+  // Show the preview banner
+  const banner = document.getElementById('admin-preview-banner');
+  if (banner) banner.style.display = 'flex';
+
+  // Populate the student sidebar with the fake persona
+  const sidebarName = document.getElementById('sidebar-name-display');
+  if (sidebarName) sidebarName.textContent = 'Juan Dela Cruz';
+
+  const defaultPic = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2EwYWVjMCI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==';
+  const sidebarPic = document.getElementById('sidebar-pic-display');
+  if (sidebarPic) sidebarPic.src = defaultPic;
+
+  // Clear the eligibility inputs so they start empty
+  const eligCourse = document.getElementById('elig-course');
+  if (eligCourse) eligCourse.value = '';
+
+  const courseLabel = document.getElementById('course-select-label');
+  if (courseLabel) courseLabel.textContent = 'Select Course';
+
+  const eligGwa = document.getElementById('elig-gwa');
+  if (eligGwa) eligGwa.value = '';
+
+  // Clear recommendation results
+  const recResult = document.getElementById('rec-result');
+  if (recResult) recResult.innerHTML = '<p style="color:#718096; font-size: 14.5px;">Select a course and enter a GWA above, then click "Update GWA & Course" to see matching scholarships for this persona.</p>';
+
+  // Push the body down to make space for the fixed banner
+  document.body.style.paddingTop = '50px';
+
+  // Navigate to the student dashboard
+  showPage('dashboard');
 }
 
 function returnToAdminDashboard() {
   isViewingAsStudent = false;
   sessionStorage.setItem('isViewingAsStudent', 'false');
+
+  // Hide the preview banner
+  const banner = document.getElementById('admin-preview-banner');
+  if (banner) banner.style.display = 'none';
+  document.body.style.paddingTop = '0';
+
+  // Restore real session
+  currentStudentId = savedStudentId;
+  currentStudentName = savedStudentName;
+  savedStudentId = null;
+  savedStudentName = null;
+
   showPage('admin-dashboard');
 }
 
@@ -371,6 +441,12 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 // Load student profile into eligibility form
 async function loadStudentProfile() {
   if (!currentStudentId) return;
+  // In fake persona mode, skip DB fetch — persona fields are already set
+  if (isViewingAsStudent) {
+    const welcomeEl = document.getElementById('dashboard-welcome');
+    if (welcomeEl) welcomeEl.textContent = 'Welcome, ' + (currentStudentName || 'Juan Dela Cruz');
+    return;
+  }
   const result = await apiFetch('/students/show.php?id=' + currentStudentId);
   if (result.ok && result.data && result.data.success) {
     const s = result.data.data;
@@ -439,6 +515,15 @@ document.getElementById('eligibility-form').addEventListener('submit', async (e)
   e.preventDefault();
   if (!currentStudentId) {
     document.getElementById('eligibility-result').innerHTML = '<p style="color:red;">Error: No student logged in</p>';
+    return;
+  }
+
+  // In fake persona mode, skip DB update and just recalculate recommendations
+  if (isViewingAsStudent) {
+    const out = document.getElementById('eligibility-result');
+    out.innerHTML = '<p style="color:green;">Recalculating recommendations for persona...</p>';
+    await loadRecommendations();
+    setTimeout(() => { out.innerHTML = ''; }, 2000);
     return;
   }
 
@@ -559,7 +644,17 @@ async function loadRecommendations() {
     return;
   }
 
-  const result = await apiFetch('/recommendations/index.php?student_id=' + encodeURIComponent(currentStudentId));
+  // In fake persona mode, use custom criteria API instead of student_id
+  let apiUrl;
+  if (isViewingAsStudent) {
+    const course = encodeURIComponent(eligCourse.value || '');
+    const gwa = encodeURIComponent(eligGwa.value || '0');
+    apiUrl = '/recommendations/index.php?course=' + course + '&gwa=' + gwa;
+  } else {
+    apiUrl = '/recommendations/index.php?student_id=' + encodeURIComponent(currentStudentId);
+  }
+
+  const result = await apiFetch(apiUrl);
 
   if (!result.ok || !result.data || !result.data.success) {
     const errorMsg = (result.data && result.data.message) || (result.data && result.data.error) || result.error || 'Error fetching recommendations';
@@ -574,6 +669,8 @@ async function loadRecommendations() {
     return;
   }
 
+  const studentGwaDisplay = (result.data.student && result.data.student.gwa) || (eligGwa ? eligGwa.value : 'N/A');
+
   let html = '';
   scholarships.forEach(s => {
     const reasons = (s.reason || []).map(r => '<li>' + r + '</li>').join('');
@@ -583,7 +680,7 @@ async function loadRecommendations() {
         <p><strong>University:</strong> ${s.university}</p>
         <p><strong>Type:</strong> ${s.scholarship_type}</p>
         <p><strong>Required GWA:</strong> ${s.minimum_gwa}</p>
-        <p><strong>Student GWA:</strong> ${result.data.student.gwa}</p>
+        <p><strong>Student GWA:</strong> ${studentGwaDisplay}</p>
         <p><strong>Course:</strong> ${s.course || 'Any'}</p>
         <p><strong>Description:</strong> ${s.description}</p>
         <p><strong>Reason:</strong></p>
@@ -601,9 +698,8 @@ async function loadRecommendations() {
 function switchAdminTab(tabId) {
   // If we are currently viewing as student, return to admin dashboard first
   if (isViewingAsStudent) {
-    isViewingAsStudent = false;
-    sessionStorage.setItem('isViewingAsStudent', 'false');
-    showPage('admin-dashboard', false);
+    returnToAdminDashboard();
+    return;
   }
 
   // Hide all tab contents
@@ -864,6 +960,7 @@ async function openAdminStudentModal(studentId) {
   const s = result.data.data;
   document.getElementById('admin-student-id').value = s.id;
   document.getElementById('admin-student-firstname').value = s.first_name || '';
+  document.getElementById('admin-student-middlename').value = s.middle_name || '';
   document.getElementById('admin-student-lastname').value = s.last_name || '';
   document.getElementById('admin-student-email').value = s.email || '';
   document.getElementById('admin-student-age').value = s.age || '';
@@ -917,6 +1014,7 @@ document.getElementById('admin-student-form').addEventListener('submit', async (
   e.preventDefault();
   const id = document.getElementById('admin-student-id').value;
   const first_name = document.getElementById('admin-student-firstname').value.trim();
+  const middle_name = document.getElementById('admin-student-middlename').value.trim();
   const last_name = document.getElementById('admin-student-lastname').value.trim();
   const email = document.getElementById('admin-student-email').value.trim();
   const age = document.getElementById('admin-student-age').value;
@@ -929,7 +1027,7 @@ document.getElementById('admin-student-form').addEventListener('submit', async (
   const address = document.getElementById('admin-student-address').value.trim();
   const new_password = document.getElementById('admin-student-password').value;
 
-  const payload = { id, first_name, last_name, email, age, phone_number, course, gwa, gender, country, status, address };
+  const payload = { id, first_name, middle_name, last_name, email, age, phone_number, course, gwa, gender, country, status, address };
   if (new_password) {
     payload.new_password = new_password;
   }
@@ -1630,7 +1728,7 @@ function updateCustomCourseSelectValue(val) {
   if (input) input.value = val || '';
   const label = document.getElementById('course-select-label');
   if (label) label.textContent = val || 'Select Course';
-  
+
   document.querySelectorAll('#course-select-options .custom-select-option').forEach(opt => {
     if (val && opt.getAttribute('data-value') === val) {
       opt.classList.add('selected');
@@ -1645,7 +1743,7 @@ function initCustomCourseSelect() {
   if (!optionsContainer) return;
 
   // Populate options list
-  optionsContainer.innerHTML = customCourseOptions.map(c => 
+  optionsContainer.innerHTML = customCourseOptions.map(c =>
     `<li class="custom-select-option" data-value="${c}">${c}</li>`
   ).join('');
 

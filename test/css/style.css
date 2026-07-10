@@ -337,10 +337,12 @@ th {
 
 .modal-content {
   background: #fff;
-  padding: 20px;
-  border: 1px solid #ddd;
+  padding: 24px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
   max-width: 500px;
   width: 100%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .privacy-modal-content {
@@ -3102,4 +3104,4 @@ body.dark-mode .custom-select-option:hover {
 body.dark-mode .custom-select-option.selected {
   background: #3c1214;
   color: #ff8a8f;
-}
+}

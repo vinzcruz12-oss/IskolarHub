@@ -12,10 +12,14 @@ class RecommendationService {
         $this->scholarship = new Scholarship();
     }
 
-    public function getEligibleScholarships($student_id) {
-        $student = $this->student->findById($student_id);
-        if (!$student) {
-            return ['success' => false, 'error' => 'Student not found'];
+    public function getEligibleScholarships($student_id, $custom_student = null) {
+        if ($custom_student !== null) {
+            $student = $custom_student;
+        } else {
+            $student = $this->student->findById($student_id);
+            if (!$student) {
+                return ['success' => false, 'error' => 'Student not found'];
+            }
         }
 
         $allScholarships = $this->scholarship->findAll();

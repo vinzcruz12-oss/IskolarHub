@@ -16,9 +16,19 @@ requireDatabase();
 require_once __DIR__ . '/../../services/RecommendationService.php';
 
 $student_id = $_GET['student_id'] ?? null;
-
 $service = new RecommendationService();
-$result = $service->getEligibleScholarships($student_id);
+
+if (isset($_GET['course']) || isset($_GET['gwa']) || isset($_GET['school']) || isset($_GET['strand'])) {
+    $custom_student = [
+        'gwa' => floatval($_GET['gwa'] ?? 0),
+        'course' => $_GET['course'] ?? '',
+        'current_school' => $_GET['school'] ?? '',
+        'strand' => $_GET['strand'] ?? ''
+    ];
+    $result = $service->getEligibleScholarships(null, $custom_student);
+} else {
+    $result = $service->getEligibleScholarships($student_id);
+}
 
 http_response_code($result['success'] ? 200 : 404);
 echo json_encode($result);
