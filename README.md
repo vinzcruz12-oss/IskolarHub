@@ -1,5 +1,3 @@
-# TO BE CHANGED TESTING ASIJDASIJDH
-
 # 🎓 IskolarHub
 
 IskolarHub is a web-based scholarship finder designed to help students easily discover scholarship opportunities through a centralized platform. Instead of searching across multiple websites and social media pages, students can browse, search, and filter scholarships based on their qualifications.
