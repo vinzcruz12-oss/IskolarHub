@@ -202,7 +202,7 @@ function showPage(pageId, updateHash = true) {
   // Toggle mobile toggle button visibility
   const toggleBtn = document.getElementById('sidebar-toggle');
   if (toggleBtn) {
-    toggleBtn.style.display = showSidebar ? 'block' : 'none';
+    toggleBtn.style.display = (showStudentSidebar || showAdminSidebar) ? 'block' : 'none';
   }
 
   if (pageId === 'dashboard' || pageId === 'profile' || pageId === 'settings' || pageId === 'student-universities') {
@@ -662,6 +662,9 @@ async function loadAdminStats() {
   }
 }
 
+let cachedScholarships = [];
+let cachedStudents = [];
+
 async function loadScholarships() {
   const result = await apiFetch('/scholarships/index.php');
   const out = document.getElementById('admin-table');
@@ -670,18 +673,33 @@ async function loadScholarships() {
     return;
   }
 
-  const list = result.data.data || [];
+  cachedScholarships = result.data.data || [];
+  
+  // Clear search and filter controls upon refresh/load
+  const searchInput = document.getElementById('scholarship-search');
+  if (searchInput) searchInput.value = '';
+  const typeFilter = document.getElementById('scholarship-type-filter');
+  if (typeFilter) typeFilter.value = 'all';
+
+  renderScholarshipsTable(cachedScholarships);
+}
+
+function renderScholarshipsTable(list) {
+  const out = document.getElementById('admin-table');
+  if (!out) return;
+
   if (list.length === 0) {
-    out.innerHTML = '<p>No scholarships found.</p>';
+    out.innerHTML = '<p style="padding: 10px; color: #a0aec0;">No matching scholarships found.</p>';
     return;
   }
 
-  let html = '<table><tr><th>ID</th><th>Title</th><th>University</th><th>Min GWA</th><th>Actions</th></tr>';
+  let html = '<table><tr><th>ID</th><th>Title</th><th>University</th><th>Type</th><th>Min GWA</th><th>Actions</th></tr>';
   list.forEach(s => {
     html += `<tr>
       <td>${s.id}</td>
       <td>${s.title}</td>
       <td>${s.university}</td>
+      <td>${s.scholarship_type}</td>
       <td>${s.minimum_gwa}</td>
       <td>
         <button onclick="editScholarship(${s.id})" style="background:#4a5568; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; margin-right:4px;">Edit</button>
@@ -693,6 +711,20 @@ async function loadScholarships() {
   out.innerHTML = html;
 }
 
+function filterScholarships() {
+  const query = (document.getElementById('scholarship-search')?.value || '').toLowerCase().trim();
+  const typeFilter = document.getElementById('scholarship-type-filter')?.value || 'all';
+
+  const filtered = cachedScholarships.filter(s => {
+    const matchesSearch = (s.title || '').toLowerCase().includes(query) || 
+                          (s.university || '').toLowerCase().includes(query);
+    const matchesType = typeFilter === 'all' || s.scholarship_type === typeFilter;
+    return matchesSearch && matchesType;
+  });
+
+  renderScholarshipsTable(filtered);
+}
+
 async function loadStudents() {
   const result = await apiFetch('/students/index.php');
   const out = document.getElementById('admin-students-table');
@@ -701,9 +733,43 @@ async function loadStudents() {
     return;
   }
 
-  const list = result.data.data || [];
+  cachedStudents = result.data.data || [];
+
+  // Reset inputs
+  const searchInput = document.getElementById('student-search');
+  if (searchInput) searchInput.value = '';
+  const statusFilter = document.getElementById('student-status-filter');
+  if (statusFilter) statusFilter.value = 'all';
+
+  // Populate dynamic course filter options
+  populateStudentCourseFilter(cachedStudents);
+
+  renderStudentsTable(cachedStudents);
+}
+
+function populateStudentCourseFilter(students) {
+  const select = document.getElementById('student-course-filter');
+  if (!select) return;
+
+  // Keep the "All Courses" option
+  select.innerHTML = '<option value="all">All Courses</option>';
+
+  // Collect unique courses
+  const courses = [...new Set(students.map(s => s.course).filter(Boolean))].sort();
+  courses.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    select.appendChild(opt);
+  });
+}
+
+function renderStudentsTable(list) {
+  const out = document.getElementById('admin-students-table');
+  if (!out) return;
+
   if (list.length === 0) {
-    out.innerHTML = '<p>No students found.</p>';
+    out.innerHTML = '<p style="padding: 10px; color: #a0aec0;">No matching students found.</p>';
     return;
   }
 
@@ -731,12 +797,52 @@ async function loadStudents() {
       <td>${statusBadge}</td>
       <td>
         <button onclick="openAdminStudentModal(${s.id})" style="background:#4a5568; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; margin-right:4px;">Edit</button>
-        <button onclick="toggleBanStudent(${s.id}, '${statusVal}')" style="background:${isBanned ? '#48bb78' : '#e53e3e'}; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;">${isBanned ? 'Unban' : 'Ban'}</button>
+        <button onclick="toggleBanStudent(${s.id}, '${statusVal}')" style="background:${isBanned ? '#48bb78' : '#e53e3e'}; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; margin-right:4px;">${isBanned ? 'Unban' : 'Ban'}</button>
+        <button onclick="deleteStudentDirect(${s.id}, '${s.email}')" style="background:#e53e3e; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;">Remove</button>
       </td>
     </tr>`;
   });
   html += '</table>';
   out.innerHTML = html;
+}
+
+function filterStudents() {
+  const query = (document.getElementById('student-search')?.value || '').toLowerCase().trim();
+  const courseFilter = document.getElementById('student-course-filter')?.value || 'all';
+  const statusFilter = document.getElementById('student-status-filter')?.value || 'all';
+
+  const filtered = cachedStudents.filter(s => {
+    let cleanMiddle = (s.middle_name || '').trim();
+    const fullName = [s.first_name, cleanMiddle, s.last_name].filter(Boolean).join(' ').toLowerCase();
+    
+    const matchesSearch = fullName.includes(query) || 
+                          (s.email || '').toLowerCase().includes(query);
+    const matchesCourse = courseFilter === 'all' || s.course === courseFilter;
+    const matchesStatus = statusFilter === 'all' || (s.status || 'active') === statusFilter;
+    
+    return matchesSearch && matchesCourse && matchesStatus;
+  });
+
+  renderStudentsTable(filtered);
+}
+
+async function deleteStudentDirect(id, email) {
+  const confirmation = confirm(`Are you sure you want to permanently delete the account of ${email}? This action CANNOT be undone.`);
+  if (!confirmation) return;
+
+  const result = await apiFetch('/students/delete.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id })
+  });
+
+  if (result.ok && result.data && result.data.success) {
+    logSecurityEvent('Student account deleted', `Admin deleted ID: ${id} (${email})`);
+    loadStudents();
+  } else {
+    const errMsg = (result.data && result.data.error) || 'Failed to remove account.';
+    alert('Error: ' + errMsg);
+  }
 }
 
 // Student Edit Modal actions (Admin Only)
@@ -767,6 +873,34 @@ async function openAdminStudentModal(studentId) {
 
 function closeAdminStudentModal() {
   document.getElementById('admin-student-modal').style.display = 'none';
+}
+
+async function deleteAdminStudent() {
+  const id = document.getElementById('admin-student-id').value;
+  const email = document.getElementById('admin-student-email').value;
+  if (!id) return;
+
+  const confirmation = confirm(`Are you sure you want to permanently delete the account of ${email}? This action CANNOT be undone.`);
+  if (!confirmation) return;
+
+  const result = await apiFetch('/students/delete.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id })
+  });
+
+  const out = document.getElementById('admin-student-modal-result');
+  if (result.ok && result.data && result.data.success) {
+    out.innerHTML = '<p style="color:green;">Account removed successfully.</p>';
+    logSecurityEvent('Student account deleted', `Admin deleted ID: ${id} (${email})`);
+    setTimeout(() => {
+      closeAdminStudentModal();
+      loadStudents();
+    }, 1000);
+  } else {
+    const errMsg = (result.data && result.data.error) || 'Failed to remove account.';
+    out.innerHTML = '<p style="color:red;">Error: ' + errMsg + '</p>';
+  }
 }
 
 // Submit Admin Student Edits
@@ -838,6 +972,10 @@ async function loadContentStructure() {
     document.getElementById('admin-universities-list').innerHTML = '<p style="color:red;">Failed to load content mapping.</p>';
     return;
   }
+
+  // Clear search field on load
+  const searchInput = document.getElementById('content-search');
+  if (searchInput) searchInput.value = '';
 
   // Populate Universities
   const uniList = document.getElementById('admin-universities-list');
@@ -1407,6 +1545,54 @@ function renderStudentUniDetail(uniKey) {
     }
   }
 }
+
+// Admin Portal Search & Filter Helper Functions
+function filterContentDOM() {
+  const query = (document.getElementById('content-search')?.value || '').toLowerCase().trim();
+  
+  // Filter Universities
+  document.querySelectorAll('#admin-universities-list .admin-list-item').forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(query) ? 'block' : 'none';
+  });
+  
+  // Filter Colleges
+  document.querySelectorAll('#admin-colleges-list .admin-list-item').forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(query) ? 'block' : 'none';
+  });
+  
+  // Filter Courses
+  document.querySelectorAll('#admin-courses-list .admin-list-item').forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(query) ? 'block' : 'none';
+  });
+}
+
+// Register Global Event Listeners for Filters using Event Delegation
+document.addEventListener('input', (e) => {
+  if (e.target) {
+    if (e.target.id === 'scholarship-search') {
+      filterScholarships();
+    } else if (e.target.id === 'student-search') {
+      filterStudents();
+    } else if (e.target.id === 'content-search') {
+      filterContentDOM();
+    }
+  }
+});
+
+document.addEventListener('change', (e) => {
+  if (e.target) {
+    if (e.target.id === 'scholarship-type-filter') {
+      filterScholarships();
+    } else if (e.target.id === 'student-course-filter') {
+      filterStudents();
+    } else if (e.target.id === 'student-status-filter') {
+      filterStudents();
+    }
+  }
+});
 
 
 

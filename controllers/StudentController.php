@@ -314,4 +314,30 @@ class StudentController {
         }
         exit;
     }
+
+    public function delete() {
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        if (!isset($input['id'])) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => 'ID is required']);
+            exit;
+        }
+
+        $existing = $this->student->findById($input['id']);
+        if (!$existing) {
+            http_response_code(404);
+            echo json_encode(['success' => false, 'error' => 'Student not found']);
+            exit;
+        }
+
+        $success = $this->student->delete($input['id']);
+        if ($success) {
+            echo json_encode(['success' => true]);
+        } else {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'error' => 'Failed to delete student account']);
+        }
+        exit;
+    }
 }

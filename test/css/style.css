@@ -2731,3 +2731,129 @@ body.dark-mode .log-border-success {
 body.dark-mode .log-border-danger {
   border-left-color: #f56565 !important;
 }
+
+/* Danger outline buttons (deletion/remove actions) */
+.btn-danger-outline {
+  padding: 10px 20px;
+  border: 1px solid #e53e3e;
+  background: #fff5f5;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #e53e3e;
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.2s ease;
+}
+.btn-danger-outline:hover {
+  background: #fed7d7;
+}
+body.dark-mode .btn-danger-outline {
+  background: #4c2326 !important;
+  color: #fc8181 !important;
+  border-color: #f56565 !important;
+}
+body.dark-mode .btn-danger-outline:hover {
+  background: #742a2a !important;
+}
+
+/* Security controls card & label styles */
+.security-controls-card {
+  background: #f7fafc;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #edf2f7;
+  margin-bottom: 24px;
+}
+.security-controls-card label {
+  color: #2d3748;
+}
+body.dark-mode .security-controls-card {
+  background: #333947 !important;
+  border-color: #4a5568 !important;
+}
+body.dark-mode .security-controls-card label {
+  color: #edf2f7 !important;
+}
+
+/* Student Sidebar Logout Button */
+.student-logout-btn {
+  display: block;
+  width: 100%;
+  border: 1.5px solid #feb2b2;
+  background: transparent;
+  color: #e53e3e;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.student-logout-btn:hover {
+  background-color: #fff5f5;
+  border-color: #e53e3e;
+}
+
+body.dark-mode .student-logout-btn {
+  border-color: #f56565 !important;
+  color: #fc8181 !important;
+}
+
+body.dark-mode .student-logout-btn:hover {
+  background-color: #4c2326 !important;
+  border-color: #f56565 !important;
+}
+
+/* Admin Filter & Search Styles */
+.admin-filter-bar {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.admin-filter-bar input,
+.admin-filter-bar select {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.admin-filter-bar input:focus,
+.admin-filter-bar select:focus {
+  border-color: #7a151a;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(122, 21, 26, 0.12);
+}
+
+.admin-filter-bar input {
+  flex: 1;
+  min-width: 250px;
+}
+
+.admin-filter-bar select {
+  min-width: 180px;
+}
+
+body.dark-mode .admin-filter-bar input,
+body.dark-mode .admin-filter-bar select {
+  background: #2d3748 !important;
+  color: #fff !important;
+  border-color: #4a5568 !important;
+}
+
+body.dark-mode .admin-filter-bar input:focus,
+body.dark-mode .admin-filter-bar select:focus {
+  border-color: #f56565 !important;
+  box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.2);
+}

@@ -52,6 +52,9 @@
           id="nav-settings-bottom">
           <span class="sidebar-icon">⚙️</span> Settings
         </a>
+        <button onclick="logout()" class="student-logout-btn">
+          Logout
+        </button>
       </div>
     </aside>
 
@@ -1104,6 +1107,18 @@
               <div id="password-settings-result" class="auth-result"></div>
             </div>
 
+            <hr style="border: none; border-top: 1px solid #edf2f7; margin: 12px 0;">
+
+            <!-- Logout Section -->
+            <div>
+              <h3
+                style="margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', sans-serif; color: #7a151a; font-size: 18px;">
+                Account Session</h3>
+              <button onclick="logout()" class="btn-danger-outline" style="align-self: flex-start;">
+                Logout
+              </button>
+            </div>
+
           </div>
         </section>
 
@@ -1291,6 +1306,19 @@
                   <button onclick="openAddModal()" class="auth-btn" style="margin: 0; padding: 8px 16px;">Add Scholarship</button>
                 </div>
               </div>
+              <div class="admin-filter-bar">
+                <input type="text" id="scholarship-search" placeholder="Search by title or university...">
+                <select id="scholarship-type-filter">
+                  <option value="all">All Types</option>
+                  <option value="Academic">Academic</option>
+                  <option value="Government">Government</option>
+                  <option value="Private">Private</option>
+                  <option value="Needs-Based">Needs-Based</option>
+                  <option value="Financial Assistance">Financial Assistance</option>
+                  <option value="Athletic">Athletic</option>
+                  <option value="Merit">Merit</option>
+                </select>
+              </div>
               <div id="admin-table"></div>
             </div>
           </div>
@@ -1302,6 +1330,17 @@
                 <h2 class="admin-tab-title" style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px;">Registered Students</h2>
                 <button onclick="loadStudents()" class="btn-back-link" style="margin: 0; padding: 8px 16px;">Refresh Students</button>
               </div>
+              <div class="admin-filter-bar">
+                <input type="text" id="student-search" placeholder="Search by name or email...">
+                <select id="student-course-filter">
+                  <option value="all">All Courses</option>
+                </select>
+                <select id="student-status-filter">
+                  <option value="all">All Statuses</option>
+                  <option value="active">Active</option>
+                  <option value="banned">Banned</option>
+                </select>
+              </div>
               <div id="admin-students-table"></div>
             </div>
           </div>
@@ -1312,6 +1351,9 @@
               <div class="admin-tab-header" style="display: flex; flex-direction: column; align-items: flex-start; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px; width: 100%;">
                 <h2 class="admin-tab-title" style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px; margin-bottom: 4px;">Manage Content</h2>
                 <p style="color: #718096; font-size: 14px; margin: 0;">Explore structural mapping for Universities, Colleges, and Courses.</p>
+              </div>
+              <div class="admin-filter-bar">
+                <input type="text" id="content-search" placeholder="Search universities, colleges or courses...">
               </div>
               
               <div class="admin-content-sections-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;">
@@ -1344,8 +1386,8 @@
                 <h2 class="admin-tab-title" style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px; margin-bottom: 4px;">Security & Access Logs</h2>
                 <p style="color: #718096; font-size: 14px; margin: 0;">Monitor login activities and access statuses in real-time.</p>
               </div>
-              <div class="security-controls-card" style="background: #f7fafc; padding: 16px; border-radius: 8px; border: 1px solid #edf2f7; margin-bottom: 24px;">
-                <label class="toggle-switch" style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: #2d3748; font-weight: 600; font-size: 14px;">
+              <div class="security-controls-card">
+                <label class="toggle-switch" style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 600; font-size: 14px;">
                   <input type="checkbox" id="admin-security-lockout" style="width: 16px; height: 16px;" checked>
                   <span>Enforce Account Banning on Security Violations</span>
                 </label>
@@ -3130,7 +3172,7 @@
           </div>
           <div>
             <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">GWA</label>
-            <input type="number" step="0.01" id="admin-student-gwa" min="1.0" max="5.0" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+            <input type="number" step="0.01" id="admin-student-gwa" min="0" max="100" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
           </div>
         </div>
 
@@ -3168,9 +3210,12 @@
           <input type="text" id="admin-student-address" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
         </div>
 
-        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px;">
-          <button type="button" onclick="closeAdminStudentModal()" style="padding: 10px 20px; border: 1px solid #cbd5e0; background: transparent; border-radius: 6px; font-weight: 600; cursor: pointer; color: #4a5568; font-family: 'Montserrat', sans-serif;">Cancel</button>
-          <button type="submit" style="padding: 10px 20px; border: none; background: #7a151a; border-radius: 6px; font-weight: 600; cursor: pointer; color: #fff; font-family: 'Montserrat', sans-serif;">Save Changes</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+          <button type="button" onclick="deleteAdminStudent()" class="btn-danger-outline">Remove Account</button>
+          <div style="display: flex; gap: 12px;">
+            <button type="button" onclick="closeAdminStudentModal()" style="padding: 10px 20px; border: 1px solid #cbd5e0; background: transparent; border-radius: 6px; font-weight: 600; cursor: pointer; color: #4a5568; font-family: 'Montserrat', sans-serif;">Cancel</button>
+            <button type="submit" style="padding: 10px 20px; border: none; background: #7a151a; border-radius: 6px; font-weight: 600; cursor: pointer; color: #fff; font-family: 'Montserrat', sans-serif;">Save Changes</button>
+          </div>
         </div>
       </form>
       <div id="admin-student-modal-result"></div>
