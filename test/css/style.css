@@ -810,80 +810,6 @@ html {
   box-shadow: 0 4px 10px rgba(122, 21, 26, 0.3);
 }
 
-/* Testimonials Section */
-.sub-label-center {
-  font-size: 12px;
-  font-weight: 700;
-  color: #7a151a;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  display: block;
-  text-align: center;
-  margin-bottom: 8px;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.section-title-spaced.centered {
-  text-align: center;
-  margin-bottom: 50px;
-}
-
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-}
-
-.testimonial-card {
-  background: #fff;
-  border: 1px solid #7a151a;
-  border-radius: 12px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.testimonial-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 15px rgba(122, 21, 26, 0.05);
-}
-
-.test-header {
-  margin-bottom: 12px;
-}
-
-.test-name {
-  font-size: 16px;
-  font-weight: 700;
-  color: #2d3748;
-  margin: 0 0 4px 0;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.test-program {
-  font-size: 13px;
-  color: #7a151a;
-  font-weight: 600;
-}
-
-.test-quote {
-  font-size: 13.5px;
-  color: #4a5568;
-  font-style: italic;
-  line-height: 1.5;
-  margin: 0 0 16px 0;
-  flex: 1;
-}
-
-.test-stars {
-  color: #fb8c00;
-  font-size: 16px;
-  letter-spacing: 2px;
-}
-
 /* FAQs Accordion Layout */
 .faqs-layout {
   display: flex;
@@ -3104,4 +3030,47 @@ body.dark-mode .custom-select-option:hover {
 body.dark-mode .custom-select-option.selected {
   background: #3c1214;
   color: #ff8a8f;
+}
+
+/* Password Toggle styles */
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+.password-input-wrapper input {
+  padding-right: 40px !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #a0aec0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  outline: none;
+  z-index: 10;
+  transition: color 0.15s ease-in-out;
+}
+
+.password-toggle-btn:hover {
+  color: #7a151a;
+}
+
+body.dark-mode .password-toggle-btn:hover {
+  color: #feb2b2;
+}
+
+body.dark-mode .password-toggle-btn {
+  color: #4a5568;
 }

@@ -47,21 +47,21 @@ class Student {
         $fields = [];
         $params = [];
 
-        if (isset($data['first_name'])) { $fields[] = 'first_name = ?'; $params[] = $data['first_name']; }
-        if (isset($data['middle_name'])) { $fields[] = 'middle_name = ?'; $params[] = $data['middle_name']; }
-        if (isset($data['last_name'])) { $fields[] = 'last_name = ?'; $params[] = $data['last_name']; }
-        if (isset($data['email'])) { $fields[] = 'email = ?'; $params[] = $data['email']; }
-        if (isset($data['age'])) { $fields[] = 'age = ?'; $params[] = $data['age']; }
-        if (isset($data['current_school'])) { $fields[] = 'current_school = ?'; $params[] = $data['current_school']; }
-        if (isset($data['strand'])) { $fields[] = 'strand = ?'; $params[] = $data['strand']; }
-        if (isset($data['course'])) { $fields[] = 'course = ?'; $params[] = $data['course']; }
-        if (isset($data['gwa'])) { $fields[] = 'gwa = ?'; $params[] = $data['gwa']; }
-        if (isset($data['phone_number'])) { $fields[] = 'phone_number = ?'; $params[] = $data['phone_number']; }
-        if (isset($data['gender'])) { $fields[] = 'gender = ?'; $params[] = $data['gender']; }
-        if (isset($data['address'])) { $fields[] = 'address = ?'; $params[] = $data['address']; }
-        if (isset($data['country'])) { $fields[] = 'country = ?'; $params[] = $data['country']; }
-        if (isset($data['status'])) { $fields[] = 'status = ?'; $params[] = $data['status']; }
-        if (isset($data['password'])) { $fields[] = 'password = ?'; $params[] = $data['password']; }
+        if (array_key_exists('first_name', $data)) { $fields[] = 'first_name = ?'; $params[] = $data['first_name']; }
+        if (array_key_exists('middle_name', $data)) { $fields[] = 'middle_name = ?'; $params[] = $data['middle_name']; }
+        if (array_key_exists('last_name', $data)) { $fields[] = 'last_name = ?'; $params[] = $data['last_name']; }
+        if (array_key_exists('email', $data)) { $fields[] = 'email = ?'; $params[] = $data['email']; }
+        if (array_key_exists('age', $data)) { $fields[] = 'age = ?'; $params[] = $data['age']; }
+        if (array_key_exists('current_school', $data)) { $fields[] = 'current_school = ?'; $params[] = $data['current_school']; }
+        if (array_key_exists('strand', $data)) { $fields[] = 'strand = ?'; $params[] = $data['strand']; }
+        if (array_key_exists('course', $data)) { $fields[] = 'course = ?'; $params[] = $data['course']; }
+        if (array_key_exists('gwa', $data)) { $fields[] = 'gwa = ?'; $params[] = $data['gwa']; }
+        if (array_key_exists('phone_number', $data)) { $fields[] = 'phone_number = ?'; $params[] = $data['phone_number']; }
+        if (array_key_exists('gender', $data)) { $fields[] = 'gender = ?'; $params[] = $data['gender']; }
+        if (array_key_exists('address', $data)) { $fields[] = 'address = ?'; $params[] = $data['address']; }
+        if (array_key_exists('country', $data)) { $fields[] = 'country = ?'; $params[] = $data['country']; }
+        if (array_key_exists('status', $data)) { $fields[] = 'status = ?'; $params[] = $data['status']; }
+        if (array_key_exists('password', $data)) { $fields[] = 'password = ?'; $params[] = $data['password']; }
 
         if (empty($fields)) return false;
 

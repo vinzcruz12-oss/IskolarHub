@@ -170,7 +170,10 @@ function showPage(pageId, updateHash = true) {
       link.classList.remove('active');
     });
 
-    if (pageId === 'dashboard') {
+    if (pageId === 'landing') {
+      const activeLink = document.getElementById('nav-home');
+      if (activeLink) activeLink.classList.add('active');
+    } else if (pageId === 'dashboard') {
       const activeLink = document.getElementById('nav-find-scholarships');
       if (activeLink) activeLink.classList.add('active');
     } else if (pageId === 'settings') {
@@ -663,9 +666,15 @@ async function loadRecommendations() {
     return;
   }
 
-  const scholarships = result.data.scholarships || [];
+  let scholarships = result.data.scholarships || [];
+  
+  const typeFilter = document.getElementById('elig-type') ? document.getElementById('elig-type').value : 'all';
+  if (typeFilter !== 'all') {
+    scholarships = scholarships.filter(s => s.scholarship_type === typeFilter);
+  }
+
   if (scholarships.length === 0) {
-    out.innerHTML = '<p>' + (result.data.message || 'No eligible scholarships found.') + '</p>';
+    out.innerHTML = '<p>No eligible scholarships match the selected type.</p>';
     return;
   }
 
@@ -1356,7 +1365,7 @@ const VALID_PAGES = [
 ];
 
 const LANDING_ANCHORS = [
-  'about', 'how-it-works', 'universities', 'testimonials', 'faqs', 'contact'
+  'about', 'how-it-works', 'universities', 'faqs', 'contact'
 ];
 
 let isInitialLoad = true;
@@ -1806,6 +1815,85 @@ function initCustomCourseSelect() {
 
 // Automatically Initialize custom select component
 initCustomCourseSelect();
+
+// Initialize Password Visibility Toggles
+function initPasswordToggles() {
+  const passwordInputs = document.querySelectorAll('input[type="password"]');
+  passwordInputs.forEach(input => {
+    // Avoid double wrapping if called multiple times
+    if (input.parentElement.classList.contains('password-input-wrapper')) return;
+
+    // Create wrapper
+    const wrapper = document.createElement('div');
+    wrapper.className = 'password-input-wrapper';
+    
+    // Copy some layout styling from input if present to wrapper to maintain inline/grid positioning
+    if (input.style.display) {
+      wrapper.style.display = input.style.display;
+    }
+    
+    // Insert wrapper in DOM before input
+    input.parentNode.insertBefore(wrapper, input);
+    
+    // Move input into wrapper
+    wrapper.appendChild(input);
+    
+    // Create button
+    const toggleBtn = document.createElement('button');
+    toggleBtn.type = 'button';
+    toggleBtn.className = 'password-toggle-btn';
+    toggleBtn.innerHTML = `
+      <svg class="eye-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+      </svg>
+    `;
+    
+    // Append button to wrapper
+    wrapper.appendChild(toggleBtn);
+    
+    // Event listener
+    toggleBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+      
+      if (isPassword) {
+        // Change to Eye Off
+        toggleBtn.innerHTML = `
+          <svg class="eye-icon-off" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>
+        `;
+      } else {
+        // Change to Eye
+        toggleBtn.innerHTML = `
+          <svg class="eye-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        `;
+      }
+      
+      // Maintain focus on the input field
+      input.focus();
+    });
+  });
+}
+
+// Call on load
+initPasswordToggles();
+
+// Automatically load recommendations when the scholarship type changes
+const eligType = document.getElementById('elig-type');
+if (eligType) {
+  eligType.addEventListener('change', () => {
+    loadRecommendations();
+  });
+}
 
 
 

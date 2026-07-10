@@ -42,6 +42,13 @@
 
       <!-- Middle Nav links -->
       <nav class="sidebar-nav">
+        <a href="#landing" onclick="showPage('landing'); return false;" class="sidebar-link" id="nav-home">
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg></span> Home
+        </a>
         <a href="#dashboard" onclick="showPage('dashboard'); return false;" class="sidebar-link"
           id="nav-find-scholarships">
           <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
@@ -744,9 +751,6 @@
                 Welcome,
                 Student</h2>
             </div>
-            <div>
-              <button onclick="logout()" class="btn-back-link" style="margin: 0; padding: 8px 16px;">Logout</button>
-            </div>
           </div>
 
           <!-- Eligibility Form Card -->
@@ -790,10 +794,27 @@
                   <input type="number" id="elig-gwa" step="0.01" placeholder="e.g., 90.00" required
                     style="padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; width: 100%; box-sizing: border-box;">
                 </div>
+                <!-- Scholarship Type -->
+                <div>
+                  <label
+                    style="color: #4a5568; font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Scholarship
+                    Type</label>
+                  <select id="elig-type"
+                    style="padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; width: 100%; box-sizing: border-box; font-family: inherit; font-size: 14.5px; background-color: #fff; color: #2d3748;">
+                    <option value="all">All Types</option>
+                    <option value="Academic">Academic</option>
+                    <option value="Merit">Merit</option>
+                    <option value="Financial Assistance">Financial Assistance</option>
+                    <option value="Government">Government</option>
+                    <option value="Private">Private</option>
+                    <option value="Athletic">Athletic</option>
+                    <option value="Needs-Based">Needs-Based</option>
+                  </select>
+                </div>
               </div>
 
               <button type="submit" class="auth-btn"
-                style="margin-top: 10px; align-self: flex-start; padding: 12px 24px;">Update GWA & Course</button>
+                style="margin-top: 10px; align-self: flex-start; padding: 12px 24px;">Update Filter</button>
             </form>
             <div id="eligibility-result" class="auth-result"></div>
           </div>
@@ -1114,8 +1135,6 @@
           <div class="dashboard-header"
             style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px;">
             <h2 style="margin: 0; font-family: 'Montserrat', sans-serif; color: #26374b;">Partner Universities</h2>
-            <button onclick="showPage('dashboard')" class="btn-back-link" style="margin: 0; padding: 8px 16px;">Back to
-              Dashboard</button>
           </div>
 
           <p style="color: #718096; font-size: 14px; margin-top: 0; margin-bottom: 24px;">Explore our partner

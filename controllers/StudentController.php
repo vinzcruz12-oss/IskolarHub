@@ -202,17 +202,17 @@ class StudentController {
         }
 
         $updateData = [];
-        if (isset($input['first_name'])) $updateData['first_name'] = $input['first_name'];
-        if (isset($input['middle_name'])) $updateData['middle_name'] = $input['middle_name'];
-        if (isset($input['last_name'])) $updateData['last_name'] = $input['last_name'];
-        if (isset($input['age'])) $updateData['age'] = $input['age'];
-        if (isset($input['current_school'])) $updateData['current_school'] = $input['current_school'];
-        if (isset($input['strand'])) $updateData['strand'] = $input['strand'];
-        if (isset($input['course'])) $updateData['course'] = $input['course'];
-        if (isset($input['phone_number'])) $updateData['phone_number'] = $input['phone_number'];
-        if (isset($input['gender'])) $updateData['gender'] = $input['gender'];
-        if (isset($input['address'])) $updateData['address'] = $input['address'];
-        if (isset($input['country'])) $updateData['country'] = $input['country'];
+        if (array_key_exists('first_name', $input)) $updateData['first_name'] = $input['first_name'];
+        if (array_key_exists('middle_name', $input)) $updateData['middle_name'] = $input['middle_name'];
+        if (array_key_exists('last_name', $input)) $updateData['last_name'] = $input['last_name'];
+        if (array_key_exists('age', $input)) $updateData['age'] = $input['age'];
+        if (array_key_exists('current_school', $input)) $updateData['current_school'] = $input['current_school'];
+        if (array_key_exists('strand', $input)) $updateData['strand'] = $input['strand'];
+        if (array_key_exists('course', $input)) $updateData['course'] = $input['course'];
+        if (array_key_exists('phone_number', $input)) $updateData['phone_number'] = $input['phone_number'];
+        if (array_key_exists('gender', $input)) $updateData['gender'] = $input['gender'];
+        if (array_key_exists('address', $input)) $updateData['address'] = $input['address'];
+        if (array_key_exists('country', $input)) $updateData['country'] = $input['country'];
         if (isset($input['new_password']) && !empty($input['new_password'])) {
             if (strlen($input['new_password']) < 6) {
                 http_response_code(400);
@@ -279,20 +279,20 @@ class StudentController {
         }
 
         $updateData = [];
-        if (isset($input['first_name'])) $updateData['first_name'] = $input['first_name'];
-        if (isset($input['middle_name'])) $updateData['middle_name'] = $input['middle_name'];
-        if (isset($input['last_name'])) $updateData['last_name'] = $input['last_name'];
-        if (isset($input['email'])) $updateData['email'] = $input['email'];
-        if (isset($input['age'])) $updateData['age'] = $input['age'];
-        if (isset($input['current_school'])) $updateData['current_school'] = $input['current_school'];
-        if (isset($input['strand'])) $updateData['strand'] = $input['strand'];
-        if (isset($input['course'])) $updateData['course'] = $input['course'];
-        if (isset($input['gwa'])) $updateData['gwa'] = floatval($input['gwa']);
-        if (isset($input['phone_number'])) $updateData['phone_number'] = $input['phone_number'];
-        if (isset($input['gender'])) $updateData['gender'] = $input['gender'];
-        if (isset($input['address'])) $updateData['address'] = $input['address'];
-        if (isset($input['country'])) $updateData['country'] = $input['country'];
-        if (isset($input['status'])) $updateData['status'] = $input['status'];
+        if (array_key_exists('first_name', $input)) $updateData['first_name'] = $input['first_name'];
+        if (array_key_exists('middle_name', $input)) $updateData['middle_name'] = $input['middle_name'];
+        if (array_key_exists('last_name', $input)) $updateData['last_name'] = $input['last_name'];
+        if (array_key_exists('email', $input)) $updateData['email'] = $input['email'];
+        if (array_key_exists('age', $input)) $updateData['age'] = $input['age'];
+        if (array_key_exists('current_school', $input)) $updateData['current_school'] = $input['current_school'];
+        if (array_key_exists('strand', $input)) $updateData['strand'] = $input['strand'];
+        if (array_key_exists('course', $input)) $updateData['course'] = $input['course'];
+        if (array_key_exists('gwa', $input)) $updateData['gwa'] = floatval($input['gwa']);
+        if (array_key_exists('phone_number', $input)) $updateData['phone_number'] = $input['phone_number'];
+        if (array_key_exists('gender', $input)) $updateData['gender'] = $input['gender'];
+        if (array_key_exists('address', $input)) $updateData['address'] = $input['address'];
+        if (array_key_exists('country', $input)) $updateData['country'] = $input['country'];
+        if (array_key_exists('status', $input)) $updateData['status'] = $input['status'];
 
         if (isset($input['new_password']) && !empty($input['new_password'])) {
             if (strlen($input['new_password']) < 6) {
