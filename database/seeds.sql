@@ -1922,7 +1922,7 @@ VALUES
     'Mercado',
     'Dela Cruz',
     'student@test.com',
-    'student123',
+    '$2y$10$zaLtGhmq3Xoc48RFx6NDfuYdJokMjhUtOg1K7JbYGL6BvEgOXaLZq',
     'BS Computer Science',
     1.50,
     '09123456789',
@@ -1942,11 +1942,11 @@ INSERT IGNORE INTO admins
 VALUES
 (
     'admin',
-    'admin123'
+    '$2y$10$NmZLEHFoM23/BlGAmkhIQenWu/i5tpI/vCr8kxqQtGFudZedEgkz2'
 ),
 (
     'test@admin.com',
-    'admin123'
+    '$2y$10$52Nq4h/tsfiIlg64jZgu8umCJkZhHzczr7IkVnl5ngIqtS310MG.q'
 );
 
 
