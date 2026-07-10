@@ -58,6 +58,7 @@ class RecommendationService {
                 $score += 3;
             } else {
                 $reasons[] = 'No GWA requirement (eligible)';
+                $score += 3;
             }
 
             // University score
@@ -108,8 +109,8 @@ class RecommendationService {
             return $b['score'] - $a['score'];
         });
 
-        // Limit to top 5 matches
-        $eligible = array_slice($eligible, 0, 5);
+        // Limit to top 100 matches
+        $eligible = array_slice($eligible, 0, 100);
 
         return [
             'success' => true,

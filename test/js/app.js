@@ -1887,14 +1887,6 @@ function initPasswordToggles() {
 // Call on load
 initPasswordToggles();
 
-// Automatically load recommendations when the scholarship type changes
-const eligType = document.getElementById('elig-type');
-if (eligType) {
-  eligType.addEventListener('change', () => {
-    loadRecommendations();
-  });
-}
-
 
 
 
