@@ -161,7 +161,8 @@ class RecommendationService {
             'feu' => ['far eastern', 'far eastern university'],
             'admu' => ['ateneo', 'ateneo de manila university'],
             'nu' => ['national university'],
-            'ue' => ['university of the east']
+            'ue' => ['university of the east'],
+            'adamson' => ['adamson university', 'adu']
         ];
 
         foreach ($abbrs as $key => $names) {
