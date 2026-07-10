@@ -52,7 +52,7 @@ function showPage(pageId, updateHash = true) {
     renderStudentUniDetail(uniKey);
   }
 
-  // Manage Dark Mode on Landing & University Pages vs Student App Pages
+  // Manage Dark Mode on Landing & University Pages vs App Pages (Student & Admin)
   const isUniversityPage = pageId.endsWith('-scholarships');
   if (pageId === 'landing' || isUniversityPage) {
     document.body.classList.remove('dark-mode');
@@ -66,6 +66,9 @@ function showPage(pageId, updateHash = true) {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       document.body.classList.toggle('dark-mode', prefersDark);
     }
+  } else if (currentAdminId && pageId.includes('admin')) {
+    const adminTheme = localStorage.getItem('admin_theme') || 'light';
+    applyAdminTheme(adminTheme);
   } else {
     document.body.classList.remove('dark-mode');
   }
@@ -118,57 +121,69 @@ function showPage(pageId, updateHash = true) {
     lastUniversitySource = 'landing';
   }
 
-  // Toggle student-sidebar visibility
-  const sidebar = document.getElementById('student-sidebar');
-  const showSidebar = currentStudentId !== null && 
-                      pageId !== 'landing' && 
-                      pageId !== 'login' && 
-                      pageId !== 'register' && 
-                      !pageId.includes('admin') && 
-                      (!isUniversityPage || lastUniversitySource === 'student-universities');
+  // Toggle student and admin sidebars visibility
+  const studentSidebar = document.getElementById('student-sidebar');
+  const adminSidebar = document.getElementById('admin-sidebar');
   
-  if (sidebar) {
-    if (showSidebar) {
-      sidebar.style.display = 'flex';
-      if (appLayout) appLayout.classList.add('has-sidebar');
-      
-      // Update sidebar profile fields
-      const sidebarName = document.getElementById('sidebar-name-display');
-      if (sidebarName) sidebarName.textContent = currentStudentName || 'Student';
-      
-      const sidebarPic = document.getElementById('sidebar-pic-display');
-      const savedPic = localStorage.getItem('profile_pic_student_' + currentStudentId);
-      const defaultPic = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2EwYWVjMCI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==';
-      if (sidebarPic) {
-        sidebarPic.src = savedPic || defaultPic;
-      }
-      const dashPic = document.getElementById('dashboard-pic-display');
-      if (dashPic) {
-        dashPic.src = savedPic || defaultPic;
-      }
-      const editPic = document.getElementById('profile-pic-display');
-      if (editPic) {
-        editPic.src = savedPic || defaultPic;
-      }
-      
-      // Highlight active link in sidebar
-      document.querySelectorAll('.student-sidebar .sidebar-link, .student-sidebar .sidebar-link-bottom').forEach(link => {
-        link.classList.remove('active');
-      });
-      
-      if (pageId === 'dashboard') {
-        const activeLink = document.getElementById('nav-find-scholarships');
-        if (activeLink) activeLink.classList.add('active');
-      } else if (pageId === 'settings') {
-        const activeLink = document.getElementById('nav-settings-bottom');
-        if (activeLink) activeLink.classList.add('active');
-      } else if (pageId === 'student-universities' || pageId === 'student-uni-detail') {
-        const activeLink = document.getElementById('nav-student-universities');
-        if (activeLink) activeLink.classList.add('active');
-      }
+  const showStudentSidebar = currentStudentId !== null && 
+                             pageId !== 'landing' && 
+                             pageId !== 'login' && 
+                             pageId !== 'register' && 
+                             !pageId.includes('admin') && 
+                             (!isUniversityPage || lastUniversitySource === 'student-universities');
+                             
+  const showAdminSidebar = currentAdminId !== null && 
+                           pageId.includes('admin');
+  
+  if (studentSidebar) {
+    studentSidebar.style.display = showStudentSidebar ? 'flex' : 'none';
+  }
+  if (adminSidebar) {
+    adminSidebar.style.display = showAdminSidebar ? 'flex' : 'none';
+  }
+
+  if (appLayout) {
+    if (showStudentSidebar || showAdminSidebar) {
+      appLayout.classList.add('has-sidebar');
     } else {
-      sidebar.style.display = 'none';
-      if (appLayout) appLayout.classList.remove('has-sidebar');
+      appLayout.classList.remove('has-sidebar');
+    }
+  }
+  
+  if (showStudentSidebar && studentSidebar) {
+    // Update sidebar profile fields
+    const sidebarName = document.getElementById('sidebar-name-display');
+    if (sidebarName) sidebarName.textContent = currentStudentName || 'Student';
+    
+    const sidebarPic = document.getElementById('sidebar-pic-display');
+    const savedPic = localStorage.getItem('profile_pic_student_' + currentStudentId);
+    const defaultPic = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2EwYWVjMCI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==';
+    if (sidebarPic) {
+      sidebarPic.src = savedPic || defaultPic;
+    }
+    const dashPic = document.getElementById('dashboard-pic-display');
+    if (dashPic) {
+      dashPic.src = savedPic || defaultPic;
+    }
+    const editPic = document.getElementById('profile-pic-display');
+    if (editPic) {
+      editPic.src = savedPic || defaultPic;
+    }
+    
+    // Highlight active link in sidebar
+    document.querySelectorAll('.student-sidebar .sidebar-link, .student-sidebar .sidebar-link-bottom').forEach(link => {
+      link.classList.remove('active');
+    });
+    
+    if (pageId === 'dashboard') {
+      const activeLink = document.getElementById('nav-find-scholarships');
+      if (activeLink) activeLink.classList.add('active');
+    } else if (pageId === 'settings') {
+      const activeLink = document.getElementById('nav-settings-bottom');
+      if (activeLink) activeLink.classList.add('active');
+    } else if (pageId === 'student-universities' || pageId === 'student-uni-detail') {
+      const activeLink = document.getElementById('nav-student-universities');
+      if (activeLink) activeLink.classList.add('active');
     }
   }
 
@@ -575,13 +590,18 @@ async function loadRecommendations() {
 
 // Tab Switching for Admin Portal
 function switchAdminTab(tabId) {
+  // If we are currently viewing as student, return to admin dashboard first
+  if (isViewingAsStudent) {
+    isViewingAsStudent = false;
+    sessionStorage.setItem('isViewingAsStudent', 'false');
+    showPage('admin-dashboard', false);
+  }
+
   // Hide all tab contents
   document.querySelectorAll('.admin-tab-content').forEach(el => el.style.display = 'none');
   // Remove active styling from nav buttons
   document.querySelectorAll('.admin-tab-btn').forEach(btn => {
     btn.classList.remove('active');
-    btn.style.background = 'transparent';
-    btn.style.color = '#a0aec0';
   });
 
   // Show active tab
@@ -592,8 +612,6 @@ function switchAdminTab(tabId) {
   const activeBtn = document.getElementById('btn-admin-tab-' + tabId);
   if (activeBtn) {
     activeBtn.classList.add('active');
-    activeBtn.style.background = '#7a151a';
-    activeBtn.style.color = '#fff';
   }
 
   // Load appropriate data
@@ -626,17 +644,17 @@ async function loadAdminStats() {
     const adminsCount = (adminsResult.data && adminsResult.data.data) ? adminsResult.data.data.length : 0;
 
     out.innerHTML = `
-      <div style="background: #f7fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 24px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.01);">
-        <h4 style="margin: 0 0 8px 0; color: #718096; font-size: 14px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">Total Scholarships</h4>
-        <span style="font-size: 36px; font-weight: 700; color: #7a151a;">${scholarshipsCount}</span>
+      <div class="admin-stats-card">
+        <h4>Total Scholarships</h4>
+        <span>${scholarshipsCount}</span>
       </div>
-      <div style="background: #f7fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 24px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.01);">
-        <h4 style="margin: 0 0 8px 0; color: #718096; font-size: 14px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">Registered Students</h4>
-        <span style="font-size: 36px; font-weight: 700; color: #7a151a;">${studentsCount}</span>
+      <div class="admin-stats-card">
+        <h4>Registered Students</h4>
+        <span>${studentsCount}</span>
       </div>
-      <div style="background: #f7fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 24px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.01);">
-        <h4 style="margin: 0 0 8px 0; color: #718096; font-size: 14px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">Administrators</h4>
-        <span style="font-size: 36px; font-weight: 700; color: #7a151a;">${adminsCount}</span>
+      <div class="admin-stats-card">
+        <h4>Administrators</h4>
+        <span>${adminsCount}</span>
       </div>
     `;
   } catch (err) {
@@ -825,9 +843,8 @@ async function loadContentStructure() {
   const uniList = document.getElementById('admin-universities-list');
   if (uniList) {
     uniList.innerHTML = result.data.universities.map(u => `
-      <div style="padding: 10px; border-bottom: 1px solid #edf2f7; font-size:13.5px; color:#2d3748;">
-        <strong>${u.name}</strong><br>
-        <span style="color:#718096; font-size:11.5px;">${u.location || 'No location'} | ${u.website || 'No website'}</span>
+      <div class="admin-list-item">
+        <strong>${u.university_name}</strong>
       </div>
     `).join('') || '<p style="padding:10px; color:#a0aec0;">No universities found.</p>';
   }
@@ -836,9 +853,9 @@ async function loadContentStructure() {
   const colList = document.getElementById('admin-colleges-list');
   if (colList) {
     colList.innerHTML = result.data.colleges.map(c => `
-      <div style="padding: 10px; border-bottom: 1px solid #edf2f7; font-size:13.5px; color:#2d3748;">
-        <strong>${c.name}</strong><br>
-        <span style="color:#718096; font-size:11.5px;">Uni: ${c.university_name}</span>
+      <div class="admin-list-item">
+        <strong>${c.college_name}</strong><br>
+        <span>Uni: ${c.university_name}</span>
       </div>
     `).join('') || '<p style="padding:10px; color:#a0aec0;">No colleges found.</p>';
   }
@@ -847,9 +864,9 @@ async function loadContentStructure() {
   const courseList = document.getElementById('admin-courses-list');
   if (courseList) {
     courseList.innerHTML = result.data.courses.map(co => `
-      <div style="padding: 10px; border-bottom: 1px solid #edf2f7; font-size:13.5px; color:#2d3748;">
-        <strong>${co.name}</strong><br>
-        <span style="color:#718096; font-size:11.5px;">Col: ${co.college_name}</span>
+      <div class="admin-list-item">
+        <strong>${co.course_name}</strong><br>
+        <span>Col: ${co.college_name}</span>
       </div>
     `).join('') || '<p style="padding:10px; color:#a0aec0;">No courses found.</p>';
   }
@@ -862,22 +879,26 @@ function loadSecurityLogs() {
 
   el.innerHTML = securityLogs.map(l => {
     let icon = '🔒';
-    let color = '#2d3748';
+    let statusClass = 'log-status-default';
+    let borderClass = 'log-border-default';
+    
     if (l.action.includes('success')) {
       icon = '✅';
-      color = '#2f855a';
+      statusClass = 'log-status-success';
+      borderClass = 'log-border-success';
     } else if (l.action.includes('Failed') || l.action.includes('banned')) {
       icon = '🚨';
-      color = '#c53030';
+      statusClass = 'log-status-danger';
+      borderClass = 'log-border-danger';
     }
 
     return `
-      <div style="background:#f7fafc; border-left:4px solid ${color === '#2d3748' ? '#4a5568' : color}; padding: 12px 16px; border-radius: 4px; font-size: 13px;">
+      <div class="security-log-card ${borderClass}">
         <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-          <span style="font-weight:700; color:${color};">${icon} ${l.action}</span>
+          <span class="${statusClass}" style="font-weight:700;">${icon} ${l.action}</span>
           <span style="color:#a0aec0; font-size:11px;">${l.time}</span>
         </div>
-        <div style="color:#4a5568;">${l.details}</div>
+        <div class="log-details">${l.details}</div>
       </div>
     `;
   }).join('');
@@ -901,14 +922,14 @@ async function loadAdminsList() {
   }
 
   const list = result.data.data || [];
-  let html = '<table style="width:100%; border-collapse:collapse; text-align:left;">';
-  html += '<tr style="border-bottom:2px solid #edf2f7; color:#4a5568; font-size:13px;"><th style="padding:10px;">Admin ID</th><th style="padding:10px;">Username/Email</th><th style="padding:10px;">Created Date</th></tr>';
+  let html = '<table>';
+  html += '<tr><th>Admin ID</th><th>Username/Email</th><th>Created Date</th></tr>';
   list.forEach(a => {
     html += `
-      <tr style="border-bottom:1px solid #edf2f7; font-size:13.5px; color:#2d3748;">
-        <td style="padding:10px;">${a.id}</td>
-        <td style="padding:10px;"><strong>${a.username}</strong></td>
-        <td style="padding:10px;">${a.created_at || 'N/A'}</td>
+      <tr>
+        <td>${a.id}</td>
+        <td><strong>${a.username}</strong></td>
+        <td>${a.created_at || 'N/A'}</td>
       </tr>
     `;
   });
@@ -1223,6 +1244,30 @@ function applyTheme(theme) {
   }
 }
 
+function applyAdminTheme(theme) {
+  if (theme === 'dark') {
+    document.body.classList.add('dark-mode');
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+  
+  const btn = document.getElementById('btn-admin-dark-mode');
+  if (btn) {
+    if (theme === 'dark') {
+      btn.innerHTML = '<span class="sidebar-icon">☀️</span> Dark Mode: On';
+    } else {
+      btn.innerHTML = '<span class="sidebar-icon">🌙</span> Dark Mode: Off';
+    }
+  }
+}
+
+function toggleAdminDarkMode() {
+  const currentTheme = localStorage.getItem('admin_theme') || 'light';
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  localStorage.setItem('admin_theme', newTheme);
+  applyAdminTheme(newTheme);
+}
+
 // Save preferences submit handler
 document.getElementById('settings-preferences-form').addEventListener('submit', (e) => {
   e.preventDefault();
@@ -1285,14 +1330,19 @@ document.getElementById('settings-password-form').addEventListener('submit', asy
   }
 });
 
-// Apply current student theme on startup
+// Apply current student or admin theme on startup
 (function initTheme() {
   const activeStudentId = sessionStorage.getItem('currentStudentId');
+  const activeAdminId = sessionStorage.getItem('currentAdminId');
+  
   if (activeStudentId) {
     const savedSettings = JSON.parse(localStorage.getItem('student_settings_' + activeStudentId)) || {};
     if (savedSettings.theme) {
       applyTheme(savedSettings.theme);
     }
+  } else if (activeAdminId) {
+    const adminTheme = localStorage.getItem('admin_theme') || 'light';
+    applyAdminTheme(adminTheme);
   }
 })();
 

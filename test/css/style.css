@@ -2442,14 +2442,109 @@ body.dark-mode .sidebar-divider {
 /* ==========================================================================
    Admin Portal Tabbed Layout Styles
    ========================================================================== */
+.admin-sidebar-menu {
+  width: 280px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 32px 24px;
+  flex-shrink: 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  border: 1.5px solid #edf2f7;
+  color: #2d3748;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.admin-avatar-container {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 16px;
+  background: #fff5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+  border: 3px solid #7a151a;
+  margin: 0 auto 16px auto;
+}
+
+#admin-display-name {
+  margin: 0 0 6px 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2d3748;
+  text-align: center;
+}
+
+.admin-sidebar-subtitle {
+  margin: 0;
+  color: #718096;
+  font-size: 12px;
+  text-align: center;
+}
+
+.admin-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  color: #4a5568 !important;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  font-family: 'Montserrat', sans-serif;
+  background: transparent !important;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+}
+
 .admin-tab-btn:hover {
-  background: rgba(255, 255, 255, 0.05) !important;
-  color: #fff !important;
+  background: #f7fafc !important;
+  color: #7a151a !important;
 }
+
 .admin-tab-btn.active {
-  background: #7a151a !important;
-  color: #fff !important;
+  background: #fff5f5 !important;
+  color: #7a151a !important;
+  font-weight: 700;
 }
+
+.admin-logout-btn {
+  display: block;
+  width: 100%;
+  border: 1.5px solid #feb2b2;
+  background: transparent;
+  color: #e53e3e;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.admin-logout-btn:hover {
+  background-color: #fff5f5;
+  border-color: #e53e3e;
+}
+
 .admin-item-list {
   background: #f7fafc;
   border: 1px solid #edf2f7;
@@ -2479,4 +2574,160 @@ body.dark-mode .sidebar-divider {
 .access-logs-list::-webkit-scrollbar-thumb {
   background: #cbd5e0;
   border-radius: 8px;
+}
+
+/* ==========================================================================
+   Admin Dark Mode Override Styling
+   ========================================================================== */
+body.dark-mode .admin-tab-btn {
+  color: #edf2f7 !important;
+}
+body.dark-mode .admin-tab-btn:hover {
+  background: #363c4b !important;
+  color: #ff8c94 !important;
+}
+body.dark-mode .admin-tab-btn.active {
+  background: #4c2326 !important;
+  color: #ff8c94 !important;
+}
+
+body.dark-mode .admin-logout-btn {
+  border-color: #f56565 !important;
+  color: #fc8181 !important;
+}
+body.dark-mode .admin-logout-btn:hover {
+  background-color: #4c2326 !important;
+  border-color: #f56565 !important;
+}
+
+body.dark-mode .admin-item-list {
+  background: #333947 !important;
+  border-color: #4a5568 !important;
+}
+
+body.dark-mode table,
+body.dark-mode th,
+body.dark-mode td {
+  border-color: #4a5568 !important;
+}
+body.dark-mode th {
+  background: #333947 !important;
+  color: #edf2f7 !important;
+}
+body.dark-mode td {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .modal-content,
+body.dark-mode .privacy-modal-content {
+  background: #2a2f3b !important;
+  color: #e0e0e0 !important;
+  border-color: #4a5568 !important;
+}
+
+/* Stats Cards */
+.admin-stats-card {
+  background: #f7fafc;
+  border: 1px solid #edf2f7;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+}
+.admin-stats-card h4 {
+  margin: 0 0 8px 0;
+  color: #718096;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+}
+.admin-stats-card span {
+  font-size: 36px;
+  font-weight: 700;
+  color: #7a151a;
+}
+body.dark-mode .admin-stats-card {
+  background: #333947 !important;
+  border-color: #4a5568 !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+body.dark-mode .admin-stats-card h4 {
+  color: #a0aec0 !important;
+}
+body.dark-mode .admin-stats-card span {
+  color: #ff8c94 !important;
+}
+
+/* Content List Items */
+.admin-list-item {
+  padding: 10px;
+  border-bottom: 1px solid #edf2f7;
+  font-size: 13.5px;
+  color: #2d3748;
+}
+.admin-list-item span {
+  color: #718096;
+  font-size: 11.5px;
+}
+body.dark-mode .admin-list-item {
+  border-color: #4a5568 !important;
+  color: #e0e0e0 !important;
+}
+body.dark-mode .admin-list-item span {
+  color: #a0aec0 !important;
+}
+
+/* Security Logs List Cards */
+.security-log-card {
+  background: #f7fafc;
+  padding: 12px 16px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+.security-log-card .log-details {
+  color: #4a5568;
+}
+body.dark-mode .security-log-card {
+  background: #333947 !important;
+}
+body.dark-mode .security-log-card .log-details {
+  color: #edf2f7 !important;
+}
+
+.log-status-default {
+  color: #2d3748;
+}
+body.dark-mode .log-status-default {
+  color: #edf2f7 !important;
+}
+.log-status-success {
+  color: #2f855a;
+}
+body.dark-mode .log-status-success {
+  color: #48bb78 !important;
+}
+.log-status-danger {
+  color: #c53030;
+}
+body.dark-mode .log-status-danger {
+  color: #f56565 !important;
+}
+
+.log-border-default {
+  border-left: 4px solid #4a5568;
+}
+body.dark-mode .log-border-default {
+  border-left-color: #a0aec0 !important;
+}
+.log-border-success {
+  border-left: 4px solid #2f855a;
+}
+body.dark-mode .log-border-success {
+  border-left-color: #48bb78 !important;
+}
+.log-border-danger {
+  border-left: 4px solid #c53030;
+}
+body.dark-mode .log-border-danger {
+  border-left-color: #f56565 !important;
 }
