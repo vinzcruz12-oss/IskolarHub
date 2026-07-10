@@ -33,16 +33,13 @@
 
       <!-- Middle Nav links -->
       <nav class="sidebar-nav">
-        <a href="#landing" onclick="showPage('landing'); return false;" class="sidebar-link">
-          <span class="sidebar-icon">🏠</span> Home
-        </a>
         <a href="#dashboard" onclick="showPage('dashboard'); return false;" class="sidebar-link"
           id="nav-find-scholarships">
-          <span class="sidebar-icon">🎓</span> Find Scholarships
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg></span> Find Scholarships
         </a>
         <a href="#student-universities" onclick="showPage('student-universities'); return false;" class="sidebar-link"
           id="nav-student-universities">
-          <span class="sidebar-icon">🏫</span> Universities
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10"></path><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M6 17h12"></path></svg></span> Universities
         </a>
       </nav>
 
@@ -50,7 +47,7 @@
       <div class="sidebar-footer">
         <a href="#settings" onclick="showPage('settings'); return false;" class="sidebar-link-bottom"
           id="nav-settings-bottom">
-          <span class="sidebar-icon">⚙️</span> Settings
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span> Settings
         </a>
         <button onclick="logout()" class="student-logout-btn">
           Logout
@@ -62,7 +59,8 @@
       <!-- Profile section -->
       <div class="sidebar-profile">
         <div class="sidebar-avatar-container">
-          <span style="font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 800; color: #7a151a;">A</span>
+          <span
+            style="font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 800; color: #7a151a;">A</span>
         </div>
         <h4 id="admin-display-name">Admin Portal</h4>
         <p class="admin-sidebar-subtitle">Overview & Control</p>
@@ -73,32 +71,65 @@
       <!-- Middle Nav links -->
       <nav class="sidebar-nav">
         <button onclick="switchAdminTab('overview')" class="admin-tab-btn active" id="btn-admin-tab-overview">
-          <span class="sidebar-icon">📊</span> Overview
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg></span> Overview
         </button>
         <button onclick="switchAdminTab('scholarships')" class="admin-tab-btn" id="btn-admin-tab-scholarships">
-          <span class="sidebar-icon">🎓</span> Scholarships
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+              <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
+            </svg></span> Scholarships
         </button>
         <button onclick="switchAdminTab('students')" class="admin-tab-btn" id="btn-admin-tab-students">
-          <span class="sidebar-icon">👥</span> Students
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg></span> Students
         </button>
         <button onclick="switchAdminTab('content')" class="admin-tab-btn" id="btn-admin-tab-content">
-          <span class="sidebar-icon">🗂️</span> Content Structure
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg></span> Content Structure
         </button>
         <button onclick="switchAdminTab('security')" class="admin-tab-btn" id="btn-admin-tab-security">
-          <span class="sidebar-icon">🔒</span> Security Logs
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg></span> Security Logs
         </button>
         <button onclick="switchAdminTab('admins')" class="admin-tab-btn" id="btn-admin-tab-admins">
-          <span class="sidebar-icon">🛡️</span> Admins List
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg></span> Admins List
         </button>
       </nav>
 
       <!-- Bottom links -->
       <div class="sidebar-footer">
-        <button onclick="toggleAdminDarkMode()" class="admin-tab-btn" id="btn-admin-dark-mode" style="margin-bottom: 8px;">
-          <span class="sidebar-icon">🌙</span> Dark Mode: Off
+        <button onclick="toggleAdminDarkMode()" class="admin-tab-btn" id="btn-admin-dark-mode"
+          style="margin-bottom: 8px;">
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg></span> Dark Mode: Off
         </button>
         <button onclick="viewAsStudent()" class="admin-tab-btn" id="btn-admin-view-student" style="margin-bottom: 8px;">
-          <span class="sidebar-icon">👁️</span> View as Student
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg></span> View as Student
         </button>
         <button onclick="adminLogout()" class="admin-logout-btn">
           Logout
@@ -127,7 +158,6 @@
                 <a href="#landing" onclick="enableSmoothScroll()">HOME</a>
                 <a href="#about" onclick="enableSmoothScroll()">ABOUT</a>
                 <a href="#universities" onclick="enableSmoothScroll()">UNIVERSITIES</a>
-                <a href="#testimonials" onclick="enableSmoothScroll()">TESTIMONIALS</a>
                 <a href="#faqs" onclick="enableSmoothScroll()">FAQS</a>
                 <a href="#contact" onclick="enableSmoothScroll()">CONTACT</a>
               </nav>
@@ -357,88 +387,7 @@
             </div>
           </div>
 
-          <!-- Testimonials Section -->
-          <div id="testimonials" class="landing-section section-testimonials bg-light">
-            <div class="section-container">
-              <span class="sub-label-center">Testimonials</span>
-              <h2 class="section-title-spaced centered">TRUSTED BY STUDENTS ACROSS THE PHILIPPINES</h2>
-              <div class="testimonials-grid">
-                <div class="testimonial-card">
-                  <div class="test-header">
-                    <h3 class="test-name">Martin Dale</h3>
-                    <span class="test-program">BS Psychology</span>
-                  </div>
-                  <p class="test-quote">"IskolarHub made it easy to discover scholarships that matched my
-                    qualifications."
-                  </p>
-                  <div class="test-stars">★★★★★</div>
-                </div>
-                <div class="testimonial-card">
-                  <div class="test-header">
-                    <h3 class="test-name">Elias Vance</h3>
-                    <span class="test-program">BS Computer Science</span>
-                  </div>
-                  <p class="test-quote">"I uploaded my grades and instantly matched with two local scholarships. I
-                    didn't
-                    expect the recommendation system to be this accurate!"</p>
-                  <div class="test-stars">★★★★★</div>
-                </div>
-                <div class="testimonial-card">
-                  <div class="test-header">
-                    <h3 class="test-name">Anya Petrov</h3>
-                    <span class="test-program">BS Civil Engineering</span>
-                  </div>
-                  <p class="test-quote">"Before IskolarHub, I didn't know there were scholarships available for my
-                    program."
-                  </p>
-                  <div class="test-stars">★★★★★</div>
-                </div>
-                <div class="testimonial-card">
-                  <div class="test-header">
-                    <h3 class="test-name">Julian Reyes</h3>
-                    <span class="test-program">BS Information Technology</span>
-                  </div>
-                  <p class="test-quote">"The interface is very clean and easy to use. I found scholarship opportunities
-                    within minutes."</p>
-                  <div class="test-stars">★★★★★</div>
-                </div>
-                <div class="testimonial-card">
-                  <div class="test-header">
-                    <h3 class="test-name">Maria Theresa</h3>
-                    <span class="test-program">BS Computer Science</span>
-                  </div>
-                  <p class="test-quote">"I found scholarships that matched my course quickly. Everything was organized
-                    in
-                    one place."</p>
-                  <div class="test-stars">★★★★★</div>
-                </div>
-                <div class="testimonial-card">
-                  <div class="test-header">
-                    <h3 class="test-name">Serena Lin</h3>
-                    <span class="test-program">BS Accountancy</span>
-                  </div>
-                  <p class="test-quote">"The recommendation feature helped me save so much time searching."</p>
-                  <div class="test-stars">★★★★★</div>
-                </div>
-                <div class="testimonial-card">
-                  <div class="test-header">
-                    <h3 class="test-name">Marcus Thorne</h3>
-                    <span class="test-program">BS Biology</span>
-                  </div>
-                  <p class="test-quote">"Filtering scholarships by course made the application process much easier."</p>
-                  <div class="test-stars">★★★★★</div>
-                </div>
-                <div class="testimonial-card">
-                  <div class="test-header">
-                    <h3 class="test-name">Clara Bennet</h3>
-                    <span class="test-program">BS Nursing</span>
-                  </div>
-                  <p class="test-quote">"Highly recommended for students looking for scholarship opportunities."</p>
-                  <div class="test-stars">★★★★★</div>
-                </div>
-              </div>
-            </div>
-          </div>
+
 
           <!-- FAQs Section -->
           <div id="faqs" class="landing-section section-faqs">
@@ -552,20 +501,35 @@
                 <h4>Quick Links</h4>
                 <a href="#about" onclick="enableSmoothScroll()">About</a>
                 <a href="#universities" onclick="enableSmoothScroll()">Universities</a>
-                <a href="#testimonials" onclick="enableSmoothScroll()">Testimonials</a>
                 <a href="#faqs" onclick="enableSmoothScroll()">FAQs</a>
                 <a href="#contact" onclick="enableSmoothScroll()">Contact</a>
               </div>
               <div class="footer-contact">
                 <h4>Contact</h4>
                 <p class="footer-contact-item">
-                  <span class="contact-icon-inline">✉</span> support@iskolarhub.com
+                  <span class="contact-icon-inline"><svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                      <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg></span> support@iskolarhub.com
                 </p>
                 <p class="footer-contact-item">
-                  <span class="contact-icon-inline">📍</span> Philippines
+                  <span class="contact-icon-inline"><svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg></span> Philippines
                 </p>
                 <p class="footer-contact-item">
-                  <span class="contact-icon-inline">📞</span> +63 912 345 6789
+                  <span class="contact-icon-inline"><svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      style="display: inline-block; vertical-align: middle; margin-right: 6px;">
+                      <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                      </path>
+                    </svg></span> +63 912 345 6789
                 </p>
               </div>
             </div>
@@ -775,32 +739,31 @@
                   <label
                     style="color: #4a5568; font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Intended/Current
                     College Course</label>
-                  <select id="elig-course" required
-                    style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; background: #fff; font-size: 15px;">
-                    <option value="">Select Course</option>
-                    <option value="BS Information Technology">BS Information Technology</option>
-                    <option value="BS Computer Science">BS Computer Science</option>
-                    <option value="BS Civil Engineering">BS Civil Engineering</option>
-                    <option value="BS Nursing">BS Nursing</option>
-                    <option value="BS Accountancy">BS Accountancy</option>
-                    <option value="BS Psychology">BS Psychology</option>
-                    <option value="BS Education">BS Education</option>
-                  </select>
+                  <div class="custom-select-wrapper" id="course-select-wrapper">
+                    <div class="custom-select-trigger" id="course-select-trigger">
+                      <span id="course-select-label">Select Course</span>
+                      <svg class="chevron-icon" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </div>
+                    <div class="custom-select-dropdown" id="course-select-dropdown" style="display: none;">
+                      <div class="custom-select-search-container">
+                        <input type="text" id="course-select-search" placeholder="Search course..." autocomplete="off">
+                      </div>
+                      <ul class="custom-select-options" id="course-select-options">
+                        <!-- Populated via Javascript -->
+                      </ul>
+                    </div>
+                    <input type="hidden" id="elig-course" required>
+                  </div>
                 </div>
                 <!-- GWA -->
                 <div>
                   <label
                     style="color: #4a5568; font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">GWA
-                    (Percentage, e.g. 85.00)</label>
+                    (Percentage, e.g. 90.00)</label>
                   <input type="number" id="elig-gwa" step="0.01" placeholder="e.g., 90.00" required
-                    style="padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; width: 100%; box-sizing: border-box;">
-                </div>
-                <!-- Password Verification -->
-                <div>
-                  <label
-                    style="color: #4a5568; font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Account
-                    Password (Verification)</label>
-                  <input type="password" id="elig-password" placeholder="Confirm password to update" required
                     style="padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; width: 100%; box-sizing: border-box;">
                 </div>
               </div>
@@ -1143,7 +1106,10 @@
                 </div>
                 <div class="student-uni-text">
                   <h4>University of the Philippines Diliman</h4>
-                  <p>The University of the Philippines Diliman is the flagship campus of the UP System. Through its Office of Scholarships and Grants, the university offers merit-based, financial assistance, government-funded, and donor-funded scholarships to help students pursue quality education regardless of their financial background.</p>
+                  <p>The University of the Philippines Diliman is the flagship campus of the UP System. Through its
+                    Office of Scholarships and Grants, the university offers merit-based, financial assistance,
+                    government-funded, and donor-funded scholarships to help students pursue quality education
+                    regardless of their financial background.</p>
                 </div>
               </div>
               <button class="auth-btn student-uni-btn" onclick="showStudentUniDetail('up')">View Details</button>
@@ -1157,7 +1123,9 @@
                 </div>
                 <div class="student-uni-text">
                   <h4>Ateneo de Manila University</h4>
-                  <p>Ateneo provides scholarship and financial aid programs for academically outstanding students, leaders, athletes, artists, and financially deserving applicants. Programs are available for incoming freshmen and continuing students.</p>
+                  <p>Ateneo provides scholarship and financial aid programs for academically outstanding students,
+                    leaders, athletes, artists, and financially deserving applicants. Programs are available for
+                    incoming freshmen and continuing students.</p>
                 </div>
               </div>
               <button class="auth-btn student-uni-btn" onclick="showStudentUniDetail('ateneo')">View Details</button>
@@ -1171,7 +1139,8 @@
                 </div>
                 <div class="student-uni-text">
                   <h4>De La Salle University</h4>
-                  <p>DLSU offers scholarships and financial assistance to recognize academic excellence, leadership, athletic talent, and financial need through the Office of Admissions and Scholarships.</p>
+                  <p>DLSU offers scholarships and financial assistance to recognize academic excellence, leadership,
+                    athletic talent, and financial need through the Office of Admissions and Scholarships.</p>
                 </div>
               </div>
               <button class="auth-btn student-uni-btn" onclick="showStudentUniDetail('dlsu')">View Details</button>
@@ -1185,7 +1154,9 @@
                 </div>
                 <div class="student-uni-text">
                   <h4>University of Santo Tomas</h4>
-                  <p>UST provides scholarships to students who excel academically, demonstrate leadership or talent, or require financial assistance. Various grants are also funded by alumni and partner organizations.</p>
+                  <p>UST provides scholarships to students who excel academically, demonstrate leadership or talent, or
+                    require financial assistance. Various grants are also funded by alumni and partner organizations.
+                  </p>
                 </div>
               </div>
               <button class="auth-btn student-uni-btn" onclick="showStudentUniDetail('ust')">View Details</button>
@@ -1199,7 +1170,8 @@
                 </div>
                 <div class="student-uni-text">
                   <h4>Far Eastern University</h4>
-                  <p>FEU offers institutional scholarships and grants for incoming freshmen, continuing students, athletes, student leaders, artists, and financially deserving students.</p>
+                  <p>FEU offers institutional scholarships and grants for incoming freshmen, continuing students,
+                    athletes, student leaders, artists, and financially deserving students.</p>
                 </div>
               </div>
               <button class="auth-btn student-uni-btn" onclick="showStudentUniDetail('feu')">View Details</button>
@@ -1213,7 +1185,8 @@
                 </div>
                 <div class="student-uni-text">
                   <h4>National University</h4>
-                  <p>National University offers scholarships that reward academic excellence, athletic achievements, and outstanding performance while also supporting financially deserving students.</p>
+                  <p>National University offers scholarships that reward academic excellence, athletic achievements, and
+                    outstanding performance while also supporting financially deserving students.</p>
                 </div>
               </div>
               <button class="auth-btn student-uni-btn" onclick="showStudentUniDetail('nu')">View Details</button>
@@ -1227,7 +1200,8 @@
                 </div>
                 <div class="student-uni-text">
                   <h4>Adamson University</h4>
-                  <p>Adamson University provides scholarships for freshmen, academic achievers, athletes, student assistants, and financially deserving students.</p>
+                  <p>Adamson University provides scholarships for freshmen, academic achievers, athletes, student
+                    assistants, and financially deserving students.</p>
                 </div>
               </div>
               <button class="auth-btn student-uni-btn" onclick="showStudentUniDetail('adamson')">View Details</button>
@@ -1241,7 +1215,8 @@
                 </div>
                 <div class="student-uni-text">
                   <h4>University of the East</h4>
-                  <p>The University of the East offers scholarships and grants to recognize academic excellence, leadership, athletic performance, and financial need.</p>
+                  <p>The University of the East offers scholarships and grants to recognize academic excellence,
+                    leadership, athletic performance, and financial need.</p>
                 </div>
               </div>
               <button class="auth-btn student-uni-btn" onclick="showStudentUniDetail('ue')">View Details</button>
@@ -1254,12 +1229,15 @@
         <section id="student-uni-detail-page" class="page" style="display:none; max-width: 900px;">
           <div class="dashboard-header"
             style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px;">
-            <h2 id="student-uni-detail-title" style="margin: 0; font-family: 'Montserrat', sans-serif; color: #26374b;">University Scholarships</h2>
-            <button onclick="showPage('student-universities')" class="btn-back-link" style="margin: 0; padding: 8px 16px;">Back to Universities</button>
+            <h2 id="student-uni-detail-title" style="margin: 0; font-family: 'Montserrat', sans-serif; color: #26374b;">
+              University Scholarships</h2>
+            <button onclick="showPage('student-universities')" class="btn-back-link"
+              style="margin: 0; padding: 8px 16px;">Back to Universities</button>
           </div>
 
-          <p id="student-uni-detail-desc" style="color: #718096; font-size: 14.5px; line-height: 1.6; margin-bottom: 32px;"></p>
-          
+          <p id="student-uni-detail-desc"
+            style="color: #718096; font-size: 14.5px; line-height: 1.6; margin-bottom: 32px;"></p>
+
           <!-- Dynamic Accordion Target (No outer card/border) -->
           <div id="student-uni-detail-accordion" class="uni-right-accordion">
             <!-- Populated dynamically in app.js -->
@@ -1286,24 +1264,35 @@
         <section id="admin-dashboard-page" class="page" style="display:none; max-width: 1200px;">
           <!-- Tab: Overview -->
           <div class="admin-tab-content active" id="admin-tab-overview">
-            <div class="dashboard-card" style="background: #fff; border: none; border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 24px;">
-              <div class="admin-tab-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px; width: 100%;">
-                <h2 class="admin-tab-title" style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px;">Dashboard Overview</h2>
+            <div class="dashboard-card"
+              style="background: #fff; border: none; border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 24px;">
+              <div class="admin-tab-header"
+                style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px; width: 100%;">
+                <h2 class="admin-tab-title"
+                  style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px;">Dashboard
+                  Overview</h2>
               </div>
-              <div id="admin-stats-cards" class="admin-stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+              <div id="admin-stats-cards" class="admin-stats-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
                 <!-- Generated dynamically in JS -->
               </div>
             </div>
           </div>
- 
+
           <!-- Tab: Scholarships -->
           <div class="admin-tab-content" id="admin-tab-scholarships" style="display: none;">
-            <div class="dashboard-card" style="background: #fff; border: none; border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 24px;">
-              <div class="admin-tab-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px; width: 100%;">
-                <h2 class="admin-tab-title" style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px;">Manage Scholarships</h2>
+            <div class="dashboard-card"
+              style="background: #fff; border: none; border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 24px;">
+              <div class="admin-tab-header"
+                style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px; width: 100%;">
+                <h2 class="admin-tab-title"
+                  style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px;">Manage
+                  Scholarships</h2>
                 <div style="display: flex; gap: 10px;">
-                  <button onclick="loadScholarships()" class="btn-back-link" style="margin: 0; padding: 8px 16px;">Refresh List</button>
-                  <button onclick="openAddModal()" class="auth-btn" style="margin: 0; padding: 8px 16px;">Add Scholarship</button>
+                  <button onclick="loadScholarships()" class="btn-back-link"
+                    style="margin: 0; padding: 8px 16px;">Refresh List</button>
+                  <button onclick="openAddModal()" class="auth-btn" style="margin: 0; padding: 8px 16px;">Add
+                    Scholarship</button>
                 </div>
               </div>
               <div class="admin-filter-bar">
@@ -1322,13 +1311,18 @@
               <div id="admin-table"></div>
             </div>
           </div>
- 
+
           <!-- Tab: Students -->
           <div class="admin-tab-content" id="admin-tab-students" style="display: none;">
-            <div class="dashboard-card" style="background: #fff; border: none; border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 24px;">
-              <div class="admin-tab-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px; width: 100%;">
-                <h2 class="admin-tab-title" style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px;">Registered Students</h2>
-                <button onclick="loadStudents()" class="btn-back-link" style="margin: 0; padding: 8px 16px;">Refresh Students</button>
+            <div class="dashboard-card"
+              style="background: #fff; border: none; border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 24px;">
+              <div class="admin-tab-header"
+                style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px; width: 100%;">
+                <h2 class="admin-tab-title"
+                  style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px;">Registered
+                  Students</h2>
+                <button onclick="loadStudents()" class="btn-back-link" style="margin: 0; padding: 8px 16px;">Refresh
+                  Students</button>
               </div>
               <div class="admin-filter-bar">
                 <input type="text" id="student-search" placeholder="Search by name or email...">
@@ -1344,33 +1338,46 @@
               <div id="admin-students-table"></div>
             </div>
           </div>
- 
+
           <!-- Tab: Content -->
           <div class="admin-tab-content" id="admin-tab-content" style="display: none;">
-            <div class="dashboard-card" style="background: #fff; border: none; border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 24px;">
-              <div class="admin-tab-header" style="display: flex; flex-direction: column; align-items: flex-start; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px; width: 100%;">
-                <h2 class="admin-tab-title" style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px; margin-bottom: 4px;">Manage Content</h2>
-                <p style="color: #718096; font-size: 14px; margin: 0;">Explore structural mapping for Universities, Colleges, and Courses.</p>
+            <div class="dashboard-card"
+              style="background: #fff; border: none; border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 24px;">
+              <div class="admin-tab-header"
+                style="display: flex; flex-direction: column; align-items: flex-start; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px; width: 100%;">
+                <h2 class="admin-tab-title"
+                  style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px; margin-bottom: 4px;">
+                  Manage Content</h2>
+                <p style="color: #718096; font-size: 14px; margin: 0;">Explore structural mapping for Universities,
+                  Colleges, and Courses.</p>
               </div>
               <div class="admin-filter-bar">
                 <input type="text" id="content-search" placeholder="Search universities, colleges or courses...">
               </div>
-              
-              <div class="admin-content-sections-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;">
+
+              <div class="admin-content-sections-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;">
                 <div>
-                  <h3 style="font-family: 'Montserrat', sans-serif; font-size: 16px; border-bottom: 2px solid #edf2f7; padding-bottom: 8px; color: #7a151a;">Universities</h3>
-                  <div id="admin-universities-list" class="admin-item-list" style="max-height: 350px; overflow-y: auto;">
+                  <h3
+                    style="font-family: 'Montserrat', sans-serif; font-size: 16px; border-bottom: 2px solid #edf2f7; padding-bottom: 8px; color: #7a151a;">
+                    Universities</h3>
+                  <div id="admin-universities-list" class="admin-item-list"
+                    style="max-height: 350px; overflow-y: auto;">
                     <!-- Populated dynamically in app.js -->
                   </div>
                 </div>
                 <div>
-                  <h3 style="font-family: 'Montserrat', sans-serif; font-size: 16px; border-bottom: 2px solid #edf2f7; padding-bottom: 8px; color: #7a151a;">Colleges</h3>
+                  <h3
+                    style="font-family: 'Montserrat', sans-serif; font-size: 16px; border-bottom: 2px solid #edf2f7; padding-bottom: 8px; color: #7a151a;">
+                    Colleges</h3>
                   <div id="admin-colleges-list" class="admin-item-list" style="max-height: 350px; overflow-y: auto;">
                     <!-- Populated dynamically in app.js -->
                   </div>
                 </div>
                 <div>
-                  <h3 style="font-family: 'Montserrat', sans-serif; font-size: 16px; border-bottom: 2px solid #edf2f7; padding-bottom: 8px; color: #7a151a;">Courses</h3>
+                  <h3
+                    style="font-family: 'Montserrat', sans-serif; font-size: 16px; border-bottom: 2px solid #edf2f7; padding-bottom: 8px; color: #7a151a;">
+                    Courses</h3>
                   <div id="admin-courses-list" class="admin-item-list" style="max-height: 350px; overflow-y: auto;">
                     <!-- Populated dynamically in app.js -->
                   </div>
@@ -1378,31 +1385,42 @@
               </div>
             </div>
           </div>
- 
+
           <!-- Tab: Security -->
           <div class="admin-tab-content" id="admin-tab-security" style="display: none;">
-            <div class="dashboard-card" style="background: #fff; border: none; border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 24px;">
-              <div class="admin-tab-header" style="display: flex; flex-direction: column; align-items: flex-start; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px; width: 100%;">
-                <h2 class="admin-tab-title" style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px; margin-bottom: 4px;">Security & Access Logs</h2>
-                <p style="color: #718096; font-size: 14px; margin: 0;">Monitor login activities and access statuses in real-time.</p>
+            <div class="dashboard-card"
+              style="background: #fff; border: none; border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 24px;">
+              <div class="admin-tab-header"
+                style="display: flex; flex-direction: column; align-items: flex-start; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px; width: 100%;">
+                <h2 class="admin-tab-title"
+                  style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px; margin-bottom: 4px;">
+                  Security & Access Logs</h2>
+                <p style="color: #718096; font-size: 14px; margin: 0;">Monitor login activities and access statuses in
+                  real-time.</p>
               </div>
               <div class="security-controls-card">
-                <label class="toggle-switch" style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                <label class="toggle-switch"
+                  style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 600; font-size: 14px;">
                   <input type="checkbox" id="admin-security-lockout" style="width: 16px; height: 16px;" checked>
                   <span>Enforce Account Banning on Security Violations</span>
                 </label>
               </div>
-              <div class="access-logs-list" id="admin-access-logs" style="max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+              <div class="access-logs-list" id="admin-access-logs"
+                style="max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
                 <!-- Generated dynamically in JS -->
               </div>
             </div>
           </div>
- 
+
           <!-- Tab: Admins -->
           <div class="admin-tab-content" id="admin-tab-admins" style="display: none;">
-            <div class="dashboard-card" style="background: #fff; border: none; border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 24px;">
-              <div class="admin-tab-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px; width: 100%;">
-                <h2 class="admin-tab-title" style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px;">Administrator Accounts</h2>
+            <div class="dashboard-card"
+              style="background: #fff; border: none; border-radius: 12px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 24px;">
+              <div class="admin-tab-header"
+                style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px; width: 100%;">
+                <h2 class="admin-tab-title"
+                  style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px;">
+                  Administrator Accounts</h2>
               </div>
               <div id="admin-accounts-list">
                 <!-- Generated dynamically in JS -->
@@ -3137,84 +3155,112 @@
       <h3 style="margin-top: 0; font-family: 'Montserrat', sans-serif; color: #7a151a;">Edit Student Profile</h3>
       <form id="admin-student-form" style="display: flex; flex-direction: column; gap: 12px;">
         <input type="hidden" id="admin-student-id">
-        
+
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div>
-            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">First Name</label>
-            <input type="text" id="admin-student-firstname" required style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">First
+              Name</label>
+            <input type="text" id="admin-student-firstname" required
+              style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
           </div>
           <div>
-            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Last Name</label>
-            <input type="text" id="admin-student-lastname" required style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Last
+              Name</label>
+            <input type="text" id="admin-student-lastname" required
+              style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
           </div>
         </div>
 
         <div>
-          <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Email Address</label>
-          <input type="email" id="admin-student-email" required style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+          <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Email
+            Address</label>
+          <input type="email" id="admin-student-email" required
+            style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div>
-            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Age</label>
-            <input type="number" id="admin-student-age" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+            <label
+              style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Age</label>
+            <input type="number" id="admin-student-age"
+              style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
           </div>
           <div>
-            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Phone Number</label>
-            <input type="text" id="admin-student-phone" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div>
-            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Course</label>
-            <input type="text" id="admin-student-course" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
-          </div>
-          <div>
-            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">GWA</label>
-            <input type="number" step="0.01" id="admin-student-gwa" min="0" max="100" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Phone
+              Number</label>
+            <input type="text" id="admin-student-phone"
+              style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div>
-            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Gender</label>
-            <select id="admin-student-gender" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; background: #fff;">
+            <label
+              style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Course</label>
+            <input type="text" id="admin-student-course"
+              style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+          </div>
+          <div>
+            <label
+              style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">GWA</label>
+            <input type="number" step="0.01" id="admin-student-gwa" min="0" max="100"
+              style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label
+              style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Gender</label>
+            <select id="admin-student-gender"
+              style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; background: #fff;">
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Other">Other</option>
             </select>
           </div>
           <div>
-            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Country</label>
-            <input type="text" id="admin-student-country" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+            <label
+              style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Country</label>
+            <input type="text" id="admin-student-country"
+              style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div>
-            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Account Status</label>
-            <select id="admin-student-status" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; background: #fff;">
+            <label
+              style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Account
+              Status</label>
+            <select id="admin-student-status"
+              style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; background: #fff;">
               <option value="active">Active</option>
               <option value="banned">Banned</option>
             </select>
           </div>
           <div>
-            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Reset Password (optional)</label>
-            <input type="password" id="admin-student-password" placeholder="New password" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+            <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Reset
+              Password (optional)</label>
+            <input type="password" id="admin-student-password" placeholder="New password"
+              style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
           </div>
         </div>
 
         <div>
-          <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Address</label>
-          <input type="text" id="admin-student-address" style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+          <label
+            style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 4px;">Address</label>
+          <input type="text" id="admin-student-address"
+            style="width: 100%; padding: 8px 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
           <button type="button" onclick="deleteAdminStudent()" class="btn-danger-outline">Remove Account</button>
           <div style="display: flex; gap: 12px;">
-            <button type="button" onclick="closeAdminStudentModal()" style="padding: 10px 20px; border: 1px solid #cbd5e0; background: transparent; border-radius: 6px; font-weight: 600; cursor: pointer; color: #4a5568; font-family: 'Montserrat', sans-serif;">Cancel</button>
-            <button type="submit" style="padding: 10px 20px; border: none; background: #7a151a; border-radius: 6px; font-weight: 600; cursor: pointer; color: #fff; font-family: 'Montserrat', sans-serif;">Save Changes</button>
+            <button type="button" onclick="closeAdminStudentModal()"
+              style="padding: 10px 20px; border: 1px solid #cbd5e0; background: transparent; border-radius: 6px; font-weight: 600; cursor: pointer; color: #4a5568; font-family: 'Montserrat', sans-serif;">Cancel</button>
+            <button type="submit"
+              style="padding: 10px 20px; border: none; background: #7a151a; border-radius: 6px; font-weight: 600; cursor: pointer; color: #fff; font-family: 'Montserrat', sans-serif;">Save
+              Changes</button>
           </div>
         </div>
       </form>

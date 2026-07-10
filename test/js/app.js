@@ -15,11 +15,11 @@ let securityLogs = [
 
 function logSecurityEvent(action, details) {
   const now = new Date();
-  const timeStr = now.getFullYear() + '-' + 
-    String(now.getMonth()+1).padStart(2, '0') + '-' + 
-    String(now.getDate()).padStart(2, '0') + ' ' + 
-    String(now.getHours()).padStart(2, '0') + ':' + 
-    String(now.getMinutes()).padStart(2, '0') + ':' + 
+  const timeStr = now.getFullYear() + '-' +
+    String(now.getMonth() + 1).padStart(2, '0') + '-' +
+    String(now.getDate()).padStart(2, '0') + ' ' +
+    String(now.getHours()).padStart(2, '0') + ':' +
+    String(now.getMinutes()).padStart(2, '0') + ':' +
     String(now.getSeconds()).padStart(2, '0');
   securityLogs.unshift({ time: timeStr, action, details });
   const el = document.getElementById('admin-access-logs');
@@ -77,15 +77,15 @@ function showPage(pageId, updateHash = true) {
   if (pageId === 'landing') {
     const authBtns = document.getElementById('landing-auth-buttons');
     const userMenu = document.getElementById('landing-user-menu');
-    
+
     if (authBtns && userMenu) {
       if (currentStudentId !== null) {
         authBtns.style.display = 'none';
         userMenu.style.display = 'inline-block';
-        
+
         const userNameEl = document.getElementById('landing-user-name');
         if (userNameEl) userNameEl.textContent = currentStudentName || 'Student';
-        
+
         const userPicEl = document.getElementById('landing-user-pic');
         if (userPicEl) {
           const savedPic = localStorage.getItem('profile_pic_student_' + currentStudentId);
@@ -124,17 +124,17 @@ function showPage(pageId, updateHash = true) {
   // Toggle student and admin sidebars visibility
   const studentSidebar = document.getElementById('student-sidebar');
   const adminSidebar = document.getElementById('admin-sidebar');
-  
-  const showStudentSidebar = currentStudentId !== null && 
-                             pageId !== 'landing' && 
-                             pageId !== 'login' && 
-                             pageId !== 'register' && 
-                             !pageId.includes('admin') && 
-                             (!isUniversityPage || lastUniversitySource === 'student-universities');
-                             
-  const showAdminSidebar = currentAdminId !== null && 
-                           pageId.includes('admin');
-  
+
+  const showStudentSidebar = currentStudentId !== null &&
+    pageId !== 'landing' &&
+    pageId !== 'login' &&
+    pageId !== 'register' &&
+    !pageId.includes('admin') &&
+    (!isUniversityPage || lastUniversitySource === 'student-universities');
+
+  const showAdminSidebar = currentAdminId !== null &&
+    pageId.includes('admin');
+
   if (studentSidebar) {
     studentSidebar.style.display = showStudentSidebar ? 'flex' : 'none';
   }
@@ -149,12 +149,12 @@ function showPage(pageId, updateHash = true) {
       appLayout.classList.remove('has-sidebar');
     }
   }
-  
+
   if (showStudentSidebar && studentSidebar) {
     // Update sidebar profile fields
     const sidebarName = document.getElementById('sidebar-name-display');
     if (sidebarName) sidebarName.textContent = currentStudentName || 'Student';
-    
+
     const sidebarPic = document.getElementById('sidebar-pic-display');
     const savedPic = localStorage.getItem('profile_pic_student_' + currentStudentId);
     const defaultPic = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2EwYWVjMCI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==';
@@ -169,12 +169,12 @@ function showPage(pageId, updateHash = true) {
     if (editPic) {
       editPic.src = savedPic || defaultPic;
     }
-    
+
     // Highlight active link in sidebar
     document.querySelectorAll('.student-sidebar .sidebar-link, .student-sidebar .sidebar-link-bottom').forEach(link => {
       link.classList.remove('active');
     });
-    
+
     if (pageId === 'dashboard') {
       const activeLink = document.getElementById('nav-find-scholarships');
       if (activeLink) activeLink.classList.add('active');
@@ -375,11 +375,15 @@ async function loadStudentProfile() {
   if (result.ok && result.data && result.data.success) {
     const s = result.data.data;
 
-    // Dashboard matching criteria
-    const eligCourse = document.getElementById('elig-course');
-    if (eligCourse) eligCourse.value = s.course || '';
+    // Dashboard matching criteria - start blank on login
+    if (typeof updateCustomCourseSelectValue === 'function') {
+      updateCustomCourseSelectValue('');
+    } else {
+      const eligCourse = document.getElementById('elig-course');
+      if (eligCourse) eligCourse.value = '';
+    }
     const eligGwa = document.getElementById('elig-gwa');
-    if (eligGwa) eligGwa.value = s.gwa || '';
+    if (eligGwa) eligGwa.value = '';
 
     // Profile page fields
     const profFirst = document.getElementById('prof-firstname');
@@ -441,8 +445,7 @@ document.getElementById('eligibility-form').addEventListener('submit', async (e)
   const payload = {
     id: currentStudentId,
     course: document.getElementById('elig-course').value || undefined,
-    gwa: document.getElementById('elig-gwa').value ? parseFloat(document.getElementById('elig-gwa').value) : undefined,
-    confirm_password: document.getElementById('elig-password').value || undefined
+    gwa: document.getElementById('elig-gwa').value ? parseFloat(document.getElementById('elig-gwa').value) : undefined
   };
 
   Object.keys(payload).forEach(key => {
@@ -458,7 +461,6 @@ document.getElementById('eligibility-form').addEventListener('submit', async (e)
   const out = document.getElementById('eligibility-result');
   if (result.ok && result.data && result.data.success) {
     out.innerHTML = '<p style="color:green;">Criteria updated successfully.</p>';
-    document.getElementById('elig-password').value = '';
     loadRecommendations();
     setTimeout(() => {
       out.innerHTML = '';
@@ -542,15 +544,22 @@ document.getElementById('profile-pic-input').addEventListener('change', (e) => {
   }
 });
 
-// Recommendations
 async function loadRecommendations() {
   if (!currentStudentId) {
     document.getElementById('rec-result').innerHTML = '<p style="color:red;">Please login first.</p>';
     return;
   }
 
-  const result = await apiFetch('/recommendations/index.php?student_id=' + encodeURIComponent(currentStudentId));
+  const eligCourse = document.getElementById('elig-course');
+  const eligGwa = document.getElementById('elig-gwa');
   const out = document.getElementById('rec-result');
+
+  if (!eligCourse || !eligCourse.value || !eligGwa || !eligGwa.value) {
+    out.innerHTML = '<p style="color:#718096; font-size: 14.5px;">Please select your course and enter your GWA above to view matching recommendations.</p>';
+    return;
+  }
+
+  const result = await apiFetch('/recommendations/index.php?student_id=' + encodeURIComponent(currentStudentId));
 
   if (!result.ok || !result.data || !result.data.success) {
     const errorMsg = (result.data && result.data.message) || (result.data && result.data.error) || result.error || 'Error fetching recommendations';
@@ -674,7 +683,7 @@ async function loadScholarships() {
   }
 
   cachedScholarships = result.data.data || [];
-  
+
   // Clear search and filter controls upon refresh/load
   const searchInput = document.getElementById('scholarship-search');
   if (searchInput) searchInput.value = '';
@@ -716,8 +725,8 @@ function filterScholarships() {
   const typeFilter = document.getElementById('scholarship-type-filter')?.value || 'all';
 
   const filtered = cachedScholarships.filter(s => {
-    const matchesSearch = (s.title || '').toLowerCase().includes(query) || 
-                          (s.university || '').toLowerCase().includes(query);
+    const matchesSearch = (s.title || '').toLowerCase().includes(query) ||
+      (s.university || '').toLowerCase().includes(query);
     const matchesType = typeFilter === 'all' || s.scholarship_type === typeFilter;
     return matchesSearch && matchesType;
   });
@@ -780,7 +789,7 @@ function renderStudentsTable(list) {
       cleanMiddle += '.';
     }
     const fullName = [s.first_name, cleanMiddle, s.last_name].filter(Boolean).join(' ');
-    
+
     // Status Badge
     const statusVal = s.status || 'active';
     const isBanned = statusVal === 'banned';
@@ -814,12 +823,12 @@ function filterStudents() {
   const filtered = cachedStudents.filter(s => {
     let cleanMiddle = (s.middle_name || '').trim();
     const fullName = [s.first_name, cleanMiddle, s.last_name].filter(Boolean).join(' ').toLowerCase();
-    
-    const matchesSearch = fullName.includes(query) || 
-                          (s.email || '').toLowerCase().includes(query);
+
+    const matchesSearch = fullName.includes(query) ||
+      (s.email || '').toLowerCase().includes(query);
     const matchesCourse = courseFilter === 'all' || s.course === courseFilter;
     const matchesStatus = statusFilter === 'all' || (s.status || 'active') === statusFilter;
-    
+
     return matchesSearch && matchesCourse && matchesStatus;
   });
 
@@ -1016,16 +1025,16 @@ function loadSecurityLogs() {
   if (!el) return;
 
   el.innerHTML = securityLogs.map(l => {
-    let icon = '🔒';
+    let icon = '[SECURE]';
     let statusClass = 'log-status-default';
     let borderClass = 'log-border-default';
-    
+
     if (l.action.includes('success')) {
-      icon = '✅';
+      icon = '[SUCCESS]';
       statusClass = 'log-status-success';
       borderClass = 'log-border-success';
     } else if (l.action.includes('Failed') || l.action.includes('banned')) {
-      icon = '🚨';
+      icon = '[ALERT]';
       statusClass = 'log-status-danger';
       borderClass = 'log-border-danger';
     }
@@ -1350,19 +1359,19 @@ function toggleSidebarMenu() {
 function loadSettingsPreferences() {
   if (!currentStudentId) return;
   const savedSettings = JSON.parse(localStorage.getItem('student_settings_' + currentStudentId)) || {};
-  
+
   const notifyMatch = document.getElementById('settings-notify-match');
   if (notifyMatch) notifyMatch.checked = savedSettings.notifyMatch === true;
-  
+
   const notifyDeadline = document.getElementById('settings-notify-deadline');
   if (notifyDeadline) notifyDeadline.checked = savedSettings.notifyDeadline === true;
-  
+
   const visibility = document.getElementById('settings-visibility');
   if (visibility) visibility.value = savedSettings.visibility || 'public';
-  
+
   const lang = document.getElementById('settings-lang');
   if (lang) lang.value = savedSettings.lang || 'en';
-  
+
   const theme = document.getElementById('settings-theme');
   if (theme) theme.value = savedSettings.theme || 'light';
 }
@@ -1388,13 +1397,13 @@ function applyAdminTheme(theme) {
   } else {
     document.body.classList.remove('dark-mode');
   }
-  
+
   const btn = document.getElementById('btn-admin-dark-mode');
   if (btn) {
     if (theme === 'dark') {
-      btn.innerHTML = '<span class="sidebar-icon">☀️</span> Dark Mode: On';
+      btn.innerHTML = '<span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span> Dark Mode: On';
     } else {
-      btn.innerHTML = '<span class="sidebar-icon">🌙</span> Dark Mode: Off';
+      btn.innerHTML = '<span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span> Dark Mode: Off';
     }
   }
 }
@@ -1410,7 +1419,7 @@ function toggleAdminDarkMode() {
 document.getElementById('settings-preferences-form').addEventListener('submit', (e) => {
   e.preventDefault();
   if (!currentStudentId) return;
-  
+
   const settings = {
     notifyMatch: document.getElementById('settings-notify-match').checked,
     notifyDeadline: document.getElementById('settings-notify-deadline').checked,
@@ -1418,10 +1427,10 @@ document.getElementById('settings-preferences-form').addEventListener('submit', 
     lang: document.getElementById('settings-lang').value,
     theme: document.getElementById('settings-theme').value
   };
-  
+
   localStorage.setItem('student_settings_' + currentStudentId, JSON.stringify(settings));
   applyTheme(settings.theme);
-  
+
   const out = document.getElementById('preferences-result');
   if (out) {
     out.innerHTML = '<p style="color:green;">Preferences saved successfully.</p>';
@@ -1436,29 +1445,29 @@ document.getElementById('settings-password-form').addEventListener('submit', asy
     document.getElementById('password-settings-result').innerHTML = '<p style="color:red;">Error: No student logged in</p>';
     return;
   }
-  
+
   const currPass = document.getElementById('settings-curr-pass').value;
   const newPass = document.getElementById('settings-new-pass').value;
   const confirmPass = document.getElementById('settings-confirm-pass').value;
   const out = document.getElementById('password-settings-result');
-  
+
   if (newPass !== confirmPass) {
     out.innerHTML = '<p style="color:red;">Error: New passwords do not match.</p>';
     return;
   }
-  
+
   const payload = {
     id: currentStudentId,
     confirm_password: currPass,
     new_password: newPass
   };
-  
+
   const result = await apiFetch('/students/update.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
-  
+
   if (result.ok && result.data && result.data.success) {
     out.innerHTML = '<p style="color:green;">Password updated successfully.</p>';
     document.getElementById('settings-password-form').reset();
@@ -1472,7 +1481,7 @@ document.getElementById('settings-password-form').addEventListener('submit', asy
 (function initTheme() {
   const activeStudentId = sessionStorage.getItem('currentStudentId');
   const activeAdminId = sessionStorage.getItem('currentAdminId');
-  
+
   if (activeStudentId) {
     const savedSettings = JSON.parse(localStorage.getItem('student_settings_' + activeStudentId)) || {};
     if (savedSettings.theme) {
@@ -1549,19 +1558,19 @@ function renderStudentUniDetail(uniKey) {
 // Admin Portal Search & Filter Helper Functions
 function filterContentDOM() {
   const query = (document.getElementById('content-search')?.value || '').toLowerCase().trim();
-  
+
   // Filter Universities
   document.querySelectorAll('#admin-universities-list .admin-list-item').forEach(item => {
     const text = item.textContent.toLowerCase();
     item.style.display = text.includes(query) ? 'block' : 'none';
   });
-  
+
   // Filter Colleges
   document.querySelectorAll('#admin-colleges-list .admin-list-item').forEach(item => {
     const text = item.textContent.toLowerCase();
     item.style.display = text.includes(query) ? 'block' : 'none';
   });
-  
+
   // Filter Courses
   document.querySelectorAll('#admin-courses-list .admin-list-item').forEach(item => {
     const text = item.textContent.toLowerCase();
@@ -1593,6 +1602,112 @@ document.addEventListener('change', (e) => {
     }
   }
 });
+
+// Custom Searchable Dropdown Javascript Logic
+const customCourseOptions = [
+  "BS Computer Science",
+  "BS Information Technology",
+  "BS Civil Engineering",
+  "BS Nursing",
+  "BS Accountancy",
+  "BS Psychology",
+  "BS Education",
+  "BS Business Administration",
+  "BS Mechanical Engineering",
+  "BS Electrical Engineering",
+  "BS Chemical Engineering",
+  "BS Architecture",
+  "BS Biology",
+  "BS Chemistry",
+  "BS Mathematics",
+  "BA Communication",
+  "BA Sociology",
+  "BA Fine Arts"
+];
+
+function updateCustomCourseSelectValue(val) {
+  const input = document.getElementById('elig-course');
+  if (input) input.value = val || '';
+  const label = document.getElementById('course-select-label');
+  if (label) label.textContent = val || 'Select Course';
+  
+  document.querySelectorAll('#course-select-options .custom-select-option').forEach(opt => {
+    if (val && opt.getAttribute('data-value') === val) {
+      opt.classList.add('selected');
+    } else {
+      opt.classList.remove('selected');
+    }
+  });
+}
+
+function initCustomCourseSelect() {
+  const optionsContainer = document.getElementById('course-select-options');
+  if (!optionsContainer) return;
+
+  // Populate options list
+  optionsContainer.innerHTML = customCourseOptions.map(c => 
+    `<li class="custom-select-option" data-value="${c}">${c}</li>`
+  ).join('');
+
+  const wrapper = document.getElementById('course-select-wrapper');
+  const trigger = document.getElementById('course-select-trigger');
+  const dropdown = document.getElementById('course-select-dropdown');
+  const searchInput = document.getElementById('course-select-search');
+
+  if (!trigger || !dropdown || !searchInput) return;
+
+  // Toggle Dropdown Display
+  trigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = wrapper.classList.contains('open');
+    if (isOpen) {
+      wrapper.classList.remove('open');
+      dropdown.style.display = 'none';
+    } else {
+      wrapper.classList.add('open');
+      dropdown.style.display = 'flex';
+      searchInput.value = '';
+      // Reset filter on open
+      document.querySelectorAll('#course-select-options .custom-select-option').forEach(opt => {
+        opt.style.display = 'block';
+      });
+      searchInput.focus();
+    }
+  });
+
+  // Filter List via Search Input
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.toLowerCase().trim();
+    document.querySelectorAll('#course-select-options .custom-select-option').forEach(opt => {
+      const text = opt.textContent.toLowerCase();
+      opt.style.display = text.includes(query) ? 'block' : 'none';
+    });
+  });
+
+  // Stop event bubbling inside dropdown
+  dropdown.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+
+  // Close dropdown on clicking outside
+  document.addEventListener('click', () => {
+    wrapper.classList.remove('open');
+    dropdown.style.display = 'none';
+  });
+
+  // Select Option Handler
+  optionsContainer.addEventListener('click', (e) => {
+    if (e.target && e.target.classList.contains('custom-select-option')) {
+      const selectedValue = e.target.getAttribute('data-value');
+      updateCustomCourseSelectValue(selectedValue);
+      wrapper.classList.remove('open');
+      dropdown.style.display = 'none';
+    }
+  });
+}
+
+// Automatically Initialize custom select component
+initCustomCourseSelect();
 
 
 

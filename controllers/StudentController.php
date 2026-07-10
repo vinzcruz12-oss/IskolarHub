@@ -181,10 +181,8 @@ class StudentController {
             exit;
         }
 
-        // Extra step: verify password if updating critical fields (course, gwa, names, password)
+        // Extra step: verify password if updating critical fields (names, password)
         $needsVerification = false;
-        if (isset($input['course']) && $input['course'] !== $existing['course']) $needsVerification = true;
-        if (isset($input['gwa']) && floatval($input['gwa']) !== floatval($existing['gwa'])) $needsVerification = true;
         if (isset($input['first_name']) && $input['first_name'] !== $existing['first_name']) $needsVerification = true;
         if (isset($input['last_name']) && $input['last_name'] !== $existing['last_name']) $needsVerification = true;
         if (isset($input['new_password']) && !empty($input['new_password'])) $needsVerification = true;
@@ -192,7 +190,7 @@ class StudentController {
         if ($needsVerification) {
             if (!isset($input['confirm_password']) || empty($input['confirm_password'])) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'error' => 'Account password is required to change Name, Course, GWA, or Password.']);
+                echo json_encode(['success' => false, 'error' => 'Account password is required to change Name or Password.']);
                 exit;
             }
             $verified = $this->student->verifyPasswordById($input['id'], $input['confirm_password']);

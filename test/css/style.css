@@ -332,6 +332,7 @@ th {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2000;
 }
 
 .modal-content {
@@ -2856,4 +2857,249 @@ body.dark-mode .admin-filter-bar input:focus,
 body.dark-mode .admin-filter-bar select:focus {
   border-color: #f56565 !important;
   box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.2);
+}
+
+/* Recommended Scholarship Cards styling */
+.recommendations-container .card {
+  background: #ffffff;
+  border: 1.5px solid #edf2f7;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.recommendations-container .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px rgba(122, 21, 26, 0.05), 0 4px 6px rgba(0, 0, 0, 0.01);
+  border-color: rgba(122, 21, 26, 0.15);
+}
+
+.recommendations-container .card h4 {
+  margin-top: 0;
+  margin-bottom: 14px;
+  color: #7a151a;
+  font-size: 19px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.recommendations-container .card p {
+  margin: 8px 0;
+  font-size: 14.5px;
+  color: #4a5568;
+  line-height: 1.5;
+}
+
+.recommendations-container .card strong {
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.recommendations-container .card ul {
+  margin: 12px 0;
+  padding-left: 20px;
+  list-style-type: none;
+}
+
+.recommendations-container .card li {
+  font-size: 13.5px;
+  color: #5a67d8;
+  margin-bottom: 6px;
+  position: relative;
+  padding-left: 18px;
+  font-weight: 550;
+}
+
+.recommendations-container .card li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #38a169;
+  font-weight: bold;
+}
+
+.recommendations-container .card a {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 10px 20px;
+  background-color: #7a151a;
+  color: #ffffff !important;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13.5px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(122, 21, 26, 0.15);
+}
+
+.recommendations-container .card a:hover {
+  background-color: #5f1014;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(122, 21, 26, 0.25);
+}
+
+/* Dark mode styling for recommended scholarship cards */
+body.dark-mode .recommendations-container .card {
+  background: #2a2f3b !important;
+  border-color: #3e4656 !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15) !important;
+}
+
+body.dark-mode .recommendations-container .card:hover {
+  border-color: rgba(245, 101, 101, 0.3) !important;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+body.dark-mode .recommendations-container .card h4 {
+  color: #ff8c94 !important;
+}
+
+body.dark-mode .recommendations-container .card p {
+  color: #cbd5e0 !important;
+}
+
+body.dark-mode .recommendations-container .card strong {
+  color: #edf2f7 !important;
+}
+
+body.dark-mode .recommendations-container .card li {
+  color: #90cdf4 !important;
+}
+
+body.dark-mode .recommendations-container .card li::before {
+  color: #48bb78 !important;
+}
+
+body.dark-mode .recommendations-container .card a {
+  background-color: #e53e3e !important;
+  box-shadow: 0 4px 6px rgba(229, 62, 62, 0.15);
+}
+
+body.dark-mode .recommendations-container .card a:hover {
+  background-color: #c53030 !important;
+  box-shadow: 0 6px 12px rgba(229, 62, 62, 0.25);
+}
+
+/* Custom Searchable Dropdown CSS */
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+.custom-select-trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  color: #4a5568;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  user-select: none;
+}
+.custom-select-trigger:hover {
+  border-color: #a0aec0;
+}
+.custom-select-wrapper.open .custom-select-trigger {
+  border-color: #7a151a;
+  box-shadow: 0 0 0 3px rgba(122, 21, 26, 0.15);
+}
+.custom-select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  margin-top: 6px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  max-height: 250px;
+}
+.custom-select-search-container {
+  padding: 8px;
+  border-bottom: 1px solid #edf2f7;
+}
+.custom-select-search-container input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+}
+.custom-select-search-container input:focus {
+  border-color: #7a151a;
+}
+.custom-select-options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  flex: 1;
+}
+.custom-select-option {
+  padding: 10px 12px;
+  font-size: 14.5px;
+  color: #2d3748;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.custom-select-option:hover {
+  background: #f7fafc;
+}
+.custom-select-option.selected {
+  background: #fff5f5;
+  color: #7a151a;
+  font-weight: 600;
+}
+
+/* Dark Mode Support for Custom Select */
+body.dark-mode .custom-select-trigger {
+  background: #1e2530;
+  border-color: #2d3748;
+  color: #e2e8f0;
+}
+body.dark-mode .custom-select-trigger:hover {
+  border-color: #4a5568;
+}
+body.dark-mode .custom-select-wrapper.open .custom-select-trigger {
+  border-color: #7a151a;
+}
+body.dark-mode .custom-select-dropdown {
+  background: #1e2530;
+  border-color: #2d3748;
+}
+body.dark-mode .custom-select-search-container {
+  border-bottom-color: #2d3748;
+}
+body.dark-mode .custom-select-search-container input {
+  background: #161a22;
+  border-color: #2d3748;
+  color: #e2e8f0;
+}
+body.dark-mode .custom-select-search-container input:focus {
+  border-color: #7a151a;
+}
+body.dark-mode .custom-select-option {
+  color: #cbd5e0;
+}
+body.dark-mode .custom-select-option:hover {
+  background: #2d3748;
+}
+body.dark-mode .custom-select-option.selected {
+  background: #3c1214;
+  color: #ff8a8f;
 }
