@@ -223,11 +223,11 @@ INSERT IGNORE INTO admins
 VALUES
 (
     'admin',
-    '$2y$10$NmZLEHFoM23/BlGAmkhIQenWu/i5tpI/vCr8kxqQtGFudZedEgkz2'
+    '$2y$10$EekIAPqBFjHGz8.zSq7tE.Agf0p6Dox2B23nylVQ/MiVPDNB5R6Mq'
 ),
 (
     'test@admin.com',
-    '$2y$10$52Nq4h/tsfiIlg64jZgu8umCJkZhHzczr7IkVnl5ngIqtS310MG.q'
+    '$2y$10$4Ge0Ex5UYh1pUTz1jh.BR.80g/6frJ5qRf1O8d3rLbr0HF/mn5xGO'
 );
 
 -- ==========================
@@ -256,9 +256,9 @@ VALUES
     'Mercado',
     'Dela Cruz',
     'student@test.com',
-    '$2y$10$zaLtGhmq3Xoc48RFx6NDfuYdJokMjhUtOg1K7JbYGL6BvEgOXaLZq',
+    '$2y$10$fHxJ.ym9iQ9VTIkOtH2v3.FU.A5XAbT.CH5OkzXp3ZM92f8t.rj6u',
     'BS Computer Science',
-    1.50,
+    90.00,
     '09123456789',
     'Male',
     '123 Main Street',
