@@ -648,14 +648,15 @@ async function loadRecommendations() {
     return;
   }
 
-  // In fake persona mode, use custom criteria API instead of student_id
+  // Always pass the current form values to the recommendations API
+  // so results reflect what the user just entered, not stale DB data
   let apiUrl;
+  const course = encodeURIComponent(eligCourse.value || '');
+  const gwa = encodeURIComponent(eligGwa.value || '0');
   if (isViewingAsStudent) {
-    const course = encodeURIComponent(eligCourse.value || '');
-    const gwa = encodeURIComponent(eligGwa.value || '0');
     apiUrl = '/recommendations/index.php?course=' + course + '&gwa=' + gwa;
   } else {
-    apiUrl = '/recommendations/index.php?student_id=' + encodeURIComponent(currentStudentId);
+    apiUrl = '/recommendations/index.php?student_id=' + encodeURIComponent(currentStudentId) + '&course=' + course + '&gwa=' + gwa;
   }
 
   const result = await apiFetch(apiUrl);
