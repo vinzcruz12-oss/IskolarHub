@@ -114,6 +114,13 @@ function showPage(pageId, updateHash = true) {
     window.scrollTo(0, 0);
     document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
     page.style.display = 'block';
+
+    if (pageId === 'landing') {
+      const video = page.querySelector('.hero-video');
+      if (video) {
+        video.play().catch(err => console.log("Video play failed or interrupted:", err));
+      }
+    }
   }
 
   // Update navigation source tracking
