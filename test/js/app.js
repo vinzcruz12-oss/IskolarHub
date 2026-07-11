@@ -1,8 +1,14 @@
 const API_BASE = '../api';
+let isViewingAsStudent = sessionStorage.getItem('isViewingAsStudent') === 'true';
 let currentStudentId = sessionStorage.getItem('currentStudentId') || null;
 let currentStudentName = sessionStorage.getItem('currentStudentName') || null;
+
+if (isViewingAsStudent) {
+  currentStudentId = -1;
+  currentStudentName = 'Juan Dela Cruz';
+}
+
 let currentAdminId = sessionStorage.getItem('currentAdminId') || null;
-let isViewingAsStudent = sessionStorage.getItem('isViewingAsStudent') === 'true';
 let lastUniversitySource = 'landing';
 
 // Administrative security logs simulation
@@ -94,11 +100,23 @@ function showPage(pageId, updateHash = true) {
         const userNameEl = document.getElementById('landing-user-name');
         if (userNameEl) userNameEl.textContent = currentStudentName || 'Student';
 
-        const userPicEl = document.getElementById('landing-user-pic');
+         const userPicEl = document.getElementById('landing-user-pic');
         if (userPicEl) {
           const savedPic = localStorage.getItem('profile_pic_student_' + currentStudentId);
           const defaultPic = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2EwYWVjMCI+PHBhdGggZD0iTTEyIDEyYzIuMjEgMCA0LTEuNzkgNC00cy0xLjc5LTQtNC00LTQgMS43OS00IDQgMS43OSA0IDQgNHptMCAyYy0yLjY3IDAtOCAxLjM0LTggNHYyaDE2di0yYzAtMi42Ni01LjMzLTQtOC00eiIvPjwvc3ZnPg==';
           userPicEl.src = savedPic || defaultPic;
+        }
+
+        const landingLogoutDivider = document.getElementById('landing-logout-divider');
+        const landingLogoutBtn = document.getElementById('landing-logout-btn');
+        if (landingLogoutDivider && landingLogoutBtn) {
+          if (isViewingAsStudent) {
+            landingLogoutDivider.style.display = 'none';
+            landingLogoutBtn.style.display = 'none';
+          } else {
+            landingLogoutDivider.style.display = '';
+            landingLogoutBtn.style.display = '';
+          }
         }
       } else {
         authBtns.style.display = 'flex';
@@ -158,6 +176,17 @@ function showPage(pageId, updateHash = true) {
       appLayout.classList.add('has-sidebar');
     } else {
       appLayout.classList.remove('has-sidebar');
+    }
+  }
+
+  const banner = document.getElementById('admin-preview-banner');
+  if (banner) {
+    if (isViewingAsStudent) {
+      banner.style.display = 'flex';
+      document.body.style.paddingTop = '50px';
+    } else {
+      banner.style.display = 'none';
+      document.body.style.paddingTop = '0';
     }
   }
 
@@ -338,10 +367,6 @@ function viewAsStudent() {
   currentStudentId = -1;          // sentinel; never hits the DB
   currentStudentName = 'Juan Dela Cruz';
 
-  // Show the preview banner
-  const banner = document.getElementById('admin-preview-banner');
-  if (banner) banner.style.display = 'flex';
-
   // Populate the student sidebar with the fake persona
   const sidebarName = document.getElementById('sidebar-name-display');
   if (sidebarName) sidebarName.textContent = 'Juan Dela Cruz';
@@ -364,9 +389,6 @@ function viewAsStudent() {
   const recResult = document.getElementById('rec-result');
   if (recResult) recResult.innerHTML = '<p style="color:#718096; font-size: 14.5px;">Select a course and enter a GWA above, then click "Update GWA & Course" to see matching scholarships for this persona.</p>';
 
-  // Push the body down to make space for the fixed banner
-  document.body.style.paddingTop = '50px';
-
   // Navigate to the student dashboard
   showPage('dashboard');
 }
@@ -374,11 +396,6 @@ function viewAsStudent() {
 function returnToAdminDashboard() {
   isViewingAsStudent = false;
   sessionStorage.setItem('isViewingAsStudent', 'false');
-
-  // Hide the preview banner
-  const banner = document.getElementById('admin-preview-banner');
-  if (banner) banner.style.display = 'none';
-  document.body.style.paddingTop = '0';
 
   // Restore real session
   currentStudentId = savedStudentId;
