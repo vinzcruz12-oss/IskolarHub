@@ -11,7 +11,7 @@ USE iskolarhub;
 
 INSERT IGNORE INTO universities (university_name) VALUES
 ('Far Eastern University'),
-('University of the Philippines Diliman'),
+('University of the Philippines'),
 ('Ateneo de Manila University'),
 ('De La Salle University'),
 ('University of Santo Tomas'),
@@ -559,7 +559,7 @@ NULL,
 'Far Eastern University',
 'Identified Degree Programs',
 'Merit',
-NULL,
+90,
 'Meet the eligibility requirements and enroll in the identified degree programs of the Institute of Education.',
 NULL,
 'https://www.feu.edu.ph/cost-and-aid/scholarship-grants/teacher-scholarship-program/'
@@ -571,7 +571,7 @@ NULL,
 'Far Eastern University',
 'All Programs',
 'Need-Based',
-NULL,
+80,
 'Filipino citizen of good moral character; physically and mentally fit; family income not more than ₱100,000 per year; FEU-CAT results of at least average rating; underwent FEU qualifying financial evaluation.',
 NULL,
 'https://www.feu.edu.ph/cost-and-aid/scholarship-grants/leap-long-term-educational-assistance-program/'
@@ -579,7 +579,7 @@ NULL,
 
 (
 'Nicanor Reyes Science Scholarship Program (NRSSP)',
-'Nicanor Reyes Science Scholarship Program (NRSSP) is awarded to students from the identified science high schools whose FEU-CAT percentile score is superior with a HS GWA of at least 88 and an annual family income not exceeding ₱360,000.00 per year.',
+'Nicanor Reyes Science Scholarship Program (NRSSP) is awarded to students from the identified science high schools whose FEU-CAT percentile score is superior with a HS GWA of at least 88 and an annual family income not exceeding 360,000.00 per year.',
 'Far Eastern University',
 'Science Programs',
 'Merit',
@@ -595,7 +595,7 @@ NULL,
 'Far Eastern University',
 'All Programs',
 'Academic',
-NULL,
+90,
 'Regular student; QPA of at least 3.20; no grade lower than C+ (2.5); no major offense.',
 NULL,
 'https://www.feu.edu.ph/academic-scholarship/'
@@ -607,10 +607,10 @@ NULL,
 'Far Eastern University',
 'All Programs',
 'Financial Assistance',
-NULL,
+85,
 'N/A',
 NULL,
-'https://www.feu.edu.ph/cost-and-aid/scholarship-grants/'
+'https://www.feu.edu.ph/feu-tuition-discount/'
 ),
 
 (
@@ -622,7 +622,7 @@ NULL,
 NULL,
 'N/A',
 NULL,
-'https://www.feu.edu.ph/cost-and-aid/scholarship-grants/'
+'https://www.feu.edu.ph/pwd-discount/'
 ),
 
 (
@@ -631,7 +631,7 @@ NULL,
 'Far Eastern University',
 'Eligible Programs',
 'Service',
-NULL,
+80,
 'Must qualify under FEU Athletics.',
 NULL,
 'https://www.feu.edu.ph/cost-and-aid/scholarship-grants/'
@@ -643,7 +643,7 @@ NULL,
 'Far Eastern University',
 'Eligible Programs',
 'Service',
-NULL,
+82,
 'Must qualify under the FEU Center for the Arts.',
 NULL,
 'https://www.feu.edu.ph/cost-and-aid/scholarship-grants/'
@@ -655,10 +655,10 @@ NULL,
 'Far Eastern University',
 'All Programs',
 'Government',
-NULL,
+80,
 'Must satisfy the requirements under Presidential Decree No. 577.',
 NULL,
-'https://www.feu.edu.ph/cost-and-aid/scholarship-grants/'
+'https://www.feu.edu.ph/presidential-decree-577-or-p-d-577/'
 ), -- Added missing comma here
 
 -- ==========================================
@@ -683,7 +683,7 @@ NULL,
 'University of the Philippines Diliman',
 'All Programs',
 'Need-Based',
-NULL,
+2.50,
 'N/A',
 NULL,
 'https://upd.edu.ph/students/scholarships-and-grants/'
@@ -695,7 +695,7 @@ NULL,
 'University of the Philippines Diliman',
 'All Programs',
 'Government',
-NULL,
+2.50,
 'Must qualify under TES guidelines',
 NULL,
 'https://upd.edu.ph/students/scholarships-and-grants/'
@@ -707,7 +707,7 @@ NULL,
 'University of the Philippines Diliman',
 'All Programs',
 'Loan',
-NULL,
+3.00,
 'N/A',
 NULL,
 'https://upd.edu.ph/students/scholarships-and-grants/'
@@ -719,7 +719,7 @@ NULL,
 'University of the Philippines Diliman',
 'All Programs',
 'Loan',
-NULL,
+3.00,
 'N/A',
 NULL,
 'https://upd.edu.ph/students/scholarships-and-grants/'
@@ -731,7 +731,7 @@ NULL,
 'University of the Philippines Diliman',
 'All Programs',
 'Academic',
-NULL,
+1.45,
 'N/A',
 NULL,
 'https://upd.edu.ph/students/scholarships-and-grants/'
@@ -743,7 +743,7 @@ NULL,
 'University of the Philippines Diliman',
 'All Programs',
 'Leadership',
-NULL,
+1.75,
 'N/A',
 NULL,
 'https://upd.edu.ph/students/scholarships-and-grants/'
@@ -755,11 +755,15 @@ NULL,
 'University of the Philippines Diliman',
 'All Programs',
 'Merit',
-NULL,
+1.30,
 'Qualified Oblation Scholar',
 NULL,
 'https://upd.edu.ph/students/scholarships-and-grants/'
 ),
+
+-- ==========================================
+-- Ateneo De Manila University
+-- ==========================================
 
 (
 'Ateneo Freshman Merit Scholarship',
@@ -767,10 +771,10 @@ NULL,
 'Ateneo de Manila University',
 'All Undergraduate Programs',
 'Merit',
-NULL,
+93,
 'Awarded based on ACET performance, high school record, and leadership potential.',
 NULL,
-'https://www.ateneo.edu/college/scholarships'
+'https://www.ateneo.edu/college/scholarships/programs'
 ),
 
 (
@@ -779,10 +783,10 @@ NULL,
 'Ateneo de Manila University',
 'All Undergraduate Programs',
 'Merit',
-NULL,
+92,
 'Outstanding ACET performance and distinguished academic and co-curricular achievements.',
 NULL,
-'https://www.ateneo.edu/college/scholarships'
+'https://www.ateneo.edu/college/scholarships/programs'
 ),
 
 (
@@ -791,10 +795,10 @@ NULL,
 'Ateneo de Manila University',
 'All Undergraduate Programs',
 'Need-Based',
-NULL,
+85,
 'Financial need, intellectual ability, consistent academic performance, service to the community, and potential for greater service.',
 NULL,
-'https://www.ateneo.edu/college/scholarships'
+'https://www.ateneo.edu/college/scholarships/programs'
 ),
 
 (
@@ -803,10 +807,10 @@ NULL,
 'Ateneo de Manila University',
 'All Undergraduate Programs',
 'Need-Based',
-NULL,
+90,
 'Open only to Financial Aid scholars who belong to the most financially disadvantaged sector.',
 NULL,
-'https://www.ateneo.edu/college/scholarships'
+'https://www.ateneo.edu/college/scholarships/programs'
 ),
 
 (
@@ -815,10 +819,10 @@ NULL,
 'Ateneo de Manila University',
 'All Undergraduate Programs',
 'Athletic',
-NULL,
+80,
 'Outstanding athletic ability, awards in a specific sport, and recommendation of the Ateneo Coach and Program Head.',
 NULL,
-'https://www.ateneo.edu/college/scholarships'
+'https://www.ateneo.edu/college/scholarships/programs'
 ),
 
 (
@@ -827,10 +831,10 @@ NULL,
 'Ateneo de Manila University',
 'All Undergraduate Programs',
 'Need-Based',
-NULL,
+88,
 'N/A',
 NULL,
-'https://www.ateneo.edu/college/scholarships'
+'https://www.ateneo.edu/college/scholarships/programs'
 ),
 
 (
@@ -839,11 +843,11 @@ NULL,
 'Ateneo de Manila University',
 'All Undergraduate Programs',
 'Merit',
-NULL,
+90,
 'N/A',
 NULL,
-'https://www.ateneo.edu/college/scholarships'
-), -- Added missing comma here
+'https://www.ateneo.edu/college/scholarships/programs'
+), 
 
 -- ==========================================
 -- De La Salle University
@@ -855,10 +859,10 @@ NULL,
 'De La Salle University',
 'All Undergraduate Programs',
 'Merit',
-NULL,
+96,
 'Must be among the Top 100 DCAT examinees.',
 NULL,
-'https://www.dlsu.edu.ph/admission/scholarship/'
+'https://www.dlsu.edu.ph/scholarship/archer-achiever-scholarship/'
 ),
 
 (
@@ -867,10 +871,10 @@ NULL,
 'De La Salle University',
 'All Undergraduate Programs',
 'Academic',
-NULL,
+95,
 'Must be the valedictorian or salutatorian of a De La Salle Philippines school.',
 NULL,
-'https://www.dlsu.edu.ph/admission/scholarship/'
+'https://www.dlsu.edu.ph/scholarship/br-andrew-gonzalez-academic-scholarship/'
 ),
 
 (
@@ -879,10 +883,10 @@ NULL,
 'De La Salle University',
 'All Undergraduate Programs',
 'Need-Based',
-NULL,
+85,
 'Subject to financial need assessment and scholarship qualifications.',
 NULL,
-'https://www.dlsu.edu.ph/admission/scholarship/'
+'https://www.dlsu.edu.ph/scholarship/st-la-salle-financial-assistance-grant-tdsol/'
 ),
 
 (
@@ -891,10 +895,10 @@ NULL,
 'De La Salle University',
 'All Undergraduate Programs',
 'Merit',
-NULL,
+92,
 'Must satisfy the scholarship qualifications prescribed by the University.',
 NULL,
-'https://www.dlsu.edu.ph/admission/scholarship/'
+'https://www.dlsu.edu.ph/scholarship/gokongwei-grants/'
 ),
 
 (
@@ -903,71 +907,11 @@ NULL,
 'De La Salle University',
 'All Undergraduate Programs',
 'Merit',
-NULL,
+90,
 'Must meet the scholarship eligibility requirements.',
 NULL,
-'https://www.dlsu.edu.ph/admission/scholarship/'
+'https://www.dlsu.edu.ph/scholarship/vaugirard-scholarship-program/'
 ),
-
-(
-'Science and Technology Scholarship',
-'Scholarship for qualified students pursuing science and technology-related degree programs.',
-'De La Salle University',
-'All Undergraduate Programs',
-'Merit',
-NULL,
-'Must enroll in an eligible science or technology degree program.',
-NULL,
-'https://www.dlsu.edu.ph/admission/scholarship/'
-),
-
-(
-'Presidential Decree No. 577 Scholarship',
-'Scholarship granted to qualified dependents of military personnel pursuant to Presidential Decree No. 577. (Wikipedia)',
-'De La Salle University',
-'All Undergraduate Programs',
-'Government',
-NULL,
-'Must qualify under Presidential Decree No. 577.',
-NULL,
-'https://www.dlsu.edu.ph/admission/scholarship/'
-),
-
-(
-'Student Assistantship Program',
-'Financial assistance through student assistantship opportunities within the University.',
-'De La Salle University',
-'All Undergraduate Programs',
-'Student Assistantship',
-NULL,
-'Must meet the University''s student assistantship requirements.',
-NULL,
-'https://www.dlsu.edu.ph/admission/scholarship/'
-),
-
-(
-'Tuition Discount Program',
-'Tuition discount granted to qualified students under University policies.',
-'De La Salle University',
-'All Undergraduate Programs',
-'Financial Assistance',
-NULL,
-'Must satisfy the University''s eligibility requirements.',
-NULL,
-'https://www.dlsu.edu.ph/admission/scholarship/'
-),
-
-(
-'Student Loan Program',
-'Loan assistance available to qualified students.',
-'De La Salle University',
-'All Undergraduate Programs',
-'Loan',
-NULL,
-'Must satisfy the University''s loan program requirements.',
-NULL,
-'https://www.dlsu.edu.ph/admission/scholarship/'
-), -- Added missing comma here
 
 -- ==========================================
 -- University of Santo Tomas
@@ -979,7 +923,7 @@ NULL,
 'University of Santo Tomas',
 'All Programs',
 'Academic',
-NULL,
+92,
 'N/A',
 NULL,
 'https://ofad.ust.edu.ph/scholarships/'
@@ -991,7 +935,7 @@ NULL,
 'University of Santo Tomas',
 'All Programs',
 'Need-Based',
-NULL,
+85,
 'Must render assistantship hours.',
 NULL,
 'https://ofad.ust.edu.ph/scholarships/'
@@ -1003,7 +947,7 @@ NULL,
 'University of Santo Tomas',
 'All Programs',
 'Talent-Based',
-NULL,
+83,
 'Excellence in arts, music, or sports.',
 NULL,
 'https://ofad.ust.edu.ph/scholarships/'
@@ -1015,7 +959,7 @@ NULL,
 'University of Santo Tomas',
 'All Programs',
 'Need-Based',
-NULL,
+83,
 'N/A',
 NULL,
 'https://ofad.ust.edu.ph/scholarships/'
@@ -1027,7 +971,7 @@ NULL,
 'University of Santo Tomas',
 'All Programs',
 'Student Assistantship',
-NULL,
+80,
 'N/A',
 NULL,
 'https://ofad.ust.edu.ph/scholarships/'
@@ -1043,7 +987,7 @@ NULL,
 'National University',
 'All Programs',
 'Academic',
-NULL,
+90,
 'Must meet the University''s academic requirements.',
 NULL,
 'https://www.chedscholar.org/national-university-nu-scholarship/'
@@ -1055,7 +999,7 @@ NULL,
 'National University',
 'All Programs',
 'Merit',
-NULL,
+95,
 'Must satisfy the University''s scholarship qualifications.',
 NULL,
 'https://www.chedscholar.org/national-university-nu-scholarship/'
@@ -1067,7 +1011,7 @@ NULL,
 'National University',
 'All Programs',
 'Government/Private',
-NULL,
+90,
 'Must meet SM Foundation scholarship requirements.',
 NULL,
 'https://www.chedscholar.org/national-university-nu-scholarship/'
@@ -1079,7 +1023,7 @@ NULL,
 'National University',
 'All Programs',
 'Athletic',
-NULL,
+80,
 'Must qualify as a varsity athlete.',
 NULL,
 'https://www.chedscholar.org/national-university-nu-scholarship/'
@@ -1091,7 +1035,7 @@ NULL,
 'National University',
 'All Programs',
 'Talent-Based',
-NULL,
+82,
 'Must pass the talent screening and scholarship evaluation.',
 NULL,
 'https://www.chedscholar.org/national-university-nu-scholarship/'
@@ -1103,7 +1047,7 @@ NULL,
 'National University',
 'All Programs',
 'Student Assistantship',
-NULL,
+80,
 'Must qualify under the University''s student assistantship program.',
 NULL,
 'https://www.chedscholar.org/national-university-nu-scholarship/'
@@ -1115,7 +1059,7 @@ NULL,
 'National University',
 'All Programs',
 'Government',
-NULL,
+90,
 'Must satisfy CHED scholarship requirements.',
 NULL,
 'https://www.chedscholar.org/national-university-nu-scholarship/'
@@ -1127,7 +1071,7 @@ NULL,
 'National University',
 'All Programs',
 'Government',
-NULL,
+85,
 'Must qualify under TES guidelines.',
 NULL,
 'https://www.chedscholar.org/national-university-nu-scholarship/'
@@ -1143,7 +1087,7 @@ NULL,
 'Adamson University',
 'All Programs',
 'Academic',
-NULL,
+90,
 'Excellent academic performance.',
 NULL,
 'https://www.chedscholar.org/adamson-university-scholarships/'
@@ -1155,7 +1099,7 @@ NULL,
 'Adamson University',
 'All Programs',
 'Merit',
-NULL,
+88,
 'Qualified incoming freshmen.',
 NULL,
 'https://www.chedscholar.org/adamson-university-scholarships/'
@@ -1167,7 +1111,7 @@ NULL,
 'Adamson University',
 'All Programs',
 'Athletic',
-NULL,
+80,
 'Must qualify as a varsity athlete.',
 NULL,
 'https://www.chedscholar.org/adamson-university-scholarships/'
@@ -1179,7 +1123,7 @@ NULL,
 'Adamson University',
 'All Programs',
 'Need-Based',
-NULL,
+82,
 'Must demonstrate financial need.',
 NULL,
 'https://www.chedscholar.org/adamson-university-scholarships/'
@@ -1191,7 +1135,7 @@ NULL,
 'Adamson University',
 'All Programs',
 'Student Assistantship',
-NULL,
+80,
 'Must qualify under the University''s student assistantship program.',
 NULL,
 'https://www.chedscholar.org/adamson-university-scholarships/'
@@ -1203,7 +1147,7 @@ NULL,
 'Adamson University',
 'All Programs',
 'Service',
-NULL,
+82,
 'Good moral character and active participation in religious or community service.',
 NULL,
 'https://www.chedscholar.org/adamson-university-scholarships/'
@@ -1214,60 +1158,12 @@ NULL,
 -- ==========================================
 
 (
-'UE–Tan Yan Kee Foundation, Inc. Scholarship',
-'Awarded to qualified incoming freshmen who intend to pursue a degree in selected degree programs/courses.',
-'University of the East',
-'Business Administration',
-'Merit',
-NULL,
-'Qualified incoming freshmen enrolled in selected degree programs.',
-NULL,
-'https://www.ue.edu.ph/mla/https-www-ue-edu-ph-mla-scholarships-grants-for-college/'
-),
-
-(
-'UE–Tan Yan Kee Foundation, Inc. Scholarship',
-'Awarded to qualified incoming freshmen who intend to pursue a degree in selected degree programs/courses.',
-'University of the East',
-'Accountancy',
-'Merit',
-NULL,
-'Qualified incoming freshmen enrolled in selected degree programs.',
-NULL,
-'https://www.ue.edu.ph/mla/https-www-ue-edu-ph-mla-scholarships-grants-for-college/'
-),
-
-(
-'UE–Tan Yan Kee Foundation, Inc. Scholarship',
-'Awarded to qualified incoming freshmen who intend to pursue a degree in selected degree programs/courses.',
-'University of the East',
-'Information Technology',
-'Merit',
-NULL,
-'Qualified incoming freshmen enrolled in selected degree programs.',
-NULL,
-'https://www.ue.edu.ph/mla/https-www-ue-edu-ph-mla-scholarships-grants-for-college/'
-),
-
-(
-'UE–Tan Yan Kee Foundation, Inc. Scholarship',
-'Awarded to qualified incoming freshmen who intend to pursue a degree in selected degree programs/courses.',
-'University of the East',
-'Engineering',
-'Merit',
-NULL,
-'Qualified incoming freshmen enrolled in selected degree programs.',
-NULL,
-'https://www.ue.edu.ph/mla/https-www-ue-edu-ph-mla-scholarships-grants-for-college/'
-),
-
-(
-'UE–Tan Yan Kee Foundation, Inc. Scholarship',
+'UE-Tan Yan Kee Foundation, Inc. Scholarship',
 'Awarded to qualified incoming freshmen who intend to pursue a degree in selected degree programs/courses.',
 'University of the East',
 'Dentistry',
 'Merit',
-NULL,
+90,
 'Qualified incoming freshmen enrolled in selected degree programs.',
 NULL,
 'https://www.ue.edu.ph/mla/https-www-ue-edu-ph-mla-scholarships-grants-for-college/'
@@ -1279,7 +1175,7 @@ NULL,
 'University of the East',
 'All Programs',
 'Academic',
-NULL,
+95,
 'Grade 12 graduate with academic honors.',
 NULL,
 'https://www.ue.edu.ph/mla/https-www-ue-edu-ph-mla-scholarships-grants-for-college/'
@@ -1291,7 +1187,7 @@ NULL,
 'University of the East',
 'All Programs',
 'Academic',
-NULL,
+1.25,
 'UE undergraduate student with a GPA of 1.0000–1.2500.',
 NULL,
 'https://www.ue.edu.ph/mla/https-www-ue-edu-ph-mla-scholarships-grants-for-college/'
@@ -1303,7 +1199,7 @@ NULL,
 'University of the East',
 'All Programs',
 'Academic',
-NULL,
+1.50,
 'UE undergraduate student with a GPA of 1.2501–1.5000.',
 NULL,
 'https://www.ue.edu.ph/mla/https-www-ue-edu-ph-mla-scholarships-grants-for-college/'
@@ -1315,7 +1211,7 @@ NULL,
 'University of the East',
 'All Programs',
 'Athletic',
-NULL,
+80,
 'Outstanding athletic ability; UAAP caliber or qualified for the UE Pep Squad.',
 NULL,
 'https://www.ue.edu.ph/mla/https-www-ue-edu-ph-mla-scholarships-grants-for-college/'
@@ -1327,7 +1223,7 @@ NULL,
 'University of the East',
 'All Programs',
 'Talent-Based',
-NULL,
+82,
 'Must qualify for membership in an official UE cultural organization.',
 NULL,
 'https://www.ue.edu.ph/mla/https-www-ue-edu-ph-mla-scholarships-grants-for-college/'
@@ -1339,7 +1235,7 @@ NULL,
 'University of the East',
 'All Programs',
 'Student Assistantship',
-NULL,
+80,
 'Must qualify under the University''s Student Assistantship Program.',
 NULL,
 'https://www.ue.edu.ph/mla/https-www-ue-edu-ph-mla-scholarships-grants-for-college/'
@@ -1351,7 +1247,7 @@ NULL,
 'University of the East',
 'All Programs',
 'Alumni',
-NULL,
+85,
 'Must satisfy the scholarship qualifications set by the UE Alumni Association.',
 NULL,
 'https://www.ue.edu.ph/mla/https-www-ue-edu-ph-mla-scholarships-grants-for-college/'
