@@ -398,9 +398,11 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
   if (result.ok && result.data && result.data.success) {
     out.innerHTML = '<p style="color:green;">Registration successful. Please login.</p>';
     document.getElementById('register-form').reset();
-    setTimeout(() => showPage('login'), 1000);
+    setTimeout(() => showPage('login'), 1500);
+  } else if (result.data && result.data.already_exists) {
+    out.innerHTML = '<p style="color:#718096;">Account already exists.</p>';
   } else {
-    out.innerHTML = '<p style="color:red;">Error: ' + JSON.stringify(result.data || result.error) + '</p>';
+    out.innerHTML = '<p style="color:red;">Error: ' + ((result.data && result.data.error) || JSON.stringify(result.data || result.error)) + '</p>';
   }
 });
 

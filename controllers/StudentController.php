@@ -51,19 +51,29 @@ class StudentController {
 
         $existing = $this->student->findByEmail($input['email']);
         if ($existing) {
-            http_response_code(409);
-            echo json_encode(['success' => false, 'error' => 'Email already registered']);
+            http_response_code(200);
+            echo json_encode(['success' => false, 'already_exists' => true, 'error' => 'This email is already registered. Please login instead.']);
             exit;
         }
 
         $hashedPassword = password_hash($input['password'], PASSWORD_DEFAULT);
-        $student_id = $this->student->create(
-            $input['first_name'],
-            $input['middle_name'] ?? null,
-            $input['last_name'],
-            $input['email'],
-            $hashedPassword
-        );
+        try {
+            $student_id = $this->student->create(
+                $input['first_name'],
+                $input['middle_name'] ?? null,
+                $input['last_name'],
+                $input['email'],
+                $hashedPassword
+            );
+        } catch (PDOException $e) {
+            // Catch duplicate key violation as safety net
+            if ($e->getCode() == 23000) {
+                http_response_code(200);
+                echo json_encode(['success' => false, 'already_exists' => true, 'error' => 'This email is already registered. Please login instead.']);
+                exit;
+            }
+            throw $e;
+        }
 
         http_response_code(201);
         echo json_encode(['success' => true, 'student_id' => (int)$student_id]);
