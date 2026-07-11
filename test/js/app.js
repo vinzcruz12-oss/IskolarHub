@@ -1341,19 +1341,26 @@ document.getElementById('scholarship-form').addEventListener('submit', async (e)
   }
 });
 
-// FAQ Accordion Toggle
-function toggleFaq(rowElement) {
-  const item = rowElement.closest('.faq-accordion-item');
-  const isActive = item.classList.contains('active');
+// Unified FAQ Accordion Toggle (Handles both Landing & Dashboard FAQS)
+function toggleFaq(element) {
+  const accordionItem = element.closest('.faq-accordion-item');
+  if (accordionItem) {
+    const isActive = accordionItem.classList.contains('active');
+    document.querySelectorAll('.faq-accordion-item').forEach(el => el.classList.remove('active'));
+    if (!isActive) {
+      accordionItem.classList.add('active');
+    }
+    return;
+  }
 
-  // Close all other FAQ items
-  document.querySelectorAll('.faq-accordion-item').forEach(el => {
-    el.classList.remove('active');
-  });
-
-  // If it was not active, toggle it open
-  if (!isActive) {
-    item.classList.add('active');
+  const content = element.nextElementSibling;
+  if (content) {
+    const arrow = element.querySelector('.faq-arrow');
+    const isOpen = content.style.display === 'block';
+    content.style.display = isOpen ? 'none' : 'block';
+    if (arrow) {
+      arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+    }
   }
 }
 
@@ -2371,17 +2378,7 @@ function deleteApplication(appId) {
   renderKanbanBoard();
 }
 
-// ─── FAQs & Help Center Accordion & Contact Form ───
-function toggleFaq(header) {
-  const content = header.nextElementSibling;
-  const arrow = header.querySelector('.faq-arrow');
-  const isOpen = content.style.display === 'block';
-  
-  content.style.display = isOpen ? 'none' : 'block';
-  if (arrow) {
-    arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
-  }
-}
+// FAQs & Help Center Contact Form event handler wires up below
 
 // Wire up FAQs & Help Center Contact Form automatically
 document.addEventListener('DOMContentLoaded', () => {

@@ -1246,79 +1246,78 @@
           <div class="dashboard-header"
             style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px;">
             <h2 style="margin: 0; font-family: 'Montserrat', sans-serif; color: #26374b;">FAQs & Help Center</h2>
-            <button onclick="showPage('dashboard')" class="btn-back-link" style="margin: 0; padding: 8px 16px;">Back to Dashboard</button>
           </div>
 
           <p style="color: #718096; font-size: 14px; margin-top: 0; margin-bottom: 24px;">Find answers to common questions about IskolarHub, or drop a message to our support team.</p>
 
           <!-- FAQs Accordion Section -->
-          <div class="dashboard-card" style="background: #fff; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 32px;">
+          <div class="faq-section-card">
             <h3 style="margin-top: 0; margin-bottom: 20px; font-family: 'Montserrat', sans-serif; color: #7a151a; font-size: 18px;">Frequently Asked Questions</h3>
             
             <div class="faq-list">
-              <div class="faq-item" style="border: 1px solid #edf2f7; border-radius: 8px; margin-bottom: 12px; overflow: hidden; background: #fff;">
-                <div class="faq-header" onclick="toggleFaq(this)" style="padding: 16px; font-weight: 600; color: #2d3748; background: #f7fafc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-family: 'Montserrat', sans-serif;">
-                  <span>How does the scholarship recommendation filter work?</span>
+              <div class="faq-item">
+                <div class="faq-header" onclick="toggleFaq(this)">
+                  <span>Is IskolarHub free?</span>
                   <svg viewBox="0 0 24 24" width="16" height="16" class="faq-arrow" style="transition: transform 0.2s;" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
-                <div class="faq-content" style="display: none; padding: 16px; border-top: 1px solid #edf2f7; color: #4a5568; font-size: 14.5px; line-height: 1.6;">
-                  Our recommendation filter evaluates your GWA, course, and strand against the criteria defined by scholarship providers. It translates different grading scales (like 1.0-5.0 or 4.0 DLSU scales) into a standardized format to check eligibility, ensuring you see the most relevant matches first.
+                <div class="faq-content">
+                  Yes. Students can create an account and browse scholarship opportunities completely free of charge.
                 </div>
               </div>
 
-              <div class="faq-item" style="border: 1px solid #edf2f7; border-radius: 8px; margin-bottom: 12px; overflow: hidden; background: #fff;">
-                <div class="faq-header" onclick="toggleFaq(this)" style="padding: 16px; font-weight: 600; color: #2d3748; background: #f7fafc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-family: 'Montserrat', sans-serif;">
-                  <span>What is the "Application Status Tracker"?</span>
+              <div class="faq-item">
+                <div class="faq-header" onclick="toggleFaq(this)">
+                  <span>Can I apply directly through IskolarHub?</span>
                   <svg viewBox="0 0 24 24" width="16" height="16" class="faq-arrow" style="transition: transform 0.2s;" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
-                <div class="faq-content" style="display: none; padding: 16px; border-top: 1px solid #edf2f7; color: #4a5568; font-size: 14.5px; line-height: 1.6;">
-                  It is a Kanban-style dashboard where you can organize scholarships you are actively applying for. You can categorize them as Draft, Submitted, Under Review, Shortlisted, Offered, or Declined, giving you a full visual roadmap of your applications.
+                <div class="faq-content">
+                  No. IskolarHub redirects you to the official scholarship provider where you can complete your application.
                 </div>
               </div>
 
-              <div class="faq-item" style="border: 1px solid #edf2f7; border-radius: 8px; margin-bottom: 12px; overflow: hidden; background: #fff;">
-                <div class="faq-header" onclick="toggleFaq(this)" style="padding: 16px; font-weight: 600; color: #2d3748; background: #f7fafc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-family: 'Montserrat', sans-serif;">
-                  <span>Are my bookmarks synced across devices?</span>
+              <div class="faq-item">
+                <div class="faq-header" onclick="toggleFaq(this)">
+                  <span>How do scholarship matches work?</span>
                   <svg viewBox="0 0 24 24" width="16" height="16" class="faq-arrow" style="transition: transform 0.2s;" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
-                <div class="faq-content" style="display: none; padding: 16px; border-top: 1px solid #edf2f7; color: #4a5568; font-size: 14.5px; line-height: 1.6;">
-                  Currently, bookmarks and tracker cards are stored securely in your browser's local storage linked to your account. Rest assured, your selections will persist on the same browser when you log back in.
+                <div class="faq-content">
+                  Click "Find My Scholarship" to open the recommendation form. After filling in your information, IskolarHub will recommend scholarships that best match your qualifications.
                 </div>
               </div>
 
-              <div class="faq-item" style="border: 1px solid #edf2f7; border-radius: 8px; margin-bottom: 12px; overflow: hidden; background: #fff;">
-                <div class="faq-header" onclick="toggleFaq(this)" style="padding: 16px; font-weight: 600; color: #2d3748; background: #f7fafc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-family: 'Montserrat', sans-serif;">
-                  <span>How can I contact a scholarship provider?</span>
+              <div class="faq-item">
+                <div class="faq-header" onclick="toggleFaq(this)">
+                  <span>Will I receive deadline reminders?</span>
                   <svg viewBox="0 0 24 24" width="16" height="16" class="faq-arrow" style="transition: transform 0.2s;" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
-                <div class="faq-content" style="display: none; padding: 16px; border-top: 1px solid #edf2f7; color: #4a5568; font-size: 14.5px; line-height: 1.6;">
-                  Each scholarship card contains an official website link or contact information (where available). Click "Apply Now" or check the program description for direct portals to submit applications.
+                <div class="faq-content">
+                  Yes. Saved scholarships can display upcoming deadlines to help you keep track of important application dates.
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Contact Form Section -->
-          <div class="dashboard-card" style="background: #fff; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
+          <div class="faq-section-card">
             <h3 style="margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', sans-serif; color: #7a151a; font-size: 18px;">Contact Support / Ask a Question</h3>
             <form id="help-contact-form" style="display: flex; flex-direction: column; gap: 16px;">
               <div class="auth-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
                 <div>
                   <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4a5568;">Your Name</label>
-                  <input type="text" id="contact-name" required style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+                  <input type="text" id="contact-name" required style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; background: inherit; color: inherit;">
                 </div>
                 <div>
                   <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4a5568;">Email Address</label>
-                  <input type="email" id="contact-email" required style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+                  <input type="email" id="contact-email" required style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; background: inherit; color: inherit;">
                 </div>
               </div>
               <div>
                 <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4a5568;">Subject</label>
-                <input type="text" id="contact-subject" required style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+                <input type="text" id="contact-subject" required style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; background: inherit; color: inherit;">
               </div>
               <div>
                 <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4a5568;">Message</label>
-                <textarea id="contact-message" rows="5" required style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; font-family: inherit; resize: vertical;"></textarea>
+                <textarea id="contact-message" rows="5" required style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; font-family: inherit; resize: vertical; background: inherit; color: inherit;"></textarea>
               </div>
               <button type="submit" class="auth-btn" style="padding: 12px 24px; align-self: flex-start; margin: 0;">Send Message</button>
             </form>

@@ -3150,4 +3150,88 @@ body.dark-mode .kanban-col[data-status="Under Review"] h3 { color: #f6ad55 !impo
 body.dark-mode .kanban-col[data-status="Shortlisted"] h3 { color: #b794f4 !important; }
 body.dark-mode .kanban-col[data-status="Offered"] h3 { color: #68d391 !important; }
 body.dark-mode .kanban-col[data-status="Declined"] h3 { color: #fc8181 !important; }
+
+/* FAQs and Help Center Styling */
+.faq-section-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  margin-bottom: 32px;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.faq-item {
+  border: 1px solid #edf2f7;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: #fff;
+  transition: all 0.2s ease-in-out;
+}
+
+.faq-item:hover {
+  border-color: #cbd5e0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.faq-header {
+  padding: 16px;
+  font-weight: 600;
+  color: #2d3748;
+  background: #f7fafc;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  font-family: 'Montserrat', sans-serif;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.faq-header:hover {
+  background: #edf2f7;
+  color: #7a151a;
+}
+
+.faq-content {
+  display: none;
+  padding: 16px;
+  border-top: 1px solid #edf2f7;
+  color: #4a5568;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+/* Dark mode FAQ overrides */
+body.dark-mode .faq-section-card {
+  background: #2d3748 !important;
+  border-color: #4a5568 !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+}
+
+body.dark-mode .faq-item {
+  background: #2d3748 !important;
+  border-color: #4a5568 !important;
+}
+
+body.dark-mode .faq-item:hover {
+  border-color: #718096 !important;
+}
+
+body.dark-mode .faq-header {
+  background: #1a202c !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .faq-header:hover {
+  background: #2d3748 !important;
+  color: #feb2b2 !important;
+}
+
+body.dark-mode .faq-content {
+  border-top-color: #4a5568 !important;
+  color: #cbd5e0 !important;
+}
 
