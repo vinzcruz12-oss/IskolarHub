@@ -52,8 +52,7 @@ function showPage(pageId, updateHash = true) {
     renderStudentUniDetail(uniKey);
   }
 
-  // Manage Dark Mode on Landing & University Pages vs App Pages (Student & Admin)
-  const isUniversityPage = pageId.endsWith('-scholarships');
+  const isUniversityPage = pageId.endsWith('-scholarships') && pageId !== 'saved-scholarships';
   if (pageId === 'landing' || isUniversityPage) {
     document.body.classList.remove('dark-mode');
   } else if (currentStudentId) {
