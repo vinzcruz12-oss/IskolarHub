@@ -6,12 +6,14 @@ let isViewingAsStudent = sessionStorage.getItem('isViewingAsStudent') === 'true'
 let lastUniversitySource = 'landing';
 
 // Administrative security logs simulation
-let securityLogs = [
+const defaultSecurityLogs = [
   { time: '2026-07-09 14:10:23', action: 'Admin login success', details: 'test@admin.com from unified form' },
   { time: '2026-07-09 14:02:45', action: 'Failed login attempt', details: 'unknown@user.com' },
   { time: '2026-07-09 12:45:12', action: 'Database backup automatic', details: 'Backup verified' },
   { time: '2026-07-09 11:30:00', action: 'Security policy change', details: 'Password complexity rules set' }
 ];
+
+let securityLogs = JSON.parse(localStorage.getItem('admin_security_logs')) || defaultSecurityLogs;
 
 function logSecurityEvent(action, details) {
   const now = new Date();
@@ -22,6 +24,13 @@ function logSecurityEvent(action, details) {
     String(now.getMinutes()).padStart(2, '0') + ':' +
     String(now.getSeconds()).padStart(2, '0');
   securityLogs.unshift({ time: timeStr, action, details });
+  
+  if (securityLogs.length > 100) {
+    securityLogs = securityLogs.slice(0, 100);
+  }
+  
+  localStorage.setItem('admin_security_logs', JSON.stringify(securityLogs));
+
   const el = document.getElementById('admin-access-logs');
   if (el) {
     // If the security tab is active, refresh visual log list instantly
