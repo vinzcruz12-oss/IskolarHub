@@ -183,6 +183,15 @@ function showPage(pageId, updateHash = true) {
     } else if (pageId === 'student-universities' || pageId === 'student-uni-detail') {
       const activeLink = document.getElementById('nav-student-universities');
       if (activeLink) activeLink.classList.add('active');
+    } else if (pageId === 'saved-scholarships') {
+      const activeLink = document.getElementById('nav-saved-scholarships');
+      if (activeLink) activeLink.classList.add('active');
+    } else if (pageId === 'application-tracker') {
+      const activeLink = document.getElementById('nav-application-tracker');
+      if (activeLink) activeLink.classList.add('active');
+    } else if (pageId === 'faqs-help') {
+      const activeLink = document.getElementById('nav-faqs-help');
+      if (activeLink) activeLink.classList.add('active');
     }
 
     // In preview mode: hide Edit Profile and Settings, swap Logout with Exit Preview
@@ -221,7 +230,7 @@ function showPage(pageId, updateHash = true) {
     toggleBtn.style.display = (showStudentSidebar || showAdminSidebar) ? 'block' : 'none';
   }
 
-  if (pageId === 'dashboard' || pageId === 'profile' || pageId === 'settings' || pageId === 'student-universities') {
+  if (pageId === 'dashboard' || pageId === 'profile' || pageId === 'settings' || pageId === 'student-universities' || pageId === 'saved-scholarships' || pageId === 'application-tracker' || pageId === 'faqs-help') {
     if (pageId === 'dashboard') {
       const welcomeEl = document.getElementById('dashboard-welcome');
       if (welcomeEl) welcomeEl.textContent = 'Welcome, ' + (currentStudentName || 'Student');
@@ -233,6 +242,12 @@ function showPage(pageId, updateHash = true) {
       }
       if (pageId === 'settings') {
         loadSettingsPreferences();
+      }
+      if (pageId === 'saved-scholarships') {
+        loadSavedScholarships();
+      }
+      if (pageId === 'application-tracker') {
+        renderKanbanBoard();
       }
     }
   }
@@ -684,11 +699,30 @@ async function loadRecommendations() {
 
   const studentGwaDisplay = (result.data.student && result.data.student.gwa) || (eligGwa ? eligGwa.value : 'N/A');
 
+  const savedKey = 'saved_scholarships_student_' + currentStudentId;
+  const savedList = JSON.parse(localStorage.getItem(savedKey)) || [];
+
   let html = '';
   scholarships.forEach(s => {
+    const isSaved = savedList.includes(parseInt(s.id));
     const reasons = (s.reason || []).map(r => '<li>' + r + '</li>').join('');
+    
+    const bookmarkBtn = `
+      <button onclick="toggleBookmark(${s.id})" class="btn-bookmark" style="background: none; border: none; cursor: pointer; color: ${isSaved ? '#7a151a' : '#cbd5e0'}; padding: 6px; display: inline-flex; align-items: center; justify-content: center; transition: color 0.2s;" title="${isSaved ? 'Remove from Saved' : 'Save Scholarship'}">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </button>
+    `;
+
+    const cleanTitle = s.title.replace(/'/g, "\\'");
+    const cleanUni = s.university.replace(/'/g, "\\'");
+
     html += `
-      <div class="card">
+      <div class="card" style="position: relative;">
+        <div style="position: absolute; top: 16px; right: 16px; display: flex; gap: 8px; align-items: center;">
+          ${bookmarkBtn}
+        </div>
         <h4>${s.title}</h4>
         <p><strong>University:</strong> ${s.university}</p>
         <p><strong>Type:</strong> ${s.scholarship_type}</p>
@@ -698,7 +732,16 @@ async function loadRecommendations() {
         <p><strong>Description:</strong> ${s.description}</p>
         <p><strong>Reason:</strong></p>
         <ul>${reasons}</ul>
-        ${s.official_scholarship_url ? '<a href="' + s.official_scholarship_url + '" target="_blank">Apply Now</a>' : 'No link'}
+        <div style="display: flex; gap: 12px; align-items: center; margin-top: 16px; flex-wrap: wrap;">
+          ${s.official_scholarship_url ? '<a href="' + s.official_scholarship_url + '" target="_blank" style="margin-top:0;">Apply Now</a>' : '<span style="font-size: 13.5px; color: #718096;">No official link</span>'}
+          <button onclick="openTrackerModal(${s.id}, '${cleanTitle}', '${cleanUni}')" class="auth-btn" style="padding: 10px 16px; margin: 0; font-size: 13.5px; background-color: #26374b; box-shadow: 0 4px 6px rgba(38, 55, 75, 0.15); display: inline-flex; align-items: center; gap: 6px; border: none; color: white;">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <rect x="7" y="7" width="3" height="9"></rect>
+              <rect x="14" y="7" width="3" height="5"></rect>
+            </svg> Track Status
+          </button>
+        </div>
       </div>
     `;
   });
@@ -1365,7 +1408,8 @@ const VALID_PAGES = [
   'admin-dashboard', 'admin-student-view',
   'up-scholarships', 'ateneo-scholarships', 'dlsu-scholarships',
   'ust-scholarships', 'feu-scholarships', 'nu-scholarships',
-  'adamson-scholarships', 'ue-scholarships'
+  'adamson-scholarships', 'ue-scholarships',
+  'saved-scholarships', 'application-tracker', 'faqs-help'
 ];
 
 const LANDING_ANCHORS = [
@@ -1388,7 +1432,7 @@ function handleRouting() {
   }
 
   if (VALID_PAGES.includes(hash)) {
-    if ((hash === 'dashboard' || hash === 'profile' || hash === 'settings' || hash === 'student-universities' || hash === 'student-uni-detail') && !currentStudentId && !isViewingAsStudent) {
+    if ((hash === 'dashboard' || hash === 'profile' || hash === 'settings' || hash === 'student-universities' || hash === 'student-uni-detail' || hash === 'saved-scholarships' || hash === 'application-tracker' || hash === 'faqs-help') && !currentStudentId && !isViewingAsStudent) {
       hash = 'login';
       window.location.hash = 'login';
       return;
@@ -1890,6 +1934,469 @@ function initPasswordToggles() {
 
 // Call on load
 initPasswordToggles();
+
+// ─── Saved & Bookmarked Scholarships ───
+function toggleBookmark(scholarshipId) {
+  if (!currentStudentId) return;
+  const key = 'saved_scholarships_student_' + currentStudentId;
+  let saved = JSON.parse(localStorage.getItem(key)) || [];
+  const index = saved.indexOf(parseInt(scholarshipId));
+  if (index > -1) {
+    saved.splice(index, 1);
+  } else {
+    saved.push(parseInt(scholarshipId));
+  }
+  localStorage.setItem(key, JSON.stringify(saved));
+  
+  // Reload the current page context to refresh heart status
+  const hash = window.location.hash.substring(1) || 'landing';
+  if (hash === 'dashboard') {
+    loadRecommendations();
+  } else if (hash === 'saved-scholarships') {
+    loadSavedScholarships();
+  }
+}
+
+async function loadSavedScholarships() {
+  const container = document.getElementById('saved-scholarships-container');
+  if (!container) return;
+
+  if (!currentStudentId) {
+    container.innerHTML = '<p style="color:red;">Please login first.</p>';
+    return;
+  }
+
+  const key = 'saved_scholarships_student_' + currentStudentId;
+  const savedIds = JSON.parse(localStorage.getItem(key)) || [];
+
+  if (savedIds.length === 0) {
+    container.innerHTML = '<p style="color:#718096; font-size: 14.5px;">You haven\'t bookmarked any scholarships yet. Browse recommended scholarships or partner universities to save them.</p>';
+    return;
+  }
+
+  container.innerHTML = '<p style="color: #a0aec0;">Loading your bookmarked scholarships...</p>';
+
+  // Fetch all scholarships from DB
+  const result = await apiFetch('/scholarships/index.php');
+  if (!result.ok || !result.data || !result.data.success) {
+    container.innerHTML = '<p style="color:red;">Error loading scholarships.</p>';
+    return;
+  }
+
+  const allScholarships = result.data.data || [];
+  const savedScholarships = allScholarships.filter(s => savedIds.includes(parseInt(s.id)));
+
+  if (savedScholarships.length === 0) {
+    container.innerHTML = '<p style="color:#718096; font-size: 14.5px;">No matching saved scholarships found.</p>';
+    return;
+  }
+
+  let html = '';
+  savedScholarships.forEach(s => {
+    const isSaved = true;
+    const bookmarkBtn = `
+      <button onclick="toggleBookmark(${s.id})" class="btn-bookmark" style="background: none; border: none; cursor: pointer; color: #7a151a; padding: 6px; display: inline-flex; align-items: center; justify-content: center; transition: color 0.2s;" title="Remove from Saved">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </button>
+    `;
+
+    const cleanTitle = s.title.replace(/'/g, "\\'");
+    const cleanUni = s.university.replace(/'/g, "\\'");
+
+    html += `
+      <div class="card" style="position: relative;">
+        <div style="position: absolute; top: 16px; right: 16px; display: flex; gap: 8px; align-items: center;">
+          ${bookmarkBtn}
+        </div>
+        <h4>${s.title}</h4>
+        <p><strong>University:</strong> ${s.university}</p>
+        <p><strong>Type:</strong> ${s.scholarship_type}</p>
+        <p><strong>Required GWA:</strong> ${s.minimum_gwa}</p>
+        <p><strong>Course:</strong> ${s.course || 'Any'}</p>
+        <p><strong>Description:</strong> ${s.description}</p>
+        <div style="display: flex; gap: 12px; align-items: center; margin-top: 16px; flex-wrap: wrap;">
+          ${s.official_scholarship_url ? '<a href="' + s.official_scholarship_url + '" target="_blank" style="margin-top:0;">Apply Now</a>' : '<span style="font-size: 13.5px; color: #718096;">No official link</span>'}
+          <button onclick="openTrackerModal(${s.id}, '${cleanTitle}', '${cleanUni}')" class="auth-btn" style="padding: 10px 16px; margin: 0; font-size: 13.5px; background-color: #26374b; box-shadow: 0 4px 6px rgba(38, 55, 75, 0.15); display: inline-flex; align-items: center; gap: 6px; border: none; color: white;">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <rect x="7" y="7" width="3" height="9"></rect>
+              <rect x="14" y="7" width="3" height="5"></rect>
+            </svg> Track Status
+          </button>
+        </div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+// ─── Application Status Tracker ───
+let cachedAllScholarships = [];
+
+async function fetchAllScholarships() {
+  if (cachedAllScholarships.length > 0) return cachedAllScholarships;
+  const result = await apiFetch('/scholarships/index.php');
+  if (result.ok && result.data && result.data.success) {
+    cachedAllScholarships = result.data.data || [];
+  }
+  return cachedAllScholarships;
+}
+
+async function onTrackerUniChange() {
+  const uniSelect = document.getElementById('tracker-uni-select');
+  const customUniGroup = document.getElementById('tracker-uni-custom-group');
+  const titleSelect = document.getElementById('tracker-title-select');
+  const customTitleGroup = document.getElementById('tracker-title-custom-group');
+  const customUniInput = document.getElementById('tracker-uni');
+  const customTitleInput = document.getElementById('tracker-title');
+
+  const selectedUni = uniSelect.value;
+
+  if (selectedUni === 'custom') {
+    customUniGroup.style.display = 'block';
+    customUniInput.value = '';
+    customUniInput.required = true;
+    
+    titleSelect.innerHTML = '<option value="custom">Other (Custom)</option>';
+    titleSelect.value = 'custom';
+    customTitleGroup.style.display = 'block';
+    customTitleInput.value = '';
+    customTitleInput.required = true;
+  } else if (!selectedUni) {
+    customUniGroup.style.display = 'none';
+    customUniInput.value = '';
+    customUniInput.required = false;
+    titleSelect.innerHTML = '<option value="">Select Scholarship</option><option value="custom">Other (Custom)</option>';
+    titleSelect.value = '';
+    customTitleGroup.style.display = 'none';
+    customTitleInput.value = '';
+    customTitleInput.required = false;
+  } else {
+    customUniGroup.style.display = 'none';
+    customUniInput.value = selectedUni;
+    customUniInput.required = false;
+
+    const scholarships = await fetchAllScholarships();
+    const matching = scholarships.filter(s => {
+      const sUni = s.university.toLowerCase();
+      const selUni = selectedUni.toLowerCase();
+      return sUni.includes(selUni) || selUni.includes(sUni);
+    });
+
+    let html = '<option value="">Select Scholarship</option>';
+    matching.forEach(s => {
+      html += `<option value="${s.title}" data-id="${s.id}">${s.title}</option>`;
+    });
+    html += '<option value="custom">Other (Custom)</option>';
+    titleSelect.innerHTML = html;
+    titleSelect.value = '';
+    
+    customTitleGroup.style.display = 'none';
+    customTitleInput.value = '';
+    customTitleInput.required = false;
+  }
+}
+
+function onTrackerTitleChange() {
+  const titleSelect = document.getElementById('tracker-title-select');
+  const customTitleGroup = document.getElementById('tracker-title-custom-group');
+  const customTitleInput = document.getElementById('tracker-title');
+  const selectedTitle = titleSelect.value;
+  const scholarshipIdInput = document.getElementById('tracker-scholarship-id');
+
+  if (selectedTitle === 'custom') {
+    customTitleGroup.style.display = 'block';
+    customTitleInput.value = '';
+    customTitleInput.required = true;
+    scholarshipIdInput.value = '';
+  } else {
+    customTitleGroup.style.display = 'none';
+    customTitleInput.value = selectedTitle;
+    customTitleInput.required = false;
+
+    const selectedOption = titleSelect.options[titleSelect.selectedIndex];
+    const sId = selectedOption ? selectedOption.getAttribute('data-id') : null;
+    scholarshipIdInput.value = sId || '';
+  }
+}
+
+async function openTrackerModal(scholarshipId, title, university) {
+  const modal = document.getElementById('tracker-modal');
+  if (!modal) return;
+
+  const uniSelect = document.getElementById('tracker-uni-select');
+  const customUniGroup = document.getElementById('tracker-uni-custom-group');
+  const titleSelect = document.getElementById('tracker-title-select');
+  const customTitleGroup = document.getElementById('tracker-title-custom-group');
+  const customUniInput = document.getElementById('tracker-uni');
+  const customTitleInput = document.getElementById('tracker-title');
+  const scholarshipIdInput = document.getElementById('tracker-scholarship-id');
+
+  scholarshipIdInput.value = scholarshipId || '';
+  customUniInput.value = university || '';
+  customTitleInput.value = title || '';
+  document.getElementById('tracker-status').value = 'Draft';
+
+  const scholarships = await fetchAllScholarships();
+
+  let matchedUni = '';
+  if (university) {
+    const uniOptions = Array.from(uniSelect.options).map(opt => opt.value);
+    const lowerUni = university.toLowerCase();
+    matchedUni = uniOptions.find(opt => opt && (lowerUni.includes(opt.toLowerCase()) || opt.toLowerCase().includes(lowerUni)));
+  }
+
+  if (matchedUni) {
+    uniSelect.value = matchedUni;
+    customUniGroup.style.display = 'none';
+    customUniInput.required = false;
+
+    const matching = scholarships.filter(s => {
+      const sUni = s.university.toLowerCase();
+      const selUni = matchedUni.toLowerCase();
+      return sUni.includes(selUni) || selUni.includes(sUni);
+    });
+
+    let html = '<option value="">Select Scholarship</option>';
+    matching.forEach(s => {
+      html += `<option value="${s.title}" data-id="${s.id}">${s.title}</option>`;
+    });
+    html += '<option value="custom">Other (Custom)</option>';
+    titleSelect.innerHTML = html;
+
+    let matchedTitle = '';
+    if (title) {
+      const match = matching.find(s => s.title.toLowerCase() === title.toLowerCase());
+      if (match) {
+        matchedTitle = match.title;
+        scholarshipIdInput.value = match.id;
+      }
+    }
+
+    if (matchedTitle) {
+      titleSelect.value = matchedTitle;
+      customTitleGroup.style.display = 'none';
+      customTitleInput.required = false;
+    } else if (title) {
+      titleSelect.value = 'custom';
+      customTitleGroup.style.display = 'block';
+      customTitleInput.value = title;
+      customTitleInput.required = true;
+    } else {
+      titleSelect.value = '';
+      customTitleGroup.style.display = 'none';
+      customTitleInput.required = false;
+    }
+  } else if (university || title) {
+    uniSelect.value = university ? 'custom' : '';
+    customUniGroup.style.display = university ? 'block' : 'none';
+    customUniInput.required = !!university;
+
+    titleSelect.innerHTML = '<option value="custom">Other (Custom)</option>';
+    titleSelect.value = 'custom';
+    customTitleGroup.style.display = 'block';
+    customTitleInput.required = true;
+  } else {
+    uniSelect.value = '';
+    customUniGroup.style.display = 'none';
+    customUniInput.required = false;
+
+    titleSelect.innerHTML = '<option value="">Select Scholarship</option><option value="custom">Other (Custom)</option>';
+    titleSelect.value = '';
+    customTitleGroup.style.display = 'none';
+    customTitleInput.required = false;
+  }
+
+  modal.style.display = 'flex';
+}
+
+function closeTrackerModal() {
+  const modal = document.getElementById('tracker-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+// Form submit handler for Tracker Modal
+document.getElementById('tracker-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (!currentStudentId) return;
+
+  const id = document.getElementById('tracker-scholarship-id').value;
+  const title = document.getElementById('tracker-title').value.trim();
+  const university = document.getElementById('tracker-uni').value.trim();
+  const status = document.getElementById('tracker-status').value;
+
+  const key = 'student_applications_' + currentStudentId;
+  let apps = JSON.parse(localStorage.getItem(key)) || [];
+
+  if (id) {
+    // If tracking a specific scholarship, check if it's already tracked and update/override it
+    const existingIndex = apps.findIndex(app => app.scholarshipId === parseInt(id));
+    if (existingIndex > -1) {
+      apps[existingIndex].status = status;
+      apps[existingIndex].title = title;
+      apps[existingIndex].university = university;
+      apps[existingIndex].dateUpdated = new Date().toISOString().split('T')[0];
+    } else {
+      apps.push({
+        id: Date.now(),
+        scholarshipId: parseInt(id),
+        title,
+        university,
+        status,
+        dateUpdated: new Date().toISOString().split('T')[0]
+      });
+    }
+  } else {
+    // Add custom application
+    apps.push({
+      id: Date.now(),
+      scholarshipId: null,
+      title,
+      university,
+      status,
+      dateUpdated: new Date().toISOString().split('T')[0]
+    });
+  }
+
+  localStorage.setItem(key, JSON.stringify(apps));
+  closeTrackerModal();
+
+  // If currently on tracker page, refresh kanban
+  const hash = window.location.hash.substring(1) || 'landing';
+  if (hash === 'application-tracker') {
+    renderKanbanBoard();
+  } else {
+    // Navigate to tracker page to show it
+    showPage('application-tracker');
+  }
+});
+
+function renderKanbanBoard() {
+  if (!currentStudentId) return;
+
+  const key = 'student_applications_' + currentStudentId;
+  const apps = JSON.parse(localStorage.getItem(key)) || [];
+  const statuses = ['Draft', 'Submitted', 'Under Review', 'Shortlisted', 'Offered', 'Declined'];
+
+  // Clear lists and count badges
+  statuses.forEach(status => {
+    const listId = 'list-' + status.replace(' ', '-');
+    const badgeId = 'badge-' + status.replace(' ', '-');
+    const list = document.getElementById(listId);
+    const badge = document.getElementById(badgeId);
+
+    if (list) list.innerHTML = '';
+    if (badge) badge.textContent = '0';
+  });
+
+  // Populate cards
+  apps.forEach(app => {
+    const status = app.status;
+    const listId = 'list-' + status.replace(' ', '-');
+    const badgeId = 'badge-' + status.replace(' ', '-');
+    const list = document.getElementById(listId);
+    const badge = document.getElementById(badgeId);
+
+    if (!list) return;
+
+    // Increment count badge
+    if (badge) {
+      badge.textContent = parseInt(badge.textContent) + 1;
+    }
+
+    const card = document.createElement('div');
+    card.className = 'kanban-card';
+
+    card.innerHTML = `
+      <h4 style="margin: 0; font-size: 14px; font-weight: 600; color: inherit; line-height: 1.4; font-family: 'Montserrat', sans-serif;">${app.title}</h4>
+      <p style="margin: 0; font-size: 11.5px; color: #718096;">${app.university}</p>
+      <div style="font-size: 10px; color: #a0aec0; margin-top: -2px;">Updated: ${app.dateUpdated || 'N/A'}</div>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+        <select onchange="moveApplication(${app.id}, this.value)" style="font-size: 11px; padding: 4px 6px; border: 1px solid #cbd5e0; border-radius: 4px; color: inherit; width: 125px; cursor: pointer; font-family: inherit;">
+          <option value="Draft" ${status === 'Draft' ? 'selected' : ''}>Draft</option>
+          <option value="Submitted" ${status === 'Submitted' ? 'selected' : ''}>Submitted</option>
+          <option value="Under Review" ${status === 'Under Review' ? 'selected' : ''}>Under Review</option>
+          <option value="Shortlisted" ${status === 'Shortlisted' ? 'selected' : ''}>Shortlisted</option>
+          <option value="Offered" ${status === 'Offered' ? 'selected' : ''}>Offered</option>
+          <option value="Declined" ${status === 'Declined' ? 'selected' : ''}>Declined</option>
+        </select>
+        
+        <button onclick="deleteApplication(${app.id})" style="background: none; border: none; cursor: pointer; color: #e53e3e; display: inline-flex; align-items: center; justify-content: center; padding: 4px;" title="Delete Application">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+        </button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  // Show empty indicator inside columns if 0 cards
+  statuses.forEach(status => {
+    const listId = 'list-' + status.replace(' ', '-');
+    const list = document.getElementById(listId);
+    if (list && list.children.length === 0) {
+      list.innerHTML = '<div style="font-size:12px; color:#a0aec0; text-align:center; padding:16px 0; border:1px dashed #e2e8f0; border-radius:6px;">No apps</div>';
+    }
+  });
+}
+
+function moveApplication(appId, newStatus) {
+  if (!currentStudentId) return;
+
+  const key = 'student_applications_' + currentStudentId;
+  let apps = JSON.parse(localStorage.getItem(key)) || [];
+  const index = apps.findIndex(app => app.id === appId);
+
+  if (index > -1) {
+    apps[index].status = newStatus;
+    apps[index].dateUpdated = new Date().toISOString().split('T')[0];
+    localStorage.setItem(key, JSON.stringify(apps));
+    renderKanbanBoard();
+  }
+}
+
+function deleteApplication(appId) {
+  if (!currentStudentId) return;
+  if (!confirm('Are you sure you want to remove this application from the tracker?')) return;
+
+  const key = 'student_applications_' + currentStudentId;
+  let apps = JSON.parse(localStorage.getItem(key)) || [];
+  apps = apps.filter(app => app.id !== appId);
+
+  localStorage.setItem(key, JSON.stringify(apps));
+  renderKanbanBoard();
+}
+
+// ─── FAQs & Help Center Accordion & Contact Form ───
+function toggleFaq(header) {
+  const content = header.nextElementSibling;
+  const arrow = header.querySelector('.faq-arrow');
+  const isOpen = content.style.display === 'block';
+  
+  content.style.display = isOpen ? 'none' : 'block';
+  if (arrow) {
+    arrow.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+  }
+}
+
+// Wire up FAQs & Help Center Contact Form automatically
+document.addEventListener('DOMContentLoaded', () => {
+  const contactForm = document.getElementById('help-contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const out = document.getElementById('contact-result');
+      out.innerHTML = '<p style="color:green; font-weight:600; margin-top: 12px;">Thank you! Your message has been sent successfully. Our team will get back to you shortly.</p>';
+      contactForm.reset();
+      setTimeout(() => { out.innerHTML = ''; }, 5000);
+    });
+  }
+});
 
 
 

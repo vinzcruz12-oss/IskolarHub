@@ -3073,4 +3073,81 @@ body.dark-mode .password-toggle-btn:hover {
 
 body.dark-mode .password-toggle-btn {
   color: #4a5568;
-}
+}
+
+/* Kanban Board Styling */
+.kanban-board {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 16px;
+  align-items: flex-start;
+  min-height: 500px;
+}
+
+.kanban-col {
+  flex: 1;
+  min-width: 250px;
+  background: #f7fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.kanban-col h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kanban-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 50px;
+}
+
+.kanban-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* Kanban Dark Mode overrides */
+body.dark-mode .kanban-col {
+  background: #1a202c !important;
+  border-color: #2d3748 !important;
+}
+
+body.dark-mode .kanban-card {
+  background: #2d3748 !important;
+  border-color: #4a5568 !important;
+  color: #e2e8f0 !important;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+body.dark-mode .kanban-card select {
+  background-color: #1a202c !important;
+  color: #e2e8f0 !important;
+  border-color: #4a5568 !important;
+}
+
+body.dark-mode .kanban-col[data-status="Draft"] h3 { color: #cbd5e0 !important; }
+body.dark-mode .kanban-col[data-status="Submitted"] h3 { color: #63b3ed !important; }
+body.dark-mode .kanban-col[data-status="Under Review"] h3 { color: #f6ad55 !important; }
+body.dark-mode .kanban-col[data-status="Shortlisted"] h3 { color: #b794f4 !important; }
+body.dark-mode .kanban-col[data-status="Offered"] h3 { color: #68d391 !important; }
+body.dark-mode .kanban-col[data-status="Declined"] h3 { color: #fc8181 !important; }
+

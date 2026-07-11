@@ -66,6 +66,31 @@
               <path d="M6 17h12"></path>
             </svg></span> Universities
         </a>
+        <a href="#saved-scholarships" onclick="showPage('saved-scholarships'); return false;" class="sidebar-link"
+          id="nav-saved-scholarships">
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+            </svg></span> Saved Scholarships
+        </a>
+        <a href="#application-tracker" onclick="showPage('application-tracker'); return false;" class="sidebar-link"
+          id="nav-application-tracker">
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <rect x="7" y="7" width="3" height="9"></rect>
+              <rect x="14" y="7" width="3" height="5"></rect>
+            </svg></span> Application Tracker
+        </a>
+        <a href="#faqs-help" onclick="showPage('faqs-help'); return false;" class="sidebar-link"
+          id="nav-faqs-help">
+          <span class="sidebar-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg></span> FAQs & Help
+        </a>
       </nav>
 
       <!-- Bottom links -->
@@ -1129,6 +1154,177 @@
               </button>
             </div>
 
+          </div>
+        </section>
+
+        <!-- Saved / Bookmarked Scholarships Page -->
+        <section id="saved-scholarships-page" class="page" style="display:none; max-width: 1000px;">
+          <div class="dashboard-header"
+            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px;">
+            <h2 style="margin: 0; font-family: 'Montserrat', sans-serif; color: #26374b;">Saved Scholarships</h2>
+            <button onclick="showPage('dashboard')" class="btn-back-link" style="margin: 0; padding: 8px 16px;">Back to Dashboard</button>
+          </div>
+
+          <p style="color: #718096; font-size: 14px; margin-top: 0; margin-bottom: 24px;">Manage the scholarships you have bookmarked for quick access and tracking.</p>
+
+          <div id="saved-scholarships-container" class="recommendations-container" style="display: flex; flex-direction: column; gap: 16px;">
+            <!-- Rendered dynamically via JS -->
+            <p style="color: #a0aec0;">No bookmarked scholarships yet. Go to Find Scholarships to save some!</p>
+          </div>
+        </section>
+
+        <!-- Application Status Tracker Page -->
+        <section id="application-tracker-page" class="page" style="display:none; max-width: 1200px;">
+          <div class="dashboard-header"
+            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px;">
+            <h2 style="margin: 0; font-family: 'Montserrat', sans-serif; color: #26374b;">Application Status Tracker</h2>
+            <div style="display: flex; gap: 12px;">
+              <button onclick="openTrackerModal(null, '', '')" class="auth-btn" style="padding: 8px 16px; font-size: 13px; margin: 0; white-space: nowrap;">+ Add</button>
+              <button onclick="showPage('dashboard')" class="btn-back-link" style="margin: 0; padding: 8px 16px;">Back to Dashboard</button>
+            </div>
+          </div>
+
+          <p style="color: #718096; font-size: 14px; margin-top: 0; margin-bottom: 24px;">Track your active applications in real-time. Change status dropdowns on cards to move them across columns.</p>
+
+          <div class="kanban-board">
+            <!-- Column: Draft -->
+            <div class="kanban-col" data-status="Draft">
+              <h3 style="margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', sans-serif; color: #4a5568; font-size: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <span>Draft</span>
+                <span class="kanban-badge" id="badge-Draft" style="background: #cbd5e0; color: #4a5568; border-radius: 20px; padding: 2px 8px; font-size: 12px; font-weight: 700;">0</span>
+              </h3>
+              <div class="kanban-cards-list" id="list-Draft" style="display: flex; flex-direction: column; gap: 12px; min-height: 50px;"></div>
+            </div>
+
+            <!-- Column: Submitted -->
+            <div class="kanban-col" data-status="Submitted">
+              <h3 style="margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', sans-serif; color: #2b6cb0; font-size: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <span>Submitted</span>
+                <span class="kanban-badge" id="badge-Submitted" style="background: #ebf8ff; color: #2b6cb0; border-radius: 20px; padding: 2px 8px; font-size: 12px; font-weight: 700;">0</span>
+              </h3>
+              <div class="kanban-cards-list" id="list-Submitted" style="display: flex; flex-direction: column; gap: 12px; min-height: 50px;"></div>
+            </div>
+
+            <!-- Column: Under Review -->
+            <div class="kanban-col" data-status="Under Review">
+              <h3 style="margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', sans-serif; color: #dd6b20; font-size: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <span>Under Review</span>
+                <span class="kanban-badge" id="badge-Under-Review" style="background: #feebc8; color: #dd6b20; border-radius: 20px; padding: 2px 8px; font-size: 12px; font-weight: 700;">0</span>
+              </h3>
+              <div class="kanban-cards-list" id="list-Under-Review" style="display: flex; flex-direction: column; gap: 12px; min-height: 50px;"></div>
+            </div>
+
+            <!-- Column: Shortlisted -->
+            <div class="kanban-col" data-status="Shortlisted">
+              <h3 style="margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', sans-serif; color: #6b46c1; font-size: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <span>Shortlisted</span>
+                <span class="kanban-badge" id="badge-Shortlisted" style="background: #faf5ff; color: #6b46c1; border-radius: 20px; padding: 2px 8px; font-size: 12px; font-weight: 700;">0</span>
+              </h3>
+              <div class="kanban-cards-list" id="list-Shortlisted" style="display: flex; flex-direction: column; gap: 12px; min-height: 50px;"></div>
+            </div>
+
+            <!-- Column: Offered -->
+            <div class="kanban-col" data-status="Offered">
+              <h3 style="margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', sans-serif; color: #22543d; font-size: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <span>Offered</span>
+                <span class="kanban-badge" id="badge-Offered" style="background: #c6f6d5; color: #22543d; border-radius: 20px; padding: 2px 8px; font-size: 12px; font-weight: 700;">0</span>
+              </h3>
+              <div class="kanban-cards-list" id="list-Offered" style="display: flex; flex-direction: column; gap: 12px; min-height: 50px;"></div>
+            </div>
+
+            <!-- Column: Declined -->
+            <div class="kanban-col" data-status="Declined">
+              <h3 style="margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', sans-serif; color: #9b2c2c; font-size: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <span>Declined</span>
+                <span class="kanban-badge" id="badge-Declined" style="background: #fed7d7; color: #9b2c2c; border-radius: 20px; padding: 2px 8px; font-size: 12px; font-weight: 700;">0</span>
+              </h3>
+              <div class="kanban-cards-list" id="list-Declined" style="display: flex; flex-direction: column; gap: 12px; min-height: 50px;"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQs / Help Center Page -->
+        <section id="faqs-help-page" class="page" style="display:none; max-width: 900px;">
+          <div class="dashboard-header"
+            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #edf2f7; padding-bottom: 16px; margin-bottom: 24px;">
+            <h2 style="margin: 0; font-family: 'Montserrat', sans-serif; color: #26374b;">FAQs & Help Center</h2>
+            <button onclick="showPage('dashboard')" class="btn-back-link" style="margin: 0; padding: 8px 16px;">Back to Dashboard</button>
+          </div>
+
+          <p style="color: #718096; font-size: 14px; margin-top: 0; margin-bottom: 24px;">Find answers to common questions about IskolarHub, or drop a message to our support team.</p>
+
+          <!-- FAQs Accordion Section -->
+          <div class="dashboard-card" style="background: #fff; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 32px;">
+            <h3 style="margin-top: 0; margin-bottom: 20px; font-family: 'Montserrat', sans-serif; color: #7a151a; font-size: 18px;">Frequently Asked Questions</h3>
+            
+            <div class="faq-list">
+              <div class="faq-item" style="border: 1px solid #edf2f7; border-radius: 8px; margin-bottom: 12px; overflow: hidden; background: #fff;">
+                <div class="faq-header" onclick="toggleFaq(this)" style="padding: 16px; font-weight: 600; color: #2d3748; background: #f7fafc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-family: 'Montserrat', sans-serif;">
+                  <span>How does the scholarship recommendation filter work?</span>
+                  <svg viewBox="0 0 24 24" width="16" height="16" class="faq-arrow" style="transition: transform 0.2s;" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="faq-content" style="display: none; padding: 16px; border-top: 1px solid #edf2f7; color: #4a5568; font-size: 14.5px; line-height: 1.6;">
+                  Our recommendation filter evaluates your GWA, course, and strand against the criteria defined by scholarship providers. It translates different grading scales (like 1.0-5.0 or 4.0 DLSU scales) into a standardized format to check eligibility, ensuring you see the most relevant matches first.
+                </div>
+              </div>
+
+              <div class="faq-item" style="border: 1px solid #edf2f7; border-radius: 8px; margin-bottom: 12px; overflow: hidden; background: #fff;">
+                <div class="faq-header" onclick="toggleFaq(this)" style="padding: 16px; font-weight: 600; color: #2d3748; background: #f7fafc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-family: 'Montserrat', sans-serif;">
+                  <span>What is the "Application Status Tracker"?</span>
+                  <svg viewBox="0 0 24 24" width="16" height="16" class="faq-arrow" style="transition: transform 0.2s;" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="faq-content" style="display: none; padding: 16px; border-top: 1px solid #edf2f7; color: #4a5568; font-size: 14.5px; line-height: 1.6;">
+                  It is a Kanban-style dashboard where you can organize scholarships you are actively applying for. You can categorize them as Draft, Submitted, Under Review, Shortlisted, Offered, or Declined, giving you a full visual roadmap of your applications.
+                </div>
+              </div>
+
+              <div class="faq-item" style="border: 1px solid #edf2f7; border-radius: 8px; margin-bottom: 12px; overflow: hidden; background: #fff;">
+                <div class="faq-header" onclick="toggleFaq(this)" style="padding: 16px; font-weight: 600; color: #2d3748; background: #f7fafc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-family: 'Montserrat', sans-serif;">
+                  <span>Are my bookmarks synced across devices?</span>
+                  <svg viewBox="0 0 24 24" width="16" height="16" class="faq-arrow" style="transition: transform 0.2s;" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="faq-content" style="display: none; padding: 16px; border-top: 1px solid #edf2f7; color: #4a5568; font-size: 14.5px; line-height: 1.6;">
+                  Currently, bookmarks and tracker cards are stored securely in your browser's local storage linked to your account. Rest assured, your selections will persist on the same browser when you log back in.
+                </div>
+              </div>
+
+              <div class="faq-item" style="border: 1px solid #edf2f7; border-radius: 8px; margin-bottom: 12px; overflow: hidden; background: #fff;">
+                <div class="faq-header" onclick="toggleFaq(this)" style="padding: 16px; font-weight: 600; color: #2d3748; background: #f7fafc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-family: 'Montserrat', sans-serif;">
+                  <span>How can I contact a scholarship provider?</span>
+                  <svg viewBox="0 0 24 24" width="16" height="16" class="faq-arrow" style="transition: transform 0.2s;" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="faq-content" style="display: none; padding: 16px; border-top: 1px solid #edf2f7; color: #4a5568; font-size: 14.5px; line-height: 1.6;">
+                  Each scholarship card contains an official website link or contact information (where available). Click "Apply Now" or check the program description for direct portals to submit applications.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Form Section -->
+          <div class="dashboard-card" style="background: #fff; border: none; border-radius: 12px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
+            <h3 style="margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', sans-serif; color: #7a151a; font-size: 18px;">Contact Support / Ask a Question</h3>
+            <form id="help-contact-form" style="display: flex; flex-direction: column; gap: 16px;">
+              <div class="auth-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                <div>
+                  <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4a5568;">Your Name</label>
+                  <input type="text" id="contact-name" required style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+                </div>
+                <div>
+                  <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4a5568;">Email Address</label>
+                  <input type="email" id="contact-email" required style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+                </div>
+              </div>
+              <div>
+                <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4a5568;">Subject</label>
+                <input type="text" id="contact-subject" required style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box;">
+              </div>
+              <div>
+                <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4a5568;">Message</label>
+                <textarea id="contact-message" rows="5" required style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; font-family: inherit; resize: vertical;"></textarea>
+              </div>
+              <button type="submit" class="auth-btn" style="padding: 12px 24px; align-self: flex-start; margin: 0;">Send Message</button>
+            </form>
+            <div id="contact-result" class="auth-result"></div>
           </div>
         </section>
 
@@ -3339,6 +3535,59 @@
   </div>
 
 
+
+  <!-- Application Tracker Modal -->
+  <div id="tracker-modal" class="modal" style="display:none; align-items: center; justify-content: center;">
+    <div class="modal-content" style="max-width: 500px; text-align: left;">
+      <h3 style="margin-top: 0; margin-bottom: 16px; color: #7a151a; font-family: 'Montserrat', sans-serif; font-size: 20px;">Track Application</h3>
+      <form id="tracker-form" style="display: flex; flex-direction: column; gap: 16px;">
+        <input type="hidden" id="tracker-scholarship-id">
+        <div>
+          <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4a5568;">University / Provider</label>
+          <select id="tracker-uni-select" onchange="onTrackerUniChange()" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; font-family: inherit;">
+            <option value="">Select University</option>
+            <option value="University of the Philippines Diliman">University of the Philippines Diliman</option>
+            <option value="Ateneo de Manila University">Ateneo de Manila University</option>
+            <option value="De La Salle University">De La Salle University</option>
+            <option value="University of Santo Tomas">University of Santo Tomas</option>
+            <option value="Far Eastern University">Far Eastern University</option>
+            <option value="National University">National University</option>
+            <option value="University of the East">University of the East</option>
+            <option value="Adamson University">Adamson University</option>
+            <option value="custom">Other (Custom)</option>
+          </select>
+          <div id="tracker-uni-custom-group" style="display: none; margin-top: 8px;">
+            <input type="text" id="tracker-uni" placeholder="Enter custom university" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; font-family: inherit;">
+          </div>
+        </div>
+        <div>
+          <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4a5568;">Scholarship Name</label>
+          <select id="tracker-title-select" onchange="onTrackerTitleChange()" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; font-family: inherit;">
+            <option value="">Select Scholarship</option>
+            <option value="custom">Other (Custom)</option>
+          </select>
+          <div id="tracker-title-custom-group" style="display: none; margin-top: 8px;">
+            <input type="text" id="tracker-title" placeholder="Enter custom scholarship name" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; font-family: inherit;">
+          </div>
+        </div>
+        <div>
+          <label style="display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #4a5568;">Application Status</label>
+          <select id="tracker-status" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; font-family: inherit;">
+            <option value="Draft">Draft</option>
+            <option value="Submitted">Submitted</option>
+            <option value="Under Review">Under Review</option>
+            <option value="Shortlisted">Shortlisted</option>
+            <option value="Offered">Offered</option>
+            <option value="Declined">Declined</option>
+          </select>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px;">
+          <button type="button" onclick="closeTrackerModal()" class="btn-back-link" style="margin: 0; padding: 10px 20px;">Cancel</button>
+          <button type="submit" class="auth-btn" style="padding: 10px 20px; margin: 0;">Save to Tracker</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <script src="js/app.js"></script>
 </body>
