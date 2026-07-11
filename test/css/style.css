@@ -992,6 +992,10 @@ html {
   flex-direction: column;
 }
 
+.contact-form .form-group {
+  margin-bottom: 14px;
+}
+
 .form-group {
   margin-bottom: 24px;
   text-align: left;

@@ -2401,6 +2401,19 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => { out.innerHTML = ''; }, 5000);
     });
   }
+
+  const landingContact = document.getElementById('landing-contact-form');
+  if (landingContact) {
+    landingContact.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const out = document.getElementById('landing-contact-result');
+      if (out) {
+        out.innerHTML = '<p style="color:green; font-weight:600; margin-top: 12px;">Thank you! Your message has been sent successfully. Our team will get back to you shortly.</p>';
+        landingContact.reset();
+        setTimeout(() => { out.innerHTML = ''; }, 5000);
+      }
+    });
+  }
 });
 
 
