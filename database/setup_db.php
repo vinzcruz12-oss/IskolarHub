@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/../config/database.php';
 
-// Helper to run SQL files that can contain multiple queries
 function executeSqlFile($pdo, $filePath) {
     if (!file_exists($filePath)) {
         echo "Error: File not found: $filePath\n";
@@ -13,20 +12,59 @@ function executeSqlFile($pdo, $filePath) {
     $sql = file_get_contents($filePath);
     
     // Remove SQL comments
-    $sql = preg_replace('/--.*\n/', '', $sql);
+    $sql = preg_replace('/--.*(\r?\n|$)/', '', $sql);
     $sql = preg_replace('/\/\*.*?\*\//s', '', $sql);
     
-    // Split into individual queries
-    $queries = array_filter(array_map('trim', explode(';', $sql)));
+    // Split into individual queries, respecting quotes
+    $queries = [];
+    $query = '';
+    $inSingleQuote = false;
+    $inDoubleQuote = false;
+    $escaped = false;
+    $len = strlen($sql);
     
-    foreach ($queries as $query) {
-        if (empty($query)) {
+    for ($i = 0; $i < $len; $i++) {
+        $char = $sql[$i];
+        
+        if ($escaped) {
+            $query .= $char;
+            $escaped = false;
             continue;
         }
+        
+        if ($char === '\\') {
+            $query .= $char;
+            $escaped = true;
+            continue;
+        }
+        
+        if ($char === "'" && !$inDoubleQuote) {
+            $inSingleQuote = !$inSingleQuote;
+        } elseif ($char === '"' && !$inSingleQuote) {
+            $inDoubleQuote = !$inDoubleQuote;
+        }
+        
+        if ($char === ';' && !$inSingleQuote && !$inDoubleQuote) {
+            $trimmed = trim($query);
+            if ($trimmed !== '') {
+                $queries[] = $trimmed;
+            }
+            $query = '';
+        } else {
+            $query .= $char;
+        }
+    }
+    
+    $trimmed = trim($query);
+    if ($trimmed !== '') {
+        $queries[] = $trimmed;
+    }
+    
+    foreach ($queries as $query) {
         try {
             $pdo->exec($query);
         } catch (PDOException $e) {
-            echo "Warning / Error on query:\n$query\nError: " . $e->getMessage() . "\n\n";
+            echo "Warning / Error on query:\n" . substr($query, 0, 150) . "...\nError: " . $e->getMessage() . "\n\n";
             // Do not fail immediately, some INSERT IGNORE might trigger warnings/errors
         }
     }

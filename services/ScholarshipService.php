@@ -30,12 +30,20 @@ class ScholarshipService {
 
         $allowedTypes = [
             'Academic',
-            'Merit',
+            'Alumni',
+            'Athletic',
             'Financial Assistance',
             'Government',
+            'Government/Private',
+            'Leadership',
+            'Loan',
+            'Merit',
+            'Need-Based',
+            'Needs-Based',
             'Private',
-            'Athletic',
-            'Needs-Based'
+            'Service',
+            'Student Assistantship',
+            'Talent-Based'
         ];
 
         if (!in_array($data['course'], $allowedCourses)) {
@@ -108,12 +116,20 @@ class ScholarshipService {
 
         $allowedTypes = [
             'Academic',
-            'Merit',
+            'Alumni',
+            'Athletic',
             'Financial Assistance',
             'Government',
+            'Government/Private',
+            'Leadership',
+            'Loan',
+            'Merit',
+            'Need-Based',
+            'Needs-Based',
             'Private',
-            'Athletic',
-            'Needs-Based'
+            'Service',
+            'Student Assistantship',
+            'Talent-Based'
         ];
 
         if (!in_array($data['course'], $allowedCourses)) {

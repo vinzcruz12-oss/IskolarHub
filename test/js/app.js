@@ -385,6 +385,9 @@ function viewAsStudent() {
   const eligGwa = document.getElementById('elig-gwa');
   if (eligGwa) eligGwa.value = '';
 
+  const eligSchool = document.getElementById('elig-school');
+  if (eligSchool) eligSchool.value = 'all';
+
   // Clear recommendation results
   const recResult = document.getElementById('rec-result');
   if (recResult) recResult.innerHTML = '<p style="color:#718096; font-size: 14.5px;">Select a course and enter a GWA above, then click "Update GWA & Course" to see matching scholarships for this persona.</p>';
@@ -513,6 +516,8 @@ async function loadStudentProfile() {
     }
     const eligGwa = document.getElementById('elig-gwa');
     if (eligGwa) eligGwa.value = '';
+    const eligSchool = document.getElementById('elig-school');
+    if (eligSchool) eligSchool.value = 'all';
 
     // Profile page fields
     const profFirst = document.getElementById('prof-firstname');
@@ -580,11 +585,15 @@ document.getElementById('eligibility-form').addEventListener('submit', async (e)
     return;
   }
 
+  const eligSchoolVal = document.getElementById('elig-school')?.value;
   const payload = {
     id: currentStudentId,
     course: document.getElementById('elig-course').value || undefined,
     gwa: document.getElementById('elig-gwa').value ? parseFloat(document.getElementById('elig-gwa').value) : undefined
   };
+  if (eligSchoolVal && eligSchoolVal !== 'all') {
+    payload.current_school = eligSchoolVal;
+  }
 
   Object.keys(payload).forEach(key => {
     if (payload[key] === undefined) delete payload[key];
@@ -690,6 +699,7 @@ async function loadRecommendations() {
 
   const eligCourse = document.getElementById('elig-course');
   const eligGwa = document.getElementById('elig-gwa');
+  const eligSchool = document.getElementById('elig-school');
   const out = document.getElementById('rec-result');
 
   if (!eligCourse || !eligCourse.value || !eligGwa || !eligGwa.value) {
@@ -702,10 +712,12 @@ async function loadRecommendations() {
   let apiUrl;
   const course = encodeURIComponent(eligCourse.value || '');
   const gwa = encodeURIComponent(eligGwa.value || '0');
+  const schoolVal = eligSchool && eligSchool.value !== 'all' ? eligSchool.value : '';
+  const school = encodeURIComponent(schoolVal);
   if (isViewingAsStudent) {
-    apiUrl = '/recommendations/index.php?course=' + course + '&gwa=' + gwa;
+    apiUrl = '/recommendations/index.php?course=' + course + '&gwa=' + gwa + '&school=' + school;
   } else {
-    apiUrl = '/recommendations/index.php?student_id=' + encodeURIComponent(currentStudentId) + '&course=' + course + '&gwa=' + gwa;
+    apiUrl = '/recommendations/index.php?student_id=' + encodeURIComponent(currentStudentId) + '&course=' + course + '&gwa=' + gwa + '&school=' + school;
   }
 
   const result = await apiFetch(apiUrl);

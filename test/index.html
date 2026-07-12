@@ -826,6 +826,23 @@
                   <input type="number" id="elig-gwa" step="0.01" placeholder="e.g., 90.00" required
                     style="padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; width: 100%; box-sizing: border-box;">
                 </div>
+                <!-- University -->
+                <div>
+                  <label
+                    style="color: #4a5568; font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Target/Current University</label>
+                  <select id="elig-school"
+                    style="padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; width: 100%; box-sizing: border-box; font-family: inherit; font-size: 14.5px; background-color: #fff; color: #2d3748;">
+                    <option value="all">All Universities</option>
+                    <option value="Far Eastern University">Far Eastern University</option>
+                    <option value="University of the Philippines">University of the Philippines</option>
+                    <option value="Ateneo de Manila University">Ateneo de Manila University</option>
+                    <option value="De La Salle University">De La Salle University</option>
+                    <option value="University of Santo Tomas">University of Santo Tomas</option>
+                    <option value="National University">National University</option>
+                    <option value="Adamson University">Adamson University</option>
+                    <option value="University of the East">University of the East</option>
+                  </select>
+                </div>
                 <!-- Scholarship Type -->
                 <div>
                   <label
@@ -835,12 +852,20 @@
                     style="padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; width: 100%; box-sizing: border-box; font-family: inherit; font-size: 14.5px; background-color: #fff; color: #2d3748;">
                     <option value="all">All Types</option>
                     <option value="Academic">Academic</option>
-                    <option value="Merit">Merit</option>
+                    <option value="Alumni">Alumni</option>
+                    <option value="Athletic">Athletic</option>
                     <option value="Financial Assistance">Financial Assistance</option>
                     <option value="Government">Government</option>
-                    <option value="Private">Private</option>
-                    <option value="Athletic">Athletic</option>
+                    <option value="Government/Private">Government/Private</option>
+                    <option value="Leadership">Leadership</option>
+                    <option value="Loan">Loan</option>
+                    <option value="Merit">Merit</option>
+                    <option value="Need-Based">Need-Based</option>
                     <option value="Needs-Based">Needs-Based</option>
+                    <option value="Private">Private</option>
+                    <option value="Service">Service</option>
+                    <option value="Student Assistantship">Student Assistantship</option>
+                    <option value="Talent-Based">Talent-Based</option>
                   </select>
                 </div>
               </div>
@@ -1530,12 +1555,20 @@
                 <select id="scholarship-type-filter">
                   <option value="all">All Types</option>
                   <option value="Academic">Academic</option>
-                  <option value="Government">Government</option>
-                  <option value="Private">Private</option>
-                  <option value="Needs-Based">Needs-Based</option>
-                  <option value="Financial Assistance">Financial Assistance</option>
+                  <option value="Alumni">Alumni</option>
                   <option value="Athletic">Athletic</option>
+                  <option value="Financial Assistance">Financial Assistance</option>
+                  <option value="Government">Government</option>
+                  <option value="Government/Private">Government/Private</option>
+                  <option value="Leadership">Leadership</option>
+                  <option value="Loan">Loan</option>
                   <option value="Merit">Merit</option>
+                  <option value="Need-Based">Need-Based</option>
+                  <option value="Needs-Based">Needs-Based</option>
+                  <option value="Private">Private</option>
+                  <option value="Service">Service</option>
+                  <option value="Student Assistantship">Student Assistantship</option>
+                  <option value="Talent-Based">Talent-Based</option>
                 </select>
               </div>
               <div id="admin-table"></div>
@@ -3355,12 +3388,20 @@
         <select id="sch-type" required>
           <option value="">Select</option>
           <option value="Academic">Academic</option>
-          <option value="Merit">Merit</option>
+          <option value="Alumni">Alumni</option>
+          <option value="Athletic">Athletic</option>
           <option value="Financial Assistance">Financial Assistance</option>
           <option value="Government">Government</option>
-          <option value="Private">Private</option>
-          <option value="Athletic">Athletic</option>
+          <option value="Government/Private">Government/Private</option>
+          <option value="Leadership">Leadership</option>
+          <option value="Loan">Loan</option>
+          <option value="Merit">Merit</option>
+          <option value="Need-Based">Need-Based</option>
           <option value="Needs-Based">Needs-Based</option>
+          <option value="Private">Private</option>
+          <option value="Service">Service</option>
+          <option value="Student Assistantship">Student Assistantship</option>
+          <option value="Talent-Based">Talent-Based</option>
         </select>
         <label>Minimum GWA</label>
         <input type="number" id="sch-gwa" step="0.01" required>
