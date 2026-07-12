@@ -68,6 +68,11 @@ function showPage(pageId, updateHash = true) {
   }
 
   const isUniversityPage = pageId.endsWith('-scholarships') && pageId !== 'saved-scholarships';
+  if (isUniversityPage) {
+    const uniKey = pageId.replace('-scholarships', '');
+    renderPublicUniDetail(uniKey);
+  }
+
   if (pageId === 'landing' || isUniversityPage) {
     document.body.classList.remove('dark-mode');
   } else if (currentStudentId) {
@@ -1719,15 +1724,25 @@ window.addEventListener('click', () => {
   closeLandingDropdown();
 });
 
-// Student University Detail Rendering Functions
-function showStudentUniDetail(uniKey) {
+async function showStudentUniDetail(uniKey) {
   sessionStorage.setItem('selectedStudentUniKey', uniKey);
-  renderStudentUniDetail(uniKey);
+  await renderStudentUniDetail(uniKey);
   showPage('student-uni-detail');
 }
 
-function renderStudentUniDetail(uniKey) {
+async function renderStudentUniDetail(uniKey) {
   const uniNames = {
+    up: 'University of the Philippines Diliman',
+    ateneo: 'Ateneo de Manila University',
+    dlsu: 'De La Salle University',
+    ust: 'University of Santo Tomas',
+    feu: 'Far Eastern University',
+    nu: 'National University',
+    adamson: 'Adamson University',
+    ue: 'University of the East'
+  };
+
+  const dbUniNames = {
     up: 'University of the Philippines Diliman',
     ateneo: 'Ateneo de Manila University',
     dlsu: 'De La Salle University',
@@ -1753,10 +1768,125 @@ function renderStudentUniDetail(uniKey) {
     if (descEl && publicDesc) {
       descEl.textContent = publicDesc.textContent.trim();
     }
+  }
 
-    const publicAccordion = publicPage.querySelector('.uni-right-accordion');
-    if (accordionEl && publicAccordion) {
-      accordionEl.innerHTML = publicAccordion.innerHTML;
+  if (accordionEl) {
+    accordionEl.innerHTML = '<p style="color:#718096; text-align:center; padding: 20px;">Loading scholarships...</p>';
+    
+    const result = await apiFetch('/scholarships/index.php');
+    if (result.ok && result.data && result.data.success) {
+      const allScholarships = result.data.data || [];
+      const targetUni = dbUniNames[uniKey];
+      const uniScholarships = allScholarships.filter(s => s.university === targetUni);
+      
+      if (uniScholarships.length === 0) {
+        accordionEl.innerHTML = '<p style="color:#718096; text-align:center; padding: 20px;">No scholarships found for this university.</p>';
+        return;
+      }
+      
+      let html = '';
+      uniScholarships.forEach(s => {
+        html += `
+          <div class="uni-accordion-item">
+            <div class="uni-accordion-header" onclick="toggleUniAccordion(this)">
+              <span class="uni-accordion-title">${s.title}</span>
+              <svg viewBox="0 0 24 24" class="uni-accordion-arrow">
+                <path d="M7 10l5 5 5-5z" />
+              </svg>
+            </div>
+            <div class="uni-accordion-content">
+              <div class="uni-accordion-columns">
+                <div class="uni-content-col">
+                  <ul>
+                    <li><strong>Type:</strong> ${s.scholarship_type}</li>
+                    <li><strong>Coverage:</strong> Full Tuition & Fees (Refer to official requirements)</li>
+                    <li><strong>Minimum GWA:</strong> ${s.minimum_gwa || 'None'}</li>
+                  </ul>
+                </div>
+                <div class="uni-content-col">
+                  <ul>
+                    <li><strong>Courses:</strong> ${s.course}</li>
+                    <li><strong>Requirements:</strong> ${s.requirements || 'N/A'}</li>
+                    <li><strong>Deadline:</strong> ${s.deadline || 'N/A'}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      accordionEl.innerHTML = html;
+    } else {
+      accordionEl.innerHTML = '<p style="color:red; text-align:center; padding: 20px;">Failed to load scholarships.</p>';
+    }
+  }
+}
+
+async function renderPublicUniDetail(uniKey) {
+  const dbUniNames = {
+    up: 'University of the Philippines Diliman',
+    ateneo: 'Ateneo de Manila University',
+    dlsu: 'De La Salle University',
+    ust: 'University of Santo Tomas',
+    feu: 'Far Eastern University',
+    nu: 'National University',
+    adamson: 'Adamson University',
+    ue: 'University of the East'
+  };
+
+  const pageId = uniKey + '-scholarships-page';
+  const pageEl = document.getElementById(pageId);
+  if (!pageEl) return;
+
+  const accordionEl = pageEl.querySelector('.uni-right-accordion');
+  if (accordionEl) {
+    accordionEl.innerHTML = '<p style="color:#718096; text-align:center; padding: 20px;">Loading scholarships...</p>';
+    
+    const result = await apiFetch('/scholarships/index.php');
+    if (result.ok && result.data && result.data.success) {
+      const allScholarships = result.data.data || [];
+      const targetUni = dbUniNames[uniKey];
+      const uniScholarships = allScholarships.filter(s => s.university === targetUni);
+      
+      if (uniScholarships.length === 0) {
+        accordionEl.innerHTML = '<p style="color:#718096; text-align:center; padding: 20px;">No scholarships found for this university.</p>';
+        return;
+      }
+      
+      let html = '';
+      uniScholarships.forEach(s => {
+        html += `
+          <div class="uni-accordion-item">
+            <div class="uni-accordion-header" onclick="toggleUniAccordion(this)">
+              <span class="uni-accordion-title">${s.title}</span>
+              <svg viewBox="0 0 24 24" class="uni-accordion-arrow">
+                <path d="M7 10l5 5 5-5z" />
+              </svg>
+            </div>
+            <div class="uni-accordion-content">
+              <div class="uni-accordion-columns">
+                <div class="uni-content-col">
+                  <ul>
+                    <li><strong>Type:</strong> ${s.scholarship_type}</li>
+                    <li><strong>Coverage:</strong> Full Tuition & Fees (Refer to official requirements)</li>
+                    <li><strong>Minimum GWA:</strong> ${s.minimum_gwa || 'None'}</li>
+                  </ul>
+                </div>
+                <div class="uni-content-col">
+                  <ul>
+                    <li><strong>Courses:</strong> ${s.course}</li>
+                    <li><strong>Requirements:</strong> ${s.requirements || 'N/A'}</li>
+                    <li><strong>Deadline:</strong> ${s.deadline || 'N/A'}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      accordionEl.innerHTML = html;
+    } else {
+      accordionEl.innerHTML = '<p style="color:red; text-align:center; padding: 20px;">Failed to load scholarships.</p>';
     }
   }
 }
