@@ -54,22 +54,27 @@ INSERT IGNORE INTO courses (college_id, course_name) VALUES
 (3,'BA Psychology'),
 (3,'BS Psychology');
 
+-- FEU Institute of Education (College ID: 4) - Course IDs: 16 to 21
 INSERT IGNORE INTO courses (college_id, course_name) VALUES
 (4,'Bachelor of Elementary Education'),
-(4,'Bachelor of Secondary Education'),
-(4,'Bachelor of Physical Education'),
-(4,'Bachelor of Early Childhood Education'),
-(4,'Bachelor of Special Needs Education');
+(4,'Bachelor of Secondary Education – English'),
+(4,'Bachelor of Secondary Education – Mathematics'),
+(4,'Bachelor of Secondary Education – Science'),
+(4,'Bachelor of Special Needs Education'),
+(4,'Bachelor of Physical Education');
 
+-- FEU Institute of Health Sciences and Nursing (College ID: 5) - Course IDs: 22 to 24
 INSERT IGNORE INTO courses (college_id, course_name) VALUES
 (5,'BS Nursing'),
 (5,'BS Medical Technology'),
 (5,'BS Pharmacy');
 
+-- FEU Institute of Tourism and Hotel Management (College ID: 6) - Course IDs: 25 to 26
 INSERT IGNORE INTO courses (college_id, course_name) VALUES
 (6,'BS Hospitality Management'),
 (6,'BS Tourism Management');
 
+-- FEU Institute of Technology (College ID: 7) - Course IDs: 27 to 32
 INSERT IGNORE INTO courses (college_id, course_name) VALUES
 (7,'BS Computer Science'),
 (7,'BS Information Technology'),
@@ -557,7 +562,7 @@ NULL,
 'Teacher Scholarship Program',
 'Awarded to 1st year exam takers who meet the eligibility requirements and will enroll in the identified degree programs of the Institute of Education during the 1st semester of the academic year.',
 'Far Eastern University',
-'Identified Degree Programs',
+'Eligible Programs',
 'Merit',
 90,
 'Meet the eligibility requirements and enroll in the identified degree programs of the Institute of Education.',
@@ -581,7 +586,7 @@ NULL,
 'Nicanor Reyes Science Scholarship Program (NRSSP)',
 'Nicanor Reyes Science Scholarship Program (NRSSP) is awarded to students from the identified science high schools whose FEU-CAT percentile score is superior with a HS GWA of at least 88 and an annual family income not exceeding 360,000.00 per year.',
 'Far Eastern University',
-'Science Programs',
+'Eligible Programs',
 'Merit',
 88,
 'Filipino citizen of good moral character; FEU-CAT percentile score of Superior; HS GWA of at least 88.',
@@ -629,7 +634,7 @@ NULL,
 'Athletics Scholarship',
 'Support talented students who embody the core values of Fortitude, Excellence and Uprightness and help promote the University through sports.',
 'Far Eastern University',
-'Eligible Programs',
+'All Programs',
 'Service',
 80,
 'Must qualify under FEU Athletics.',
@@ -641,7 +646,7 @@ NULL,
 'Cultural Scholarship',
 'Support talented students who embody the core values of Fortitude, Excellence and Uprightness and help promote the University through arts and culture.',
 'Far Eastern University',
-'Eligible Programs',
+'All Programs',
 'Service',
 82,
 'Must qualify under the FEU Center for the Arts.',
@@ -659,7 +664,7 @@ NULL,
 'Must satisfy the requirements under Presidential Decree No. 577.',
 NULL,
 'https://www.feu.edu.ph/presidential-decree-577-or-p-d-577/'
-), -- Added missing comma here
+),
 
 -- ==========================================
 -- University of the Philippines Diliman
@@ -769,7 +774,7 @@ NULL,
 'Ateneo Freshman Merit Scholarship',
 'The very best applicants to Ateneo de Manila University are awarded the Ateneo Freshman Merit Scholarship.',
 'Ateneo de Manila University',
-'All Undergraduate Programs',
+'All Programs',
 'Merit',
 93,
 'Awarded based on ACET performance, high school record, and leadership potential.',
@@ -781,7 +786,7 @@ NULL,
 'Director''s List Scholarship',
 'Awarded to outstanding applicants to Ateneo de Manila University.',
 'Ateneo de Manila University',
-'All Undergraduate Programs',
+'All Programs',
 'Merit',
 92,
 'Outstanding ACET performance and distinguished academic and co-curricular achievements.',
@@ -793,7 +798,7 @@ NULL,
 'Financial Aid Scholarship',
 'Financial Aid scholarships are awarded to students in all degree programs of the University and are selected on the basis of financial need, intellectual ability, consistent academic performance, service to the community, and potential for greater service. (Wikipedia)',
 'Ateneo de Manila University',
-'All Undergraduate Programs',
+'All Programs',
 'Need-Based',
 85,
 'Financial need, intellectual ability, consistent academic performance, service to the community, and potential for greater service.',
@@ -805,7 +810,7 @@ NULL,
 'Magis Scholarship',
 'This all-expenses-paid scholarship is part of the University''s commitment to make Ateneo education accessible to more students without the economic means to do so. (Wikipedia)',
 'Ateneo de Manila University',
-'All Undergraduate Programs',
+'All Programs',
 'Need-Based',
 90,
 'Open only to Financial Aid scholars who belong to the most financially disadvantaged sector.',
@@ -817,7 +822,7 @@ NULL,
 'Athletic Scholarship',
 'Awarded to student-athletes who have excelled in sports and academics. (Wikipedia)',
 'Ateneo de Manila University',
-'All Undergraduate Programs',
+'All Programs',
 'Athletic',
 80,
 'Outstanding athletic ability, awards in a specific sport, and recommendation of the Ateneo Coach and Program Head.',
@@ -829,7 +834,7 @@ NULL,
 'Finster Scholarship',
 'Awarded to deserving students who demonstrate financial need and academic excellence.',
 'Ateneo de Manila University',
-'All Undergraduate Programs',
+'All Programs',
 'Need-Based',
 88,
 'N/A',
@@ -841,7 +846,7 @@ NULL,
 'San Ignacio Scholarship',
 'Scholarship for qualified undergraduate students based on the University''s scholarship policies.',
 'Ateneo de Manila University',
-'All Undergraduate Programs',
+'All Programs',
 'Merit',
 90,
 'N/A',
@@ -857,7 +862,7 @@ NULL,
 'Archer Achiever Scholarship',
 'Awarded to the Top 100 examinees of the De La Salle College Admission Test (DCAT). (Wikipedia)',
 'De La Salle University',
-'All Undergraduate Programs',
+'All Programs',
 'Merit',
 96,
 'Must be among the Top 100 DCAT examinees.',
@@ -869,7 +874,7 @@ NULL,
 'Br. Andrew Gonzalez Academic Scholarship',
 'High school valedictorians and salutatorians of De La Salle Philippines schools are automatically exempted from paying tuition and fees. (Wikipedia)',
 'De La Salle University',
-'All Undergraduate Programs',
+'All Programs',
 'Academic',
 95,
 'Must be the valedictorian or salutatorian of a De La Salle Philippines school.',
@@ -881,7 +886,7 @@ NULL,
 'St. La Salle Financial Assistance Grant',
 'Financial assistance for qualified students with demonstrated financial need.',
 'De La Salle University',
-'All Undergraduate Programs',
+'All Programs',
 'Need-Based',
 85,
 'Subject to financial need assessment and scholarship qualifications.',
@@ -893,7 +898,7 @@ NULL,
 'Gokongwei Grant for Excellence',
 'Scholarship awarded to outstanding students enrolled in identified degree programs.',
 'De La Salle University',
-'All Undergraduate Programs',
+'All Programs',
 'Merit',
 92,
 'Must satisfy the scholarship qualifications prescribed by the University.',
@@ -905,7 +910,7 @@ NULL,
 'Vaugirard Scholarship Program',
 'Scholarship program for qualified undergraduate students.',
 'De La Salle University',
-'All Undergraduate Programs',
+'All Programs',
 'Merit',
 90,
 'Must meet the scholarship eligibility requirements.',
@@ -975,7 +980,7 @@ NULL,
 'N/A',
 NULL,
 'https://ofad.ust.edu.ph/scholarships/'
-), -- Added missing comma here
+),
 
 -- ==========================================
 -- National University
@@ -1075,7 +1080,7 @@ NULL,
 'Must qualify under TES guidelines.',
 NULL,
 'https://www.chedscholar.org/national-university-nu-scholarship/'
-), -- Added missing comma here
+),
 
 -- ==========================================
 -- Adamson University
@@ -1151,7 +1156,7 @@ NULL,
 'Good moral character and active participation in religious or community service.',
 NULL,
 'https://www.chedscholar.org/adamson-university-scholarships/'
-), -- Added missing comma here
+),
 
 -- ==========================================
 -- University of the East
@@ -1271,25 +1276,30 @@ VALUES
 -- Entrance Scholarship (All Colleges, All Programs)
 (1, 1, NULL, NULL),
 
--- Teacher Scholarship Program (Institute of Education)
-(2, 1, 4, NULL),
+-- Teacher Scholarship Program
+(2, 1, 4, 16), -- Bachelor of Elementary Education
+(2, 1, 4, 17), -- Bachelor of Secondary Education – English
+(2, 1, 4, 18), -- Bachelor of Secondary Education – Mathematics
+(2, 1, 4, 19), -- Bachelor of Secondary Education – Science
+(2, 1, 4, 20), -- Bachelor of Special Needs Education
+(2, 1, 4, 21), -- Bachelor of Physical Education
 
 -- LEAP (All Colleges, All Programs)
 (3, 1, NULL, NULL),
 
 -- Nicanor Reyes Science Scholarship Program
 -- Institute of Health Sciences and Nursing
-(4, 1, 5, 21), -- BS Nursing
-(4, 1, 5, 22), -- BS Medical Technology
-(4, 1, 5, 23), -- BS Pharmacy
+(4, 1, 5, 22), -- BS Nursing
+(4, 1, 5, 23), -- BS Medical Technology
+(4, 1, 5, 24), -- BS Pharmacy
 
 -- Institute of Technology
-(4, 1, 7, 26), -- BS Computer Science
-(4, 1, 7, 27), -- BS Information Technology
-(4, 1, 7, 28), -- BS Civil Engineering
-(4, 1, 7, 29), -- BS Mechanical Engineering
-(4, 1, 7, 30), -- BS Electrical Engineering
-(4, 1, 7, 31), -- BS Electronics Engineering
+(4, 1, 7, 27), -- BS Computer Science
+(4, 1, 7, 28), -- BS Information Technology
+(4, 1, 7, 29), -- BS Civil Engineering
+(4, 1, 7, 30), -- BS Mechanical Engineering
+(4, 1, 7, 31), -- BS Electrical Engineering
+(4, 1, 7, 32), -- BS Electronics Engineering
 
 -- Academic Scholarship
 (5, 1, NULL, NULL),
@@ -1519,6 +1529,7 @@ VALUES
     '123 Main Street',
     'Philippines'
 );
+
 -- ==========================
 -- Admin Account
 -- ==========================
@@ -1537,14 +1548,3 @@ VALUES
     'test@admin.com',
     '$2y$10$52Nq4h/tsfiIlg64jZgu8umCJkZhHzczr7IkVnl5ngIqtS310MG.q'
 );
-
-
-
-
-
-
-
-
-
-
-
