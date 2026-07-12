@@ -196,8 +196,13 @@ To provide a centralized platform that simplifies scholarship discovery for stud
 
 **Group 1**
 
+- CASTRO, TROJAN KANE PERSEUS, V.
+- CRUZ, VINZ EMMANUEL, B.
+- ODDA, Kris Derick, C.
+- RADOC, JUSTINE GRACE, A.
+- TEIKATAPU, BAIABE, McANTHONY
+- TIONGSON, JUSTINE ZHARINA
 - 
-
 ---
 
 *Helping students discover more opportunities, one scholarship at a time.*
