@@ -716,6 +716,12 @@ async function loadRecommendations() {
     return;
   }
 
+  const gwaVal = parseFloat(eligGwa.value);
+  if (!isNaN(gwaVal) && gwaVal < 70) {
+    out.innerHTML = '<p style="color:#718096; font-size: 14.5px;">No eligible scholarships match the criteria.</p>';
+    return;
+  }
+
   // Always pass the current form values to the recommendations API
   // so results reflect what the user just entered, not stale DB data
   let apiUrl;

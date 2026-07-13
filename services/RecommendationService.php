@@ -22,6 +22,17 @@ class RecommendationService {
             }
         }
 
+        $studentGwa = $student['gwa'] ?? null;
+        if ($studentGwa !== null && $studentGwa !== '') {
+            $normalizedStudentGwa = $this->normalizeGwa($studentGwa, $student['current_school'] ?? '');
+            if (floatval($studentGwa) > 0 && $normalizedStudentGwa < 70) {
+                return [
+                    'success' => false,
+                    'message' => 'No scholarships matched your current qualifications.'
+                ];
+            }
+        }
+
         $allScholarships = $this->scholarship->findAll();
         $eligible = [];
 
