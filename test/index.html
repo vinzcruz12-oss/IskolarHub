@@ -197,58 +197,58 @@
       <main>
         <!-- Landing Page -->
         <section id="landing-page" class="page page-hero-container" style="display:none;">
+          <header class="hero-header">
+
+            <div class="logo-container">
+              <img src="images/iskolarhubLogo.png" class="logo-img">
+            </div>
+
+            <nav class="hero-nav">
+              <a href="#landing" onclick="enableSmoothScroll()">HOME</a>
+              <a href="#about" onclick="enableSmoothScroll()">ABOUT</a>
+              <a href="#universities" onclick="enableSmoothScroll()">UNIVERSITIES</a>
+              <a href="#faqs" onclick="enableSmoothScroll()">FAQS</a>
+              <a href="#contact" onclick="enableSmoothScroll()">CONTACT</a>
+            </nav>
+
+            <div class="header-right-action">
+              <div class="auth-buttons" id="landing-auth-buttons">
+                <button class="btn-outline-header" onclick="showPage('login')">LOGIN</button>
+                <button class="btn-filled-header" onclick="showPage('register')">SIGN UP</button>
+              </div>
+
+              <!-- Logged In User Dropdown -->
+              <div class="landing-user-menu" id="landing-user-menu" style="display: none;">
+                <button class="landing-user-btn" onclick="toggleLandingDropdown(event)">
+                  <span id="landing-user-name">Student</span>
+                  <div class="landing-user-avatar">
+                    <img id="landing-user-pic" src="" alt="Profile">
+                  </div>
+                  <svg viewBox="0 0 24 24" class="landing-user-arrow">
+                    <path d="M7 10l5 5 5-5z" fill="#fff" />
+                  </svg>
+                </button>
+                <div class="landing-dropdown-menu" id="landing-dropdown-menu">
+                  <a href="#dashboard"
+                    onclick="showPage('dashboard'); closeLandingDropdown(); return false;">Dashboard</a>
+                  <a href="#profile" onclick="showPage('profile'); closeLandingDropdown(); return false;">Edit
+                    Profile</a>
+                  <a href="#settings"
+                    onclick="showPage('settings'); closeLandingDropdown(); return false;">Settings</a>
+                  <hr id="landing-logout-divider" style="border: 0; border-top: 1px solid rgba(0, 0, 0, 0.08); margin: 6px 0;">
+                  <a href="#" id="landing-logout-btn" onclick="logout(); closeLandingDropdown(); return false;" class="logout-link">Logout</a>
+                </div>
+              </div>
+            </div>
+
+          </header>
+
           <div class="hero-screen">
             <video class="hero-video" autoplay muted loop playsinline>
               <source src="videos/hero.mp4" type="video/mp4">
             </video>
 
             <div class="hero-overlay"></div>
-
-            <header class="hero-header">
-
-              <div class="logo-container">
-                <img src="images/iskolarhubLogo.png" class="logo-img">
-              </div>
-
-              <nav class="hero-nav">
-                <a href="#landing" onclick="enableSmoothScroll()">HOME</a>
-                <a href="#about" onclick="enableSmoothScroll()">ABOUT</a>
-                <a href="#universities" onclick="enableSmoothScroll()">UNIVERSITIES</a>
-                <a href="#faqs" onclick="enableSmoothScroll()">FAQS</a>
-                <a href="#contact" onclick="enableSmoothScroll()">CONTACT</a>
-              </nav>
-
-              <div class="header-right-action">
-                <div class="auth-buttons" id="landing-auth-buttons">
-                  <button class="btn-outline-header" onclick="showPage('login')">LOGIN</button>
-                  <button class="btn-filled-header" onclick="showPage('register')">SIGN UP</button>
-                </div>
-
-                <!-- Logged In User Dropdown -->
-                <div class="landing-user-menu" id="landing-user-menu" style="display: none;">
-                  <button class="landing-user-btn" onclick="toggleLandingDropdown(event)">
-                    <span id="landing-user-name">Student</span>
-                    <div class="landing-user-avatar">
-                      <img id="landing-user-pic" src="" alt="Profile">
-                    </div>
-                    <svg viewBox="0 0 24 24" class="landing-user-arrow">
-                      <path d="M7 10l5 5 5-5z" fill="#fff" />
-                    </svg>
-                  </button>
-                  <div class="landing-dropdown-menu" id="landing-dropdown-menu">
-                    <a href="#dashboard"
-                      onclick="showPage('dashboard'); closeLandingDropdown(); return false;">Dashboard</a>
-                    <a href="#profile" onclick="showPage('profile'); closeLandingDropdown(); return false;">Edit
-                      Profile</a>
-                    <a href="#settings"
-                      onclick="showPage('settings'); closeLandingDropdown(); return false;">Settings</a>
-                    <hr id="landing-logout-divider" style="border: 0; border-top: 1px solid rgba(0, 0, 0, 0.08); margin: 6px 0;">
-                    <a href="#" id="landing-logout-btn" onclick="logout(); closeLandingDropdown(); return false;" class="logout-link">Logout</a>
-                  </div>
-                </div>
-              </div>
-
-            </header>
 
             <div class="hero-container-inner">
 
@@ -1684,6 +1684,11 @@
                 <h2 class="admin-tab-title"
                   style="margin: 0; font-family: 'Montserrat', sans-serif; color: #2d3748; font-size: 24px;">
                   Administrator Accounts</h2>
+                <div style="display: flex; gap: 10px;">
+                  <button onclick="loadAdminsList()" class="btn-back-link"
+                    style="margin: 0; padding: 8px 16px;">Refresh List</button>
+                  <button onclick="openAdminAccountModal()" class="auth-btn" style="margin: 0; padding: 8px 16px;">Add Admin</button>
+                </div>
               </div>
               <div id="admin-accounts-list">
                 <!-- Generated dynamically in JS -->
@@ -3540,6 +3545,38 @@
         </div>
       </form>
       <div id="admin-student-modal-result"></div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Admin Modal -->
+  <div id="admin-account-modal" class="modal" style="display:none; align-items: center; justify-content: center;">
+    <div class="modal-content" style="max-width: 450px; text-align: left;">
+      <h3 id="admin-account-modal-title" style="margin-top: 0; font-family: 'Montserrat', sans-serif; color: #7a151a;">Add Administrator</h3>
+      <form id="admin-account-form" style="display: flex; flex-direction: column; gap: 16px;">
+        <input type="hidden" id="admin-account-id">
+        <div id="admin-account-username-container">
+          <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 6px;">Username / Email</label>
+          <input type="text" id="admin-account-username" required
+            style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; background: inherit; color: inherit;">
+        </div>
+        <div>
+          <label id="admin-account-pass-label" style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 6px;">Password</label>
+          <input type="password" id="admin-account-password" required
+            style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; background: inherit; color: inherit;">
+        </div>
+        <div>
+          <label style="font-weight: 600; font-size: 13px; color: #4a5568; display: block; margin-bottom: 6px;">Confirm Password</label>
+          <input type="password" id="admin-account-confirm-password" required
+            style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; background: inherit; color: inherit;">
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px;">
+          <button type="button" onclick="closeAdminAccountModal()"
+            style="padding: 10px 20px; border: 1px solid #cbd5e0; background: transparent; border-radius: 6px; font-weight: 600; cursor: pointer; color: #4a5568; font-family: 'Montserrat', sans-serif;">Cancel</button>
+          <button type="submit"
+            style="padding: 10px 20px; border: none; background: #7a151a; border-radius: 6px; font-weight: 600; cursor: pointer; color: #fff; font-family: 'Montserrat', sans-serif;">Save</button>
+        </div>
+      </form>
+      <div id="admin-account-modal-result" style="margin-top: 12px;"></div>
     </div>
   </div>
 

@@ -58,6 +58,7 @@ After running `seeds.sql`, you can log in with:
 
 - **Username:** `admin`
 - **Password:** `admin123`
+- **Username:**
 
 ## Troubleshooting
 

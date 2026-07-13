@@ -143,6 +143,8 @@ function showPage(pageId, updateHash = true) {
       if (video) {
         video.play().catch(err => console.log("Video play failed or interrupted:", err));
       }
+      // Reset landing header scrolled state when entering the landing page
+      handleLandingScroll();
     }
   }
 
@@ -189,9 +191,11 @@ function showPage(pageId, updateHash = true) {
     if (isViewingAsStudent) {
       banner.style.display = 'flex';
       document.body.style.paddingTop = '50px';
+      document.body.classList.add('has-preview-banner');
     } else {
       banner.style.display = 'none';
       document.body.style.paddingTop = '0';
+      document.body.classList.remove('has-preview-banner');
     }
   }
 
@@ -1273,19 +1277,137 @@ async function loadAdminsList() {
 
   const list = result.data.data || [];
   let html = '<table>';
-  html += '<tr><th>Admin ID</th><th>Username/Email</th><th>Created Date</th></tr>';
+  html += '<tr><th>Admin ID</th><th>Username/Email</th><th>Created Date</th><th>Actions</th></tr>';
   list.forEach(a => {
+    const isCurrentAdmin = (currentAdminId !== null && parseInt(a.id) === parseInt(currentAdminId));
+    const curBadge = isCurrentAdmin ? ' <span style="background:#e2e8f0; color:#4a5568; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:bold; margin-left:4px;">You</span>' : '';
+    
     html += `
       <tr>
         <td>${a.id}</td>
-        <td><strong>${a.username}</strong></td>
+        <td><strong>${a.username}</strong>${curBadge}</td>
         <td>${a.created_at || 'N/A'}</td>
+        <td>
+          <button onclick="openAdminAccountModal(${a.id}, '${a.username}')" style="background:#4a5568; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; margin-right:4px;">Edit Password</button>
+          <button onclick="deleteAdminDirect(${a.id}, '${a.username}')" style="background:#e53e3e; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;" ${isCurrentAdmin ? 'disabled title="Cannot delete yourself"' : ''}>Remove</button>
+        </td>
       </tr>
     `;
   });
   html += '</table>';
   out.innerHTML = html;
 }
+
+// Open Admin Account Modal (Add or Edit)
+function openAdminAccountModal(id = null, username = '') {
+  document.getElementById('admin-account-form').reset();
+  document.getElementById('admin-account-modal-result').innerHTML = '';
+  
+  const titleEl = document.getElementById('admin-account-modal-title');
+  const userContainerEl = document.getElementById('admin-account-username-container');
+  const userEl = document.getElementById('admin-account-username');
+  const passLabelEl = document.getElementById('admin-account-pass-label');
+  const passEl = document.getElementById('admin-account-password');
+  const confirmPassEl = document.getElementById('admin-account-confirm-password');
+  
+  if (id) {
+    // Edit password mode
+    titleEl.textContent = 'Change Admin Password';
+    userContainerEl.style.display = 'none';
+    userEl.removeAttribute('required');
+    userEl.value = username;
+    passLabelEl.textContent = 'New Password';
+    document.getElementById('admin-account-id').value = id;
+  } else {
+    // Add mode
+    titleEl.textContent = 'Add Administrator';
+    userContainerEl.style.display = 'block';
+    userEl.setAttribute('required', 'true');
+    userEl.value = '';
+    passLabelEl.textContent = 'Password';
+    document.getElementById('admin-account-id').value = '';
+  }
+  
+  document.getElementById('admin-account-modal').style.display = 'flex';
+}
+
+function closeAdminAccountModal() {
+  document.getElementById('admin-account-modal').style.display = 'none';
+}
+
+// Delete Admin
+async function deleteAdminDirect(id, username) {
+  const confirmation = confirm(`Are you sure you want to permanently delete the administrator account of ${username}? This action CANNOT be undone.`);
+  if (!confirmation) return;
+
+  const result = await apiFetch('/admin/delete.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id })
+  });
+
+  if (result.ok && result.data && result.data.success) {
+    logSecurityEvent('Admin account deleted', `Admin deleted account: ${username} (ID: ${id})`);
+    loadAdminsList();
+  } else {
+    const errMsg = (result.data && result.data.error) || 'Failed to remove admin account.';
+    alert('Error: ' + errMsg);
+  }
+}
+
+// Submit Add/Edit Admin Form
+document.getElementById('admin-account-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const id = document.getElementById('admin-account-id').value;
+  const username = document.getElementById('admin-account-username').value.trim();
+  const password = document.getElementById('admin-account-password').value;
+  const confirmPassword = document.getElementById('admin-account-confirm-password').value;
+  
+  const resultDiv = document.getElementById('admin-account-modal-result');
+  resultDiv.innerHTML = '';
+  
+  if (password.length < 6) {
+    resultDiv.innerHTML = '<p style="color:red;">Password must be at least 6 characters.</p>';
+    return;
+  }
+  
+  if (password !== confirmPassword) {
+    resultDiv.innerHTML = '<p style="color:red;">Passwords do not match.</p>';
+    return;
+  }
+  
+  let endpoint = '/admin/create.php';
+  let payload = { username, password, confirm_password: confirmPassword };
+  
+  if (id) {
+    endpoint = '/admin/update.php';
+    payload = { id, password, confirm_password: confirmPassword };
+  }
+  
+  const result = await apiFetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  
+  if (result.ok && result.data && result.data.success) {
+    const successMsg = id ? 'Admin password updated successfully.' : 'Admin account created successfully.';
+    resultDiv.innerHTML = `<p style="color:green;">${successMsg}</p>`;
+    
+    const eventName = id ? 'Admin password changed' : 'Admin account added';
+    const details = id ? `Admin changed password for ID: ${id} (${username})` : `Admin added new account: ${username}`;
+    logSecurityEvent(eventName, details);
+    
+    setTimeout(() => {
+      closeAdminAccountModal();
+      loadAdminsList();
+    }, 1000);
+  } else {
+    const errMsg = (result.data && result.data.error) || 'An error occurred. Please try again.';
+    resultDiv.innerHTML = `<p style="color:red;">Error: ${errMsg}</p>`;
+  }
+});
 
 function openAddModal() {
   document.getElementById('modal-title').textContent = 'Add Scholarship';
@@ -1515,7 +1637,11 @@ function handleRouting() {
       // Force layout calculation and get absolute vertical position
       const rect = el.getBoundingClientRect();
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const targetY = rect.top + scrollTop;
+      
+      // Offset by the height of the fixed navigation bar
+      const header = document.querySelector('.hero-header');
+      const headerHeight = header ? header.offsetHeight : 0;
+      const targetY = rect.top + scrollTop - headerHeight;
 
       // Perform immediate synchronous scroll
       if (useSmoothScroll) {
@@ -1536,6 +1662,20 @@ function handleRouting() {
 // Register routing listeners
 window.addEventListener('hashchange', handleRouting);
 window.addEventListener('DOMContentLoaded', handleRouting);
+
+// Landing page sticky header scroll listener
+function handleLandingScroll() {
+  const header = document.querySelector('.hero-header');
+  if (header) {
+    if (window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  }
+}
+window.addEventListener('scroll', handleLandingScroll);
+window.addEventListener('DOMContentLoaded', handleLandingScroll);
 
 // Intercept all landing anchor links to scroll smoothly
 document.addEventListener('click', e => {
