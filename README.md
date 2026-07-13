@@ -4,6 +4,28 @@ IskolarHub is a web-based scholarship finder designed to help students easily di
 
 The platform also provides an admin dashboard that allows scholarship providers to create, update, and manage scholarship listings, making scholarship information more accessible to students.
 
+---
+
+# 🎯 Purpose
+
+IskolarHub aims to simplify the scholarship search process by providing a centralized platform where students can easily browse scholarship opportunities while allowing scholarship providers to efficiently manage their scholarship listings.
+
+---
+
+### Scholarship Details
+
+Each scholarship listing displays:
+
+- Scholarship Description
+- Eligibility Requirements
+- Required Documents
+- Scholarship Benefits
+- Application Deadline
+- Scholarship Provider
+- Official Website Link
+
+---
+
 ## 🚀 Setup Instructions
 
 ### Prerequisites
@@ -174,8 +196,13 @@ To provide a centralized platform that simplifies scholarship discovery for stud
 
 **Group 1**
 
+- CASTRO, TROJAN KANE PERSEUS, V.
+- CRUZ, VINZ EMMANUEL, B.
+- ODDA, Kris Derick, C.
+- RADOC, JUSTINE GRACE, A.
+- TEIKATAPU, BAIABE, McANTHONY
+- TIONGSON, JUSTINE ZHARINA
 - 
-
 ---
 
 *Helping students discover more opportunities, one scholarship at a time.*
